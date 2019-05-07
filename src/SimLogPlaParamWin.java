@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -30,10 +30,12 @@
 /* //////////////////////////////////////////////////////////////////////// */
 
 /**
- *  Classe récupérant les paramètres pour une
- *  interface PLA et créant cette interface si les
- *  paramètres sont correctes 
+ *  Classe rï¿½cupï¿½rant les paramï¿½tres pour une
+ *  interface PLA et crï¿½ant cette interface si les
+ *  paramï¿½tres sont correctes
  */
+
+package src;
 
 
 import java.io.*;
@@ -42,19 +44,19 @@ import java.awt.event.*;
 import javax.swing.*;
 
 
-public class SimLogPlaParamWin extends JFrame 
+public class SimLogPlaParamWin extends JFrame
 	implements ActionListener {
- 		
+
   // PARTIE GRAPHIQUE
-  
-	private SimLogWin  appli;  
+
+	private SimLogWin  appli;
   private JTextField tNbVar;
   private JTextField tNbMon;
   private JButton    bOk;
 	private JButton    bCancel;
 
-		
-  
+
+
 	private JPanel createUserInterface() {
 		JPanel panel=new JPanel();
 		panel.setLayout(new BorderLayout());
@@ -102,19 +104,19 @@ public class SimLogPlaParamWin extends JFrame
     }
 
   // CONSTRUCTEUR
-  
+
   public SimLogPlaParamWin(SimLogWin parent) {
 		appli=parent;
 	  setTitle("Monomial formula");
 	  setResizable(false);
-	  //Cursor cur = new Cursor( Cursor.HAND_CURSOR ); 
+	  //Cursor cur = new Cursor( Cursor.HAND_CURSOR );
     getContentPane().setLayout(new BorderLayout());
 		getContentPane().add("Center",createUserInterface());
 		pack();
 	}
 
   // LISTENER
-	 
+
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==bCancel) {
 			dispose();
@@ -143,7 +145,7 @@ public class SimLogPlaParamWin extends JFrame
 					if (!error) appli.windowWarning("Bad format number for Number of Monomials");
 					error=true;
 				}
-	  
+
 	  		if ((nbVar<2) || (nbVar>8)) {
 					nbVar=0;
 					if (!error) appli.windowWarning("Number of variables must be between 2 and 8.");
@@ -160,10 +162,10 @@ public class SimLogPlaParamWin extends JFrame
 					win.show();
 					this.dispose();
 				}
-				
+
 			}
 		}
-	} 
+	}
 }
-	
+
 

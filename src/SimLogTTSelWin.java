@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -38,13 +38,15 @@
  *   @author Jean-Michel Richer
  */
 
+package src;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.util.Vector;
 
-public class SimLogTTSelWin extends JDialog 
+public class SimLogTTSelWin extends JDialog
    implements ActionListener {
 
 
@@ -167,8 +169,8 @@ public class SimLogTTSelWin extends JDialog
 			JScrollPane scrollpane=new JScrollPane(tableOfOutputs);
 			scrollpane.setPreferredSize(new Dimension(200,100));
 
-			
-			selectAllOutputs=new JCheckBox("select all");			
+
+			selectAllOutputs=new JCheckBox("select all");
 			selectAllOutputs.addActionListener(this);
 
 			JPanel northPanel=new JPanel();
@@ -303,7 +305,7 @@ public class SimLogTTSelWin extends JDialog
 		 */
 
 		class MyTableModel extends AbstractTableModel {
-        final String[] columnNames = {"LED Name", 
+        final String[] columnNames = {"LED Name",
                                       "Select" };
         private Object[][] data;
 
@@ -314,7 +316,7 @@ public class SimLogTTSelWin extends JDialog
         public int getColumnCount() {
             return columnNames.length;
         }
-        
+
         public int getRowCount() {
             return data.length;
         }
@@ -344,7 +346,7 @@ public class SimLogTTSelWin extends JDialog
         public boolean isCellEditable(int row, int col) {
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
-            if (col == 0) { 
+            if (col == 0) {
                 return false;
             } else {
                 return true;
@@ -360,18 +362,18 @@ public class SimLogTTSelWin extends JDialog
             if (DEBUG) {
                 System.out.println("Setting value at " + row + "," + col
                                    + " to " + value
-                                   + " (an instance of " 
+                                   + " (an instance of "
                                    + value.getClass() + ")");
             }
 */
-            if (data[0][col] instanceof Integer                        
-                    && !(value instanceof Integer)) {                  
-                //With JFC/Swing 1.1 and JDK 1.2, we need to create    
-                //an Integer from the value; otherwise, the column     
-                //switches to contain Strings.  Starting with v 1.3,   
+            if (data[0][col] instanceof Integer
+                    && !(value instanceof Integer)) {
+                //With JFC/Swing 1.1 and JDK 1.2, we need to create
+                //an Integer from the value; otherwise, the column
+                //switches to contain Strings.  Starting with v 1.3,
                 //the table automatically converts value to an Integer,
-                //so you only need the code in the 'else' part of this 
-                //'if' block.                                          
+                //so you only need the code in the 'else' part of this
+                //'if' block.
                 //XXX: See TableEditDemo.java for a better solution!!!
                 try {
                     data[row][col] = new Integer(value.toString());
@@ -422,13 +424,13 @@ public class SimLogTTSelWin extends JDialog
 							setValueAt(new Boolean(false),i,1);
 					}
 				}
-		
+
 				public void getSelected(int tab[]) {
 					int i;
 
 					for (i=0;i<getRowCount();i++) {
 						Boolean b=(Boolean)getValueAt(i,1);
-						if (b.booleanValue()==true) 
+						if (b.booleanValue()==true)
 							tab[i]=1;
 						else
 							tab[i]=0;
@@ -478,7 +480,7 @@ public class SimLogTTSelWin extends JDialog
         public int getColumnCount() {
             return columnNames.length;
         }
-        
+
         public int getRowCount() {
             return data.length;
         }
@@ -543,7 +545,7 @@ public class SimLogTTSelWin extends JDialog
 			}
 			for (i=0;i<tabSelectedIndices.length;i++) {
 				if (tabSelectedIndices[i]==1) vOut.add(tabOutputGates[i]);
-			}					
+			}
 			SimLogTruthTable tt=new SimLogTruthTable(circuit,vIn,vOut);
 			tt.generateTable();
 			tt.print();

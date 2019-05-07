@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -29,39 +29,41 @@
 /* // ------------------------------------------------------------------ // */
 /* //////////////////////////////////////////////////////////////////////// */
 
+package src;
+
 /**
- *  Classe Gérant un Tableau de Karnaugh 
+ *  Classe Gï¿½rant un Tableau de Karnaugh
  */
 
 
-public class SimLogKarnaugh 
-{	
+public class SimLogKarnaugh
+{
   // Champs
-	
+
   // Nombre de Variables et Nombre de Monomes
-  
+
   private int NbVar;
   private int NbMonome;
-	
+
   // Nombre de Variables Horizontales et Verticales dans la Table de Karnaugh
-  
+
   private int varH;
   private int varV;
-		
-  // Tableau de Booléen décrivant l'expression logique
-  
+
+  // Tableau de Boolï¿½en dï¿½crivant l'expression logique
+
   private boolean [][] Matrice;
-	
+
   // Table de Karnaugh
-  
+
   private boolean [][] TableK;
-	
-  // Table des Correspondances entre la Table de Booléens et la Table de Karnaugh	
-  
+
+  // Table des Correspondances entre la Table de Boolï¿½ens et la Table de Karnaugh
+
   private SimLogTableCorres TableCorres;
 
-  // Résultat du Regroupement
-	
+  // Rï¿½sultat du Regroupement
+
   private int [][] StockMask;
   private int NbMask;
 
@@ -72,43 +74,43 @@ public class SimLogKarnaugh
     {
 	  NbVar = nv;
 	  NbMonome = nm;
-	
+
 	  // Initialisation des Dimensions de la Table de Karnaugh
-	  
+
 	  varV = NbVar / 2;
 	  varH = NbVar - varV;
-	
+
 	  // Initialisation de TablePla
-	  
-	  Matrice = new boolean [NbMonome][NbVar*2];	
-	 
+
+	  Matrice = new boolean [NbMonome][NbVar*2];
+
 	  for ( int i = 0 ; i < (NbVar * 2) ; i++ )
 	    {
 	      for ( int j = 0 ; j < NbMonome ; j++ )
 	        { Matrice[j][i] = Table[j][i]; }
-		}	
-	
+		}
+
 	  // Initialisation de la TableCorres
 	  // Pour Chaque Case de la Table de Karnaugh
 	  // On Stocke la Colonne puis la Ligne Correspondante
-	 
+
 	  TableCorres = new SimLogTableCorres(NbVar);
-	
-	  // Création de la Table de Karnaugh
-	
+
+	  // Crï¿½ation de la Table de Karnaugh
+
 	  TableK = new boolean [ (int) Math.pow(2,varV) ][ (int) Math.pow(2,varH) ];
-	
+
 	  // Ajout des Monomes dans la Table de Karnaugh
-	  
+
 	  InitKarnaugh();
-	
+
 	  // Regroupement
-	
+
 	  NbMask = 0;
-	  StockMask = regroupement(StockMask,NbMask);	
-    
- 
-    } // Fin Constructeur	
+	  StockMask = regroupement(StockMask,NbMask);
+
+
+    } // Fin Constructeur
 
 
 /***********************************************************************************/
@@ -116,54 +118,54 @@ public class SimLogKarnaugh
 /***********************************************************************************/
 
 
-  public void InitKarnaugh () 
-    {      
+  public void InitKarnaugh ()
+    {
       for ( int i = 0 ; i < NbMonome ; i++ )
 	    {
-	      int [] bit = new int [NbVar];		
+	      int [] bit = new int [NbVar];
 	      int vide , nombre , k = 0;
 	      int [][] TableCase;
 	      int [][] Verite;
 	      boolean [] resultat;
-	  
+
 	      reset_bit(bit,NbVar);
-	  
+
 	      for ( int j = 0 ; j < NbVar * 2 ; j = j + 2 )
-	        {	  
-	          // On Détermine la Valeur des Bits
-		  
+	        {
+	          // On Dï¿½termine la Valeur des Bits
+
 		      if ( Matrice[i][j] && !Matrice[i][j+1] )
-		        { 
+		        {
 		          bit[k] = 1;
 		          k++;
 		        }
-    	
+
     	      if ( !Matrice[i][j] && Matrice[i][j+1] )
-		        { 
+		        {
 		          bit[k] = 0;
 		          k++;
 		        }
-    		   
+
               if ( !Matrice[i][j] && !Matrice[i][j+1] )
-		        { k++; }	
-	          
+		        { k++; }
+
 	          if (Matrice[i][j] && Matrice[i][j+1])
 	  	        {
-	  	          // Si on a une Variable et sa Négation 
-	  	          // On met la Ligne à Vide pour ne pas la Prendre en Compte
-		          
+	  	          // Si on a une Variable et sa Nï¿½gation
+	  	          // On met la Ligne ï¿½ Vide pour ne pas la Prendre en Compte
+
 		          j = NbVar * 2;
 		          reset_bit(bit,NbVar);
-		        }		    
-            }       	
-	 
-	      // On Traite les Cases Vides Initialisées à -1
-	      
+		        }
+            }
+
+	      // On Traite les Cases Vides Initialisï¿½es ï¿½ -1
+
 	      resultat = IndicesCasesVides(bit,NbVar);
 	      vide = NbCasesVides(resultat,NbVar);
-	  
+
 	      // Si la Ligne est Vide -> On ne la Prend pas en Compte
-	
+
 	      if ( vide == NbVar )
 	  	    {
 		      //JOptionPane.showMessageDialog(null,"Line "+i+" incorrect : not used","Information : Some Lines Are Erroned",1);
@@ -173,86 +175,86 @@ public class SimLogKarnaugh
 	        {
 	  	      nombre = (int) Math.pow(2,vide);
 	          TableCase = new int [nombre][NbVar];
-	  
+
 	 	      // On Initialise la Matrice
-	  	      
+
 	  	      for ( int l = 0 ; l < NbVar ; l++ )
-	    		{	
+	    		{
 	      		  for ( int m = 0 ; m < nombre ; m++ )
 	        		{
 	         		 TableCase[m][l] = bit[l];
 	        		}
 	    		}
-	  
-	  	      // Calcule la Table de Vérité des Cases à -1
-	 	  
+
+	  	      // Calcule la Table de Vï¿½ritï¿½ des Cases ï¿½ -1
+
 	 	      Verite = TableVerite(vide);
-	  
-	          // On Met à Jour la Matrice
-	 	  
+
+	          // On Met ï¿½ Jour la Matrice
+
 	 	      if ( vide > 0 )
 	            {
 	      	      int t = 0;
-	          
+
 	              for ( int r = 0 ; r < NbVar ; r++ )
 	                {
 	          	      if ( TableCase[0][r] == -1 )
-	                    { 
+	                    {
 	             	      CopieColMat(Verite,TableCase,t,r,nombre);
 	             	      t++;
 	            	    }
 	        	    }
         	    }
-	 
+
 	 	      // On Modifie la Table de Karnaugh
-	 	  
+
 	 	      for ( int y = 0 ; y < nombre ; y++ )
 	 		    {
 			      int indice = BitToInt(TableCase[y]);
 		          int l = TableCorres.getNbLig(indice);
 		 	      int c = TableCorres.getNbCol(indice);
-		 	      TableK[l][c] = true;	
+		 	      TableK[l][c] = true;
 		        }
-	 
+
 	        }
-        } 
-    }  
+        }
+    }
 
 
-  // Initialise le Tableau de Bits à -1
-  
+  // Initialise le Tableau de Bits ï¿½ -1
+
   public void reset_bit ( int[]bit , int l )
     {
       for ( int k = 0 ; k < l ; k++ )
-	    { bit[k] = -1; } 	
-    }	
+	    { bit[k] = -1; }
+    }
 
-  // Pour Convertir un Tableau de Bits en Entier 	
-  
+  // Pour Convertir un Tableau de Bits en Entier
+
   public int BitToInt ( int[]bit )
     {
       int tmp = 0;
-  
-      for ( int k = 0 ; k < NbVar ; k++ )
-	    { tmp = tmp + ( bit[k] * ( (int) Math.pow(2,(NbVar-k-1)) ) ); } 	
-  
-      return tmp;
-    }	
 
-  // Pour Créer le Tableau de Bits Correspondant à l'Entier x
-  // l : Taille du Tableau de Bits 
+      for ( int k = 0 ; k < NbVar ; k++ )
+	    { tmp = tmp + ( bit[k] * ( (int) Math.pow(2,(NbVar-k-1)) ) ); }
+
+      return tmp;
+    }
+
+  // Pour Crï¿½er le Tableau de Bits Correspondant ï¿½ l'Entier x
+  // l : Taille du Tableau de Bits
 
   public void IntToBit ( int[]bit , int x , int l )
     {
       int k , div , mod;
-  
+
       if ( l > 0 )
         {
           reset_bit(bit,l);
           k = l - 1;
           div = x / 2;
           mod = x % 2;
-  
+
           while ( div != 0 )
             {
               bit[k] = mod;
@@ -260,89 +262,89 @@ public class SimLogKarnaugh
               div = div / 2;
               k--;
             }
-  
+
           bit[k] = mod;
-  
+
           if ( k != 0 )
             {
-              for ( int i = 0 ; i < k ; i++ ) 	
-                { bit[i] = 0; }	
+              for ( int i = 0 ; i < k ; i++ )
+                { bit[i] = 0; }
             }
-        }	
+        }
     }
 
-  // Calcul la Table de Vérité pour NbVar
-  
+  // Calcul la Table de Vï¿½ritï¿½ pour NbVar
+
   public int [][] TableVerite ( int Var )
-    { 
+    {
       int [] bit = new int [NbVar];
       int l = (int) Math.pow(2,Var);
       int [][] Verite = new int [l][Var];
-  
+
       for ( int i = 0 ; i < l ; i++ )
 	    {
-          IntToBit(bit,i,Var);  
-          
+          IntToBit(bit,i,Var);
+
           for ( int j = 0 ; j < Var ; j++ )
 	        { Verite[i][j] = bit[j]; }
-        } 	
-      
+        }
+
       return Verite;
     }
 
   // Affichage d'un Tableau de Bits
-  
+
   public void AfficheBit ( int[]bit , int l )
     {
       for ( int i = 0 ; i < l ; i++ )
-	    { System.out.print(bit[i]); } 	
+	    { System.out.print(bit[i]); }
       System.out.println( " ");
-    }	
+    }
 
-  // Renvoie un Tableau Contenant les Indices des Bits à -1
-  
+  // Renvoie un Tableau Contenant les Indices des Bits ï¿½ -1
+
   public boolean [] IndicesCasesVides ( int[]bit , int l )
     {
       boolean [] Indices = new boolean [l];
-  
+
       for ( int k = 0 ; k < l ; k++ )
 	    {
           if ( bit[k] == -1 )
-            { Indices[k] = true; } 	
+            { Indices[k] = true; }
           else
-            { Indices[k] = false; }  
-        } 	
-  
-      return Indices;
-    }	
+            { Indices[k] = false; }
+        }
 
-  // Renvoie le Nombre de Cases à -1 dans T
-  
+      return Indices;
+    }
+
+  // Renvoie le Nombre de Cases ï¿½ -1 dans T
+
   public int NbCasesVides ( boolean[]T , int l )
     {
       int nombre = 0;
-  
+
       for ( int k = 0 ; k < l ; k++ )
 	    {
           if ( T[k] == true )
-            { nombre++; } 	
-        } 	
-  
-      return nombre;
-    }	
+            { nombre++; }
+        }
 
-  // Remplit la Matrice dst à partir de la Matrice src
-  // c1 : La Colonne à Copier
-  // c2 : La Colonne à Modifier
-  
+      return nombre;
+    }
+
+  // Remplit la Matrice dst ï¿½ partir de la Matrice src
+  // c1 : La Colonne ï¿½ Copier
+  // c2 : La Colonne ï¿½ Modifier
+
   public void CopieColMat ( int[][]src , int[][]dst , int c1 , int c2 , int NbLignes )
     {
       for ( int i = 0 ; i < NbLignes ; i++ )
 	    { dst[i][c2] = src[i][c1]; }
     }
 
-  // Copie 
-  
+  // Copie
+
   public void CopieMask ( int[]src , int[][]dst , int l )
     {
       for ( int i = 0 ; i < NbVar ; i++ )
@@ -355,20 +357,20 @@ public class SimLogKarnaugh
 /**********************************************************************************/
 
 
-  // On Teste si le Masque M est un "Sous Masque" d'un Masque Accepté et Stocké dans StockMask
+  // On Teste si le Masque M est un "Sous Masque" d'un Masque Acceptï¿½ et Stockï¿½ dans StockMask
 
-  public boolean EstSousMaskLig ( int[]M , int[]StockMask , int NbMask ) 
+  public boolean EstSousMaskLig ( int[]M , int[]StockMask , int NbMask )
     {
       // Pour le Masque de la Table StockMask
-	  
+
 	  for ( int j = 0 ; j < NbVar ; j++ )
 		{
 		  if ( StockMask[j] != -1 )
 		    {
 			  if ( StockMask[j] != M[j] )
-			    { return false; }			
+			    { return false; }
 			}
-		}	
+		}
 
       return true;
     }
@@ -390,7 +392,7 @@ public class SimLogKarnaugh
     }
 
 
-//remplacela ligne de l'intersection par la derniere ligne 
+//remplacela ligne de l'intersection par la derniere ligne
  public int RempMask(int [][]StockMask,int NbMask,int inter)
 {
 
@@ -409,12 +411,12 @@ public boolean EstIntersection ( int intersec,int []InterMask , int[][]StockMask
 	int i=0;
           while (i < NbMask)
 	        {
-		  if (i != intersec)	
+		  if (i != intersec)
 			{
 	          	if ( EstSousMaskLig( InterMask , StockMask[i] , NbMask ) )
 		        	{ return true; }
 			}
-		   i++;		
+		   i++;
 	        }
 
           return false;
@@ -429,17 +431,17 @@ public boolean EstIntersection ( int intersec,int []InterMask , int[][]StockMask
 public int SuppInterMask(int [][]StockMask, int NbMask)
 {
   for (int i=0;i<NbMask;i++)
-      {	
+      {
 	int vide = NbCasesVides( IndicesCasesVides( StockMask[i] , NbVar ) , NbVar );
-      
+
       // Nombre de Lignes dans CaseMask
-      
+
       int NbLigCaseMask = (int) Math.pow(2,vide);
       int [][] CaseMask;
       CaseMask = IniCaseMask( StockMask[i] , NbLigCaseMask , vide );
-      
-    
-      
+
+
+
  //on teste si les cases du masque ne sont pas toutes incluses dans les autres masques de StockMask
 	boolean IntersectionRecouverte = true;
 	int d = 0;
@@ -447,8 +449,8 @@ public int SuppInterMask(int [][]StockMask, int NbMask)
 		{
 		if (!EstIntersection(i,CaseMask[d],StockMask, NbMask)) {IntersectionRecouverte = false;}
 		d++;
-		} 
-	     
+		}
+
 	     //si le masque est une intersection on le supprime
 
 
@@ -456,12 +458,12 @@ public int SuppInterMask(int [][]StockMask, int NbMask)
 	     	{
 		//on supprime le masque qui est une intersection
 		NbMask = RempMask(StockMask,NbMask,i);
-		//on teste la ligne échangée
-		i--; 
-		
+		//on teste la ligne ï¿½changï¿½e
+		i--;
+
 		}
-	     
-	        	
+
+
 
 	}//fin parcours des masques
 return NbMask;
@@ -473,47 +475,47 @@ return NbMask;
       int [][] CaseMask = new int [NbLigCaseMask][NbVar];
 
       // On Initialise CaseMask
-	  
+
 	  for ( int l = 0 ; l < NbVar ; l++ )
-	    {	
+	    {
 	      for ( int m = 0 ; m < NbLigCaseMask ; m++ )
 	        { CaseMask[m][l] = Mask[l]; }
 	    }
-	  
-	  // Calcule la Table de Vérité des Cases à -1
-	  
+
+	  // Calcule la Table de Vï¿½ritï¿½ des Cases ï¿½ -1
+
 	  int [][] Verite = TableVerite(vide);
-	  
-	  // On Met à Jour la Matrice
-	  
+
+	  // On Met ï¿½ Jour la Matrice
+
 	  if ( vide > 0 )
 	    {
 	      int t = 0;
-	      
+
 	      for ( int r = 0 ; r < NbVar ; r++ )
 	        {
 	          if ( CaseMask[0][r] == -1 )
-	            { 
+	            {
 	              CopieColMat(Verite,CaseMask,t,r,NbLigCaseMask);
 	              t++;
 	            }
 	        }
         }
- 
+
       return CaseMask;
     }
 
-  // Fonction qui Teste si un Masque peut être Appliqué à Partir de sa Table CaseMask
-  
+  // Fonction qui Teste si un Masque peut ï¿½tre Appliquï¿½ ï¿½ Partir de sa Table CaseMask
+
   public boolean ValidMask ( int[][]CaseMask , int NbLigCaseMask )
     {
       int i = 0;
       boolean valid = true;
-      
+
       while ( valid && ( i < NbLigCaseMask ) )
 	    {
 	      // On Convertit le Nombre Binaire en Entier
-	      
+
 	      int NumCase = BitToInt(CaseMask[i]);
 	      valid = TableK[ TableCorres.getNbLig(NumCase) ][ TableCorres.getNbCol(NumCase) ];
 	      i++;
@@ -523,11 +525,11 @@ return NbMask;
     }
 
   // Renvoie le Nombre de 1 dans le Tableau
-  
+
   public int NbUn ( int[]Tableau )
     {
       int nb = 0;
-      
+
       for ( int i = 0 ; i < NbVar ; i++ )
 	    {
 	      if ( Tableau[i] == 1 )
@@ -537,133 +539,133 @@ return NbMask;
       return nb;
     }
 
-  
-  // Renvoie le Tableau des Masques Acceptés ainsi que leur Nombre
+
+  // Renvoie le Tableau des Masques Acceptï¿½s ainsi que leur Nombre
 
   public int [][] regroupement ( int[][]StockMask , int NbMask )
     {
       StockMask = new int [ (int) Math.pow(2,NbVar) ][NbVar];
       int [][] Mask = new int [1][NbVar];
-      
+
       // On Initialise la Table Mask
-      
+
       for ( int i = 0 ; i < NbVar ; i++ )
 	    { Mask[0][i] = -1; }
 
-      // Nombre de Masques Acceptés
-      
+      // Nombre de Masques Acceptï¿½s
+
       NbMask = 0;
 
-      // Définition des Variables pour la Table qui Contient les Cases d'un Masque
+      // Dï¿½finition des Variables pour la Table qui Contient les Cases d'un Masque
 
-      // Nombre de Cases à -1
-      
+      // Nombre de Cases ï¿½ -1
+
       int vide = NbCasesVides( IndicesCasesVides( Mask[0] , NbVar ) , NbVar );
-      
+
       // Nombre de Lignes dans CaseMask
-      
+
       int NbLigCaseMask = (int) Math.pow(2,vide);
       int [][] CaseMask;
       CaseMask = IniCaseMask( Mask[0] , NbLigCaseMask , vide );
 
-	  // Cas du Plus Grand Masque (Que des -1)	
-      
+	  // Cas du Plus Grand Masque (Que des -1)
+
       if ( ValidMask( CaseMask , NbLigCaseMask ) )
         {
           // On a que des 1 dans la Table de Karnaugh
-          
+
           CopieMask( Mask[0] , StockMask , NbMask );
           NbMask++;
         }
       else
         {
-          // On Génère Tous les Autres Masques
-          // On Génère la Table de Vérité qui Donne les Positions des Colonnes non Vide
-          
+          // On Gï¿½nï¿½re Tous les Autres Masques
+          // On Gï¿½nï¿½re la Table de Vï¿½ritï¿½ qui Donne les Positions des Colonnes non Vide
+
           int [][] Verite = TableVerite(NbVar);
 
           for ( int i = 1 ; i < NbVar + 1 ; i++ )
-	        { 
-	          // Pour Chaque Bloc de Masques Ayant le même Nombre de -1
-	          
+	        {
+	          // Pour Chaque Bloc de Masques Ayant le mï¿½me Nombre de -1
+
 	          int NbLigMask = (int) Math.pow(2,i);
-	 
-		      // On Génère une Petite Table de Vérité Provisoire
-		      
+
+		      // On Gï¿½nï¿½re une Petite Table de Vï¿½ritï¿½ Provisoire
+
 		      int [][] VeriteTemp = TableVerite(i);
-		
-		      // Parcours de la Table de Vérité
-		      
+
+		      // Parcours de la Table de Vï¿½ritï¿½
+
 		      int NbLigVerite = (int) Math.pow(2,NbVar);
-		      
+
 		      for ( int l = 0 ; l < NbLigVerite ; l++ )
 			    {
 			      // On Regarde si la Ligne Contient i fois "1"
-			      
+
 			      if ( NbUn( Verite[l] ) == i )
-				    { 
-				      int ColVeriteTemp = 0; 
+				    {
+				      int ColVeriteTemp = 0;
 				      Mask = new int [NbLigMask][NbVar];
-		
+
 				      // Initialisation de Mask
-				      
+
 				      for ( int k = 0 ; k < NbLigMask ; k++ )
 				        { reset_bit(Mask[k],NbVar); }
-		
+
 				      for ( int c = 0 ; c < NbVar ; c++ )
 					    { if ( Verite[l][c] == 1 )
 					        {
 				              CopieColMat( VeriteTemp , Mask , ColVeriteTemp , c , NbLigMask );
-					          ColVeriteTemp++;				 
+					          ColVeriteTemp++;
 					        }
-					    } // Fin Parcours de la Ligne dans Vérité
-				
+					    } // Fin Parcours de la Ligne dans Vï¿½ritï¿½
+
 				      // Parcours de Mask
-	    
+
 	                  for ( int w = 0 ; w < NbLigMask ; w++ )
 	                    {
-		             
+
 				  // On Teste si le Masque de la Ligne w est un Sous Masque
-		
+
 		                  if ( !EstSousMask( Mask[w] , StockMask , NbMask ) )
 		                    {
 		                      // On Teste si le Masque est Acceptable
-		                      // Nombre de Cases à -1
-		                  
+		                      // Nombre de Cases ï¿½ -1
+
 		                      vide = NbCasesVides( IndicesCasesVides( Mask[w] , NbVar ) , NbVar );
-		                  
+
 		                      // Nombre de Lignes dans CaseMask
-		                  
+
 		                      NbLigCaseMask = (int) Math.pow(2,vide);
 		                      CaseMask = IniCaseMask(Mask[w],NbLigCaseMask,vide);
-		            	  	
-											
+
+
 					//si le masque est valide
 		            	      if (ValidMask(CaseMask,NbLigCaseMask))
-			                    {				                
+			                    {
 				                  CopieMask( Mask[w] , StockMask , NbMask );
 				                  NbMask++;
-				                
+
 						}// Fin le Masque est Valide
-						
-						
+
+
 		                    } // Fin le Masque n'est pas un Sous Masque
-				    
-							    
-				    
-				    
+
+
+
+
 		                } // Fin du Test du Petit Bloc
 				    } // Fin on Trouve un 1
-				} // Fin Parcours des Lignes de Vérité
-	        } // Fin Grand Bloc 
-        }	 
+				} // Fin Parcours des Lignes de Vï¿½ritï¿½
+	        } // Fin Grand Bloc
+        }
 
 
-	//une fois tous les masques trouvés, il faut enlever les masques qui sont des intersections
-	
+	//une fois tous les masques trouvï¿½s, il faut enlever les masques qui sont des intersections
+
 	NbMask = SuppInterMask(StockMask,NbMask);
-      
-      setNbMask(NbMask);	
+
+      setNbMask(NbMask);
       return StockMask;
     } // Fin Regroupement
 

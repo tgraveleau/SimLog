@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -32,11 +32,13 @@
 
 /**
  *   This class is part of the edition mode and let the user
- *   
+ *
  *
  *   @version 2.1, 14 October 2002
  *   @author Jean-Michel Richer
  */
+
+package src;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -51,7 +53,7 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 		//
 
 		public final static int STATE_NONE = 0; //
-		public final static int STATE_GATE = 1; // add gate 
+		public final static int STATE_GATE = 1; // add gate
 		public final static int STATE_MOVE = 2; // move gate
 		public final static int STATE_DELE = 3; // delete gate
 		public final static int STATE_LINK = 4; // link two gates
@@ -73,22 +75,22 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 			"To remove a window, click on the cross on the top right corner"
 		};
 
-		private final String buttonLabels[] = { 
-				"switch", 
+		private final String buttonLabels[] = {
+				"switch",
 				"led",
-			  "and", 
+			  "and",
 				"nand",
-			  "or" , 
+			  "or" ,
 				"nor",
-				"not", 
+				"not",
 				"xor",
 				"parray",
-				"move", 
+				"move",
 				"link",
-				"dele", 
+				"dele",
 		};
 
-		private final String tabTips[] = { 
+		private final String tabTips[] = {
 			"add a switch",
 			"add a LED",
 			"add a AND gate",
@@ -99,7 +101,7 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 			"add XOR gate",
 			"add Programmable Array - not implemented",
 			"move a gate",
-		
+
 			"link 2 gates",
 			"remove a gate or link"
 		};
@@ -110,24 +112,24 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 			   STATE_GATE, STATE_GATE,
 				 STATE_GATE, STATE_GATE,
 				 STATE_GATE,
-			   STATE_MOVE, 
-			   STATE_LINK, 
+			   STATE_MOVE,
+			   STATE_LINK,
 				 STATE_DELE
-		};	
+		};
 
 		private final static int tabGates[] = {
 			   SimLogGate.SWITCH_GATE, SimLogGate.LED_GATE,
-			   SimLogGate.AND_GATE, SimLogGate.NAND_GATE, 
-			   SimLogGate.OR_GATE, SimLogGate.NOR_GATE, 
-			   SimLogGate.NOT_GATE, SimLogGate.XOR_GATE, 
+			   SimLogGate.AND_GATE, SimLogGate.NAND_GATE,
+			   SimLogGate.OR_GATE, SimLogGate.NOR_GATE,
+			   SimLogGate.NOT_GATE, SimLogGate.XOR_GATE,
 				 SimLogGate.NONE_GATE,
-				 SimLogGate.NONE_GATE, 
+				 SimLogGate.NONE_GATE,
 				 SimLogGate.NONE_GATE, SimLogGate.NONE_GATE,
 			 };
 
 
 		private JButton tabButtons[];
-		private int    markedButton = 0;	
+		private int    markedButton = 0;
 		private int    oldMarkedButton;
 
  		private int state = STATE_GATE;
@@ -153,8 +155,8 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 				tabButtons = new JButton[ buttonLabels.length ];
 
 				if (applet == null) {
-						
-						for (i = 0; i < buttonLabels.length; i++) {	
+
+						for (i = 0; i < buttonLabels.length; i++) {
 							b = new JButton( new ImageIcon( "." + appli.getFileSeparator() + "img" + appli.getFileSeparator() + buttonLabels[i] + ".gif" ) );
 							b.setToolTipText( tabTips[i] );
 							b.addActionListener( this );
@@ -167,8 +169,8 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 				} else {
 						Image tabImg[] = new Image[ buttonLabels.length ];
 						MediaTracker tracker = new MediaTracker(this);
-					
-						for (i = 0; i < buttonLabels.length; i++) {	
+
+						for (i = 0; i < buttonLabels.length; i++) {
 							tabImg[i] = applet.getImage( applet.getDocumentBase(), "img/" + buttonLabels[i] + ".gif" );
 							tracker.addImage( tabImg[i], i );
 						}
@@ -236,7 +238,7 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 						}
 					}
 					appli.mainPanel.unsetCanvasIntersectFlag();
-					
+
 					state = tabStates[ markedButton ];
 					appli.messageWarning( tabWarningMessages[i] );
 
@@ -245,7 +247,7 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 
 		/**
 		 *  chose simulation mode in which the Toolabr is not accessible
-		 */ 
+		 */
 
 		public void simulation() {
 				oldMarkedButton = markedButton;

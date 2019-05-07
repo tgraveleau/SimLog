@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -38,6 +38,8 @@
  *   @author Jean-Michel Richer
  */
 
+package src;
+
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -48,10 +50,10 @@ import javax.swing.table.*;
 import java.util.Vector;
 
 
-public class SimLogTruthTableWin extends JFrame 
+public class SimLogTruthTableWin extends JFrame
 		implements ActionListener {
 
-		// 
+		//
 		// class variables
 		//
 
@@ -76,7 +78,7 @@ public class SimLogTruthTableWin extends JFrame
 			pack();
 		}
 
-		
+
 		/**
      *  create a user interface
      */
@@ -91,7 +93,7 @@ public class SimLogTruthTableWin extends JFrame
 			nOut= truthTable.getNbrOutputs();
 			tabValues=truthTable.getData();
 
-			
+
 			cols=new String[nIn+nOut];
 			for (i=0;i<nIn;i++) {
 				cols[i]=new String(truthTable.getInput(i).getName());
@@ -112,7 +114,7 @@ public class SimLogTruthTableWin extends JFrame
 			tableModel=new IntegerTableModel(cols,data);
 			table=new JTable(tableModel);
 			return table;
-		}		
+		}
 
 		/**
      *  create a user interface
@@ -130,7 +132,7 @@ public class SimLogTruthTableWin extends JFrame
 			JScrollPane scrollpane=new JScrollPane(createTable());
 			scrollpane.setPreferredSize(new Dimension(200,100));
 			scrollpane.getViewport().setBackground(Color.white);
-			
+
 			panel.add("Center",scrollpane);
 			panel.add("South",buttonPanel);
 
@@ -142,7 +144,7 @@ public class SimLogTruthTableWin extends JFrame
 
 		/**
 		 *  Wait for the user to press the Ok button
-		 */	
+		 */
 
 		public void actionPerformed( ActionEvent e ) {
 			if (e.getSource()==bOk) {
@@ -170,7 +172,7 @@ public class SimLogTruthTableWin extends JFrame
         public int getColumnCount() {
             return columnNames.length;
         }
-        
+
         public int getRowCount() {
             return data.length;
         }

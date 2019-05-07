@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -30,8 +30,10 @@
 /* //////////////////////////////////////////////////////////////////////// */
 
 /**
- *  Classe Affichant une Liste Capable de Sélectionner les Différents Masques
+ *  Classe Affichant une Liste Capable de Sï¿½lectionner les Diffï¿½rents Masques
  */
+
+package src;
 
 
 import javax.swing.*;
@@ -43,112 +45,112 @@ import java.awt.event.*;
 public class SimLogListMask extends JFrame
 {
   // Champs
-  
+
   private int NbMask;
   private int Longueur;
   private int Hauteur;
-  
+
   private JList liste;
   private JPanel conteneur = new JPanel();
   private JButton GenColors;
-  
-  private SimLogAfficheKarnaugh AffKar;	 
-  
-  
+
+  private SimLogAfficheKarnaugh AffKar;
+
+
   // Constructeur
-  
-  public SimLogListMask ( boolean[][]Table , int nv , int nm ) 
+
+  public SimLogListMask ( boolean[][]Table , int nv , int nm )
     {
-      // Création d'un Affichage d'une Table de Karnaugh AffKar
-      
+      // Crï¿½ation d'un Affichage d'une Table de Karnaugh AffKar
+
       AffKar = new SimLogAfficheKarnaugh(Table,nv,nm);
-    
-      // Initialisation des Champs 
-      
+
+      // Initialisation des Champs
+
       NbMask = AffKar.getSizeVect();
       Longueur = 150;
       Hauteur = ( NbMask * 16 ) + 52;
-      
-      // Création de la Fenetre
-    
+
+      // Crï¿½ation de la Fenetre
+
       this.setTitle("Maskes");
       this.setSize(Longueur,Hauteur);
       this.setLocation(0,30);
       this.setResizable(false);
       this.show();
-     
+
      //si la table de Karnaugh n'est pas vide
       if (NbMask > 0)
         {
-	
+
           	JOptionPane.showMessageDialog(null,"Click on the Maskes List to Select Monomes","Information : How to Use the List",1);
-          	
+
           	Cursor cur = new Cursor( Cursor.HAND_CURSOR );
-  	
-  	      	// Bouton de Génération Aléatoire de Couleurs
-   	      
+
+  	      	// Bouton de Gï¿½nï¿½ration Alï¿½atoire de Couleurs
+
    	      	GenColors = new JButton("Generate New Colors");
           	GenColors.setBackground(Color.lightGray);
           	GenColors.setForeground(Color.black);
           	GenColors.setBorder( BorderFactory.createRaisedBevelBorder() );
-          	GenColors.setFocusPainted(false); 
+          	GenColors.setFocusPainted(false);
           	GenColors.setCursor(cur);
           	GenColors.setPreferredSize( new Dimension(Longueur,20) );
-    	
-          	// Création de la Liste
-    
+
+          	// Crï¿½ation de la Liste
+
          	liste = new JList( AffKar.getVectMask() );
-         	liste.setCellRenderer( new SimLogCellRenderer(AffKar.getTabColors()) ); 
+         	liste.setCellRenderer( new SimLogCellRenderer(AffKar.getTabColors()) );
          	JScrollPane jsplist = new JScrollPane(liste);
-         	
+
     	 	BorderLayout LayoutParam = new BorderLayout();
          	conteneur.setLayout(LayoutParam);
          	conteneur.add(LayoutParam.NORTH,GenColors);
-         	conteneur.add(LayoutParam.CENTER,jsplist);  
-    
+         	conteneur.add(LayoutParam.CENTER,jsplist);
+
          	this.setContentPane(conteneur);
 	        this.show();
-	 	
-	 	GenColors.addActionListener( new ActionListener() 
+
+	 	GenColors.addActionListener( new ActionListener()
            	{
-             	public void actionPerformed ( ActionEvent event ) 
-	           { 
+             	public void actionPerformed ( ActionEvent event )
+	           {
                  AffKar.IniTabColors(NbMask);
-                 liste.setCellRenderer(new SimLogCellRenderer(AffKar.getTabColors())); 
-                 AffKar.repaint();       
-               		}  
+                 liste.setCellRenderer(new SimLogCellRenderer(AffKar.getTabColors()));
+                 AffKar.repaint();
+               		}
            	});
-    
+
           	// Ajout du Listener
-          
-          	liste.addListSelectionListener( new ListSelectionListener() 
+
+          	liste.addListSelectionListener( new ListSelectionListener()
             	{
-              	public void valueChanged ( ListSelectionEvent e ) 
+              	public void valueChanged ( ListSelectionEvent e )
                 {
     	          for ( int k = 0 ; k < NbMask ; k++ )
 		            {
 		              if ( liste.isSelectedIndex(k) )
 		                { AffKar.setCocheMask(k,true); }
-		              
+
 		              else
 		                {AffKar.setCocheMask(k,false);}
-		
+
 		            }
-	
+
 	              AffKar.repaint();
-	
+
                 } // Fin valueChanged
-   
-            }); // Fin Listener         
-    
-  	
+
+            }); // Fin Listener
+
+
         }//fin if nbmask > 0
-   
-      else 
+
+      else
         {
-  	      JOptionPane.showMessageDialog(null,"There is no Formula to Simplify !","Error : No Monomes Available",2); 
-  	    } 
-   
+  	      JOptionPane.showMessageDialog(null,"There is no Formula to Simplify !","Error : No Monomes Available",2);
+  	    }
+
     } // Fin Constructeur
-   
-} // Fin SimLogListMask 
+
+} // Fin SimLogListMask

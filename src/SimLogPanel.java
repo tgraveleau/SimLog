@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -37,6 +37,8 @@
  *   @version 2.2, 14 October 2002
  *   @author Jean-Michel Richer
  */
+
+package src;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -86,7 +88,7 @@ public class SimLogPanel extends JPanel {
 		}
 
 		/**
-		 *  check if circuit is valid, 
+		 *  check if circuit is valid,
 		 *  i.e. if all the input and output gates are connected
 		 *
 		 *  @return true if circuit is valie, false otherwise
@@ -113,11 +115,11 @@ public class SimLogPanel extends JPanel {
 				appli.toolbar.simulation();
 				canvas.simulation();
 		}
- 
+
 		/**
 		 *  repaint the canvas, i.e. repaint circuit
 		 */
-		
+
 		public void paintCanvas() {
 			canvas.repaint();
 		}
@@ -125,7 +127,7 @@ public class SimLogPanel extends JPanel {
 		/**
 		 *  define the circuit to be used
 		 */
-		
+
 		public void setCircuit( SimLogCircuit c ) {
 			canvas.setCircuit( c );
 		}

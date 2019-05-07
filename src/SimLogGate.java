@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -33,9 +33,9 @@
 /**
  *  This class is the main class for Gates
  *  It defines all the gates types, states and colors.
- *  
+ *
  *  Basically a gate is defined by :
- *  - its type (AND, OR, NOT, ...) 
+ *  - its type (AND, OR, NOT, ...)
  *  - its coordinate on canvas where it is paint
  *  - a list of inputs
  *  - a series of outputs
@@ -43,6 +43,8 @@
  *  @version 2.2, 14 October 2002
  *  @author Jean-Michel Richer
  */
+
+package src;
 
 import java.awt.*;
 import java.util.Vector;
@@ -69,7 +71,7 @@ public abstract class SimLogGate extends Rectangle {
 
 		public final static String[] genericName = {
       "NONE", "AND", "NAND", "OR", "NOR", "XOR", "NOT", "SWITCH", "LED", ""
-	  }; 
+	  };
 
 		//
 		// Colors
@@ -112,7 +114,7 @@ public abstract class SimLogGate extends Rectangle {
 
 		public final static String FALSE_STRING ="0";
   	public final static String  TRUE_STRING ="1";
-			
+
 		//
 		// variables
 		//
@@ -144,13 +146,13 @@ public abstract class SimLogGate extends Rectangle {
 		//
 
 		SimLogLink inputLinks[];   // array of input ports
-			 
+
 		//
 		// output links
 		// the number of output links is not limited so make it a vector
 		//
-		
-		private Vector outputLinks;  
+
+		private Vector outputLinks;
 
 
 		/**
@@ -197,7 +199,7 @@ public abstract class SimLogGate extends Rectangle {
 		 */
 
 		public void moveTo( int _x, int _y ) {
- 				this.x = _x; 
+ 				this.x = _x;
 				this.y = _y;
 				fitToGrid();
 		}
@@ -241,7 +243,7 @@ public abstract class SimLogGate extends Rectangle {
 		/**
 		 * set value of gate
 		 *
-		 * @param n is either <code>FALSE</code>, <code>TRUE</code> or 
+		 * @param n is either <code>FALSE</code>, <code>TRUE</code> or
 		 *				  <code>UNSET</code>
 		 */
 
@@ -295,8 +297,8 @@ public abstract class SimLogGate extends Rectangle {
 
 		/**
 		 *  return gate type
-		 * 
-		 *  @return one of <code>NONE_GATE</code>, <code>AND_GATE</code>, 
+		 *
+		 *  @return one of <code>NONE_GATE</code>, <code>AND_GATE</code>,
                        <code>NAND_GATE</code>, <code>OR_GATE</code>,
                        <code>NOT_GATE</code>, <code>NOT_GATE</code>,
                        <code>XOR_GATE</code>, <code>SWITCH_GATE</code>,
@@ -371,7 +373,7 @@ public abstract class SimLogGate extends Rectangle {
 		/**
 		 *  return Link related to given input port
 		 *
-     *  @return link 
+     *  @return link
      */
 
 		public SimLogLink getInputLink( int n ) {
@@ -392,13 +394,13 @@ public abstract class SimLogGate extends Rectangle {
 		/**
 		 *  add output link
 		 *
-		 *  @param lnk link to add 
+		 *  @param lnk link to add
 		 */
 
 		public void addOutputLink( SimLogLink lnk ) {
 				outputLinks.add( lnk );
 		}
-			 	 
+
 		/**
 		 *  Add Link from output gate to this input gate.
 		 *  The output gate can not be of type <code>LED_GATE</code>
@@ -410,7 +412,7 @@ public abstract class SimLogGate extends Rectangle {
 		public void addInputLink( SimLogLink lnk ) {
 				inputLinks[ lnk.getInputPort() ] = lnk;
 		}
-	 
+
 		/**
 		 *  check if point is inside gate dimensions
 		 *
@@ -427,7 +429,7 @@ public abstract class SimLogGate extends Rectangle {
 
 		/**
 		 *  check if a gate at position x,y will intersect with current gate
-		 *  
+		 *
 		 *  @param _x coordinate of gate on canvas
 		 *  @param _y coordinate of gate on canvas
 		 *  @return <code>true</code> if both gates intersect
@@ -445,11 +447,11 @@ public abstract class SimLogGate extends Rectangle {
 
 		/**
 		 *  chek if mouse position is near input
-		 *  
+		 *
 		 *  @param _x coordinate of mouse on canvas
 		 *  @param _y coordinate of mouse on canvas
 		 *  @return index of nearest input or -1
-		 */		 
+		 */
 
 		public int isNearInput( int _x, int _y ) {
 				int i , xa, ya, xb, yb;
@@ -470,11 +472,11 @@ public abstract class SimLogGate extends Rectangle {
 
 		/**
 		 *  chek if mouse position is near output
-		 *  
+		 *
 		 *  @param _x coordinate of mouse on canvas
 		 *  @param _y coordinate of mouse on canvas
 		 *  @return 0 if position is near output or -1
-		 */		 
+		 */
 
 		public int isNearOutput( int _x, int _y ) {
 				int xa, ya, xb, yb;
@@ -489,12 +491,12 @@ public abstract class SimLogGate extends Rectangle {
 
 		/**
 		 *  chek if mouse position is inside remove zone
-		 *  
+		 *
 		 *  @param _x coordinate of mouse on canvas
 		 *  @param _y coordinate of mouse on canvas
 		 *  @return <code>true</code> if position is inside remove zone,
 		 *          <code>false</code> otherwise
-		 */		 
+		 */
 
 		public boolean isInsideRemoveZone( int _x, int _y ) {
 				int xa, ya, xb, yb;
@@ -509,12 +511,12 @@ public abstract class SimLogGate extends Rectangle {
 
 		/**
 		 *  chek if mouse position is inside naming zone
-		 *  
+		 *
 		 *  @param _x coordinate of mouse on canvas
 		 *  @param _y coordinate of mouse on canvas
 		 *  @return <code>true</code> if position is inside naming zone,
 		 *          <code>false</code> otherwise
-		 */		 
+		 */
 
 		public boolean isInsideNameZone( int _x, int _y ) {
 				int xa, ya, xb, yb;
@@ -528,7 +530,7 @@ public abstract class SimLogGate extends Rectangle {
 		}
 
 		/**
-		 *  remove input link given input port 
+		 *  remove input link given input port
 		 *
 		 *  @param port input port number
 		 */
@@ -604,14 +606,14 @@ public abstract class SimLogGate extends Rectangle {
 		 *  @return <code>true</code> if output is connected,
 		 * 				  <code>false</code> otherwise
 		 */
-			
+
 		public boolean checkOutput() {
 				if (type == LED_GATE) return true;
 				if (outputLinks.size() == 0) return false;
 				return true;
 		}
 
- 
+
 		/**
 		 *  return position of Y when connecting gate
 		 *
@@ -621,7 +623,7 @@ public abstract class SimLogGate extends Rectangle {
 		private int getInputYPos( SimLogGate g ) {
 				int i;
 				SimLogLink link;
-							 
+
 				for (i = 0; i < maxInputLinks; i++) {
 					link = (SimLogLink) inputLinks[i];
 					if (link.getOutputGate() == g) return y + inputYPos +i*STEP;
@@ -647,10 +649,10 @@ public abstract class SimLogGate extends Rectangle {
 		void paintInputs( Graphics g ) {
 				int i, dist;
 				dist = inputYPos;
-						
+
 				for (i = 0; i < maxInputLinks; i++) {
 					g.drawLine( x, y+dist, x+35, y+dist );
-					dist += STEP;					
+					dist += STEP;
 				}
 		}
 
@@ -726,7 +728,7 @@ public abstract class SimLogGate extends Rectangle {
 		 */
 
 		public void paint( Graphics g ) {
-			 
+
 		}
 
 		/**
@@ -735,7 +737,7 @@ public abstract class SimLogGate extends Rectangle {
 
 		public void compute() {
 				value = UNSET;
-		}		 
+		}
 
 		/**
 		 *

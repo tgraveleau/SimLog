@@ -1,6 +1,7 @@
+package src;
 
 public class SimLogFormulaNode {
-	
+
 	private SimLogFormulaNode left, right, parent;
 	private int    operator;
 	private String variable;

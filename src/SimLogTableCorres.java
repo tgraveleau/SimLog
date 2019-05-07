@@ -1,3 +1,5 @@
+package src;
+
 public class SimLogTableCorres
 {
 
@@ -14,7 +16,7 @@ TableBin = Generer();
 
 int index = 0;
 int varv = (colonne/2);
-int varh = colonne - varv; 
+int varh = colonne - varv;
 
 
 
@@ -32,15 +34,15 @@ for (int i=0;i<indcol;i++)
 		TableCorres[indlig][1] = j;
 		index++;
 		}//fin pour j
-	indexcol++;	
+	indexcol++;
 	for (int j=(int)Math.pow(2,varv)-1;j>=0;j--)
 		{
 		int indlig = BitToInt(TableBin[index]);
-		
+
 		TableCorres[indlig][0] = indexcol;
 		TableCorres[indlig][1] = j;
 		index++;
-		}//fin pour j	
+		}//fin pour j
 	indexcol++;
 	}//fin for i
 
@@ -50,26 +52,26 @@ for (int i=0;i<indcol;i++)
  public void AffCorres ()
    {
 	 System.out.println("num :		col		lig");
-     
+
      for ( int i = 0 ; i < ( (int) Math.pow(2,colonne) ) ; i++ )
-	   { System.out.println(""+i+": 	  	    "+TableCorres[i][0]+"  		   "+TableCorres[i][1]); }	
+	   { System.out.println(""+i+": 	  	    "+TableCorres[i][0]+"  		   "+TableCorres[i][1]); }
    }
-	 
+
 
 
 //renvoie l'entier correspondant au tableau binaire
 public int BitToInt(boolean [] bit)
 {
  int tmp = 0;
-  
+
       for ( int k = 0 ; k < colonne ; k++ )
-	    { 
+	    {
 	    int aux=0;
-	    if (bit[k]){aux=1;} 
-	    tmp = tmp + ( aux * ( (int) Math.pow(2,(colonne-k-1)) ) ); 
-	    
-	    } 	
-  
+	    if (bit[k]){aux=1;}
+	    tmp = tmp + ( aux * ( (int) Math.pow(2,(colonne-k-1)) ) );
+
+	    }
+
       return tmp;
 
 
@@ -115,26 +117,26 @@ boolean [][] Mat = new boolean [ligne][colonne];
 
 for (int i=1;i<ligne;i++)
 	{
-	//on recopie la ligne précédente dans la ligne courante
+	//on recopie la ligne prï¿½cï¿½dente dans la ligne courante
 	CopieTab(Mat[i-1],Mat[i]);
-	
+
 	if (NbTruePair(Mat[i-1]))
 		//on change le dernier bit
 		{
 		Mat[i][colonne-1] = !Mat[i-1][colonne-1];}
-		//on change le bit a gauche du bit à 1 le plus à droite 
+		//on change le bit a gauche du bit ï¿½ 1 le plus ï¿½ droite
 		else
 		{
 		int j=colonne-1;
 		while (!Mat[i-1][j])
 		 	j--;
-			
-		Mat[i][j-1] = !Mat[i-1][j-1];		
-		
+
+		Mat[i][j-1] = !Mat[i-1][j-1];
+
 		}
-	
-	
-	
+
+
+
 	}//fin pour
 return Mat;
 }
@@ -153,60 +155,60 @@ for (int i=0;i<ligne;i++)
 			{System.out.print("0 ");}
 		}
 	System.out.println("");
-	
+
 	}
 
 }
 
 
 // Accesseurs
-  
-  // Renvoie le Numéro de Colonne à Partir du Numéro de Case
-  
+
+  // Renvoie le Numï¿½ro de Colonne ï¿½ Partir du Numï¿½ro de Case
+
   public int getNbCol ( int NCase )
     {
-      return TableCorres[NCase][0];	
+      return TableCorres[NCase][0];
     }
-	
-  // Renvoie le Numéro de Ligne à Partir du Numéro de Case
+
+  // Renvoie le Numï¿½ro de Ligne ï¿½ Partir du Numï¿½ro de Case
 
   public int getNbLig ( int NCase )
     {
-      return TableCorres[NCase][1];	
+      return TableCorres[NCase][1];
     }
-		
-  // Renvoie l'Indice de TableCorres à Partir des Coordonnées 
+
+  // Renvoie l'Indice de TableCorres ï¿½ Partir des Coordonnï¿½es
   // de Case de la Table de Karnaugh
-  
+
   public int getIndice ( int col , int lig )
     {
-      // Nombre de Cases Dans TableCorres	
-      
+      // Nombre de Cases Dans TableCorres
+
       int NbCase = (int) Math.pow( 2 , colonne );
-      
+
       // Nombre de Lignes de la Table de Karnaugh
-      
+
       int NbLig = (int) Math.pow( 2 , ( colonne / 2 ) );
-      
+
       // Nombre de Colonnes de la Table de Karnaugh
-      
+
       int NbCol = (int) Math.pow( 2 , colonne - ( colonne / 2 ) );
 
-	  // Teste que les Numéros de Colonne et Ligne sont Corrects
-      
+	  // Teste que les Numï¿½ros de Colonne et Ligne sont Corrects
+
       if ( ( col < NbCol ) && ( lig < NbLig ) )
 	    {
 		  for ( int i = 0 ; i < NbCase ; i++ )
-			{	
+			{
 			  if ( (TableCorres[i][0] == col) && (TableCorres[i][1] == lig) )
-				{ return i; }		
+				{ return i; }
 			}
-			
-	    } // Fin Test des Numéros de Colonne et Ligne
 
-      return -1;		
+	    } // Fin Test des Numï¿½ros de Colonne et Ligne
 
-    } 
+      return -1;
+
+    }
 
 
 
