@@ -1,0 +1,14 @@
+# SimLog v2.1
+# Please do not remove the line above
+# number of gates
+4
+# list of gates : x,y,type,name,number of links
+80 120 7 A 1
+80 220 7 B 1
+200 180 1 G1 1
+380 180 8 L1 0
+# links
+3
+0 2 0
+1 2 1
+2 3 0

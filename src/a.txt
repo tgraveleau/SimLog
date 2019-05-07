@@ -1,0 +1,236 @@
+
+public class SimLogTruthTableWin extends JFrame 
+		implements ActionListener {
+
+		// 
+		// class variables
+		//
+
+		private SimLogWin     parent;
+		private SimLogCircuit circuit;
+		private JButton       bOk;
+		private JTable        table;
+
+
+		private int    nbrSwitch=0;
+		private int    nbrLED=0;
+		private int    nbrCols=0;
+		private int    nbrRows=0;
+		private SimLogGate tabSwitch[];
+		private int        tabSwitchValues[];
+		private SimLogGate tabLED[];
+		private String tableColumns[];
+		private String tableValues[][];
+
+		private boolean forOneLED=false;
+		private SimLogGate oneLED=null;
+
+		/**
+ 		 *  default constructor
+		 *  This method will create a truth table of the entire circuit
+		 */
+
+		public SimLogTruthTableWin( SimLogWin appli, SimLogCircuit c ) {
+			parent=appli;
+			circuit=c;
+			createAndFillTable();
+			createUserInterface();
+			setSize(200,200);
+			pack();
+		}
+
+		/**
+     *  constructor for LED
+     *  This method will create a truth table for a given LED   
+		 */
+
+		public SimLogTruthTableWin( SimLogWin appli, SimLogCircuit c, SimLogGate g ) {
+			parent=appli;
+			circuit=c;			
+			oneLED=g;
+			forOneLED=true;
+			createAndFillTable();
+			createUserInterface();
+			setSize(200,200);
+			pack();
+		}
+
+		/**
+     *  create a user interface
+     */
+
+		public void createUserInterface( ) {
+			JPanel panel=new JPanel();
+			panel.setLayout(new BorderLayout());
+			JPanel buttonPanel=new JPanel();
+			buttonPanel.setLayout(new FlowLayout());
+			bOk=new JButton("  OK  ");
+			bOk.addActionListener(this);
+			buttonPanel.add(bOk);
+
+			JScrollPane scrollpane=new JScrollPane(table);
+			scrollpane.getViewport().setBackground(Color.white);
+			
+			panel.add("Center",scrollpane);
+			panel.add("South",buttonPanel);
+
+			getContentPane().setLayout(new BorderLayout());
+			getContentPane().add("Center",panel);
+		}
+
+		/**
+		 *
+		 *
+		 */
+
+		private void storeSwitchesValues() {
+			int i;
+			SimLogGate gate;
+
+		  nbrSwitch=circuit.getNbrSwitch();
+			tabSwitch=new SimLogGate[nbrSwitch];
+			tabSwitchValues=new int[nbrSwitch];
+
+			for (i=0;i<nbrSwitch;i++) {
+				gate=circuit.getSwitch(i);
+				tabSwitch[i]=gate;
+				tabSwitchValues[i]=gate.getValue();
+				tableColumns[i]=gate.getName();
+			}
+		}
+
+		/**
+		 *
+		 *
+		 */
+
+		private void restoreSwitchesValues() {
+			int i;
+
+			for (i=0;i<nbrSwitch;i++) {
+				tabSwitch[i].setValue(tabSwitchValues[i]);
+			}
+		}
+
+		/**
+     *  create and fill table
+     */
+
+		public void createAndFillTable() {		
+			int i,j;
+			SimLogGate gate;
+
+			storeSwitchesValues();
+			if (forOneLED==true) 
+				nbrLED=1;
+			else
+				nbrLED   =circuit.getNbrLED();
+			nbrCols=nbrSwitch+nbrLED;
+			tableColumns=new String[nbrCols];
+
+			tabLED=new SimLogGate[nbrLED];
+
+			if (forOneLED) {
+			  tabLED[0]=oneLED;
+				tableColumns[nbrSwitch]=oneLED.getName();
+			} else {
+			  for (i=0;i<nbrLED;i++) {
+				  gate=circuit.getLED(i);
+					tabLED[i]=gate;
+					tableColumns[nbrSwitch+i]=gate.getName();
+				}
+			}
+
+      nbrRows=(1 << nbrSwitch);
+			tableValues = new String[nbrRows][nbrCols];
+			fillValues();
+			table = new JTable(tableValues,tableColumns);
+		}
+
+
+		private void fillValues() {
+			int i,j;
+			int digit[], val;
+
+			digit=new int[nbrSwitch];
+			for (i=0;i<nbrRows;i++) {
+				decToBin(i,nbrSwitch,digit);
+				//for (j=0;j<nbrSwitch;j++) System.out.print(digit[j]);
+
+				for (j=0;j<nbrSwitch;j++) {
+					val=digit[nbrSwitch-1-j];
+					tableValues[i][j]=new String(" "+val+" ");
+					if (val==1)
+						tabSwitch[j].setValue(SimLogGate.TRUE);
+					else
+						tabSwitch[j].setValue(SimLogGate.FALSE);
+				}
+				simulation();
+				for (j=0;j<nbrLED;j++) {
+					if (tabLED[j].getValue()==SimLogGate.TRUE)
+						val=1;
+					else
+						val=0;
+					//System.out.print("  "+val);
+					tableValues[i][nbrSwitch+j]=new String(" "+val+" ");
+				}
+				//System.out.println("");
+			}
+		}
+
+		/**
+		 *  Convert a decimal number into a binary representation
+		 *
+		 *  @param n decimal number to convert
+		 *  @param max length of table containing the binary representation
+		 *  @param tab array containing the binary digits
+		 */	
+
+		void decToBin( int n, int max, int tab[] ) {
+			int i, r;
+
+			i=0;
+			while (n>1) {
+				tab[i++]=n%2;
+				n=n>>1;
+			}
+			if (n!=0) tab[i++]=n;
+			while (i<max) tab[i++]=0;
+		}
+
+		/**
+		 *  enter simulation mode during which you can only change the
+		 *  switches
+		 */
+ 
+		public void simulation( ) {
+				int i;
+				SimLogGate g;
+				Vector listOfGates;
+
+				listOfGates=circuit.getListOfGates();
+				for (i = 0; i < listOfGates.size(); i++) {
+					g = (SimLogGate) listOfGates.elementAt(i);
+					if (g.getType() != SimLogGate.SWITCH_GATE) 
+						g.setValue( SimLogGate.UNSET );
+					g.setActiveState();
+				}
+
+				for (i = 0; i < listOfGates.size(); i++) {
+					g = (SimLogGate) listOfGates.elementAt(i);
+					if (g.getType() == SimLogGate.LED_GATE) {
+						g.compute();
+					}
+				}
+		}
+
+		/**
+		 *  Wait for the user to press the Ok button
+		 */	
+
+		public void actionPerformed( ActionEvent e ) {
+			if (e.getSource()==bOk) {
+				dispose();
+			}
+		}
+}
