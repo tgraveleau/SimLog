@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -38,12 +38,14 @@
  *   @author Jean-Michel Richer
  */
 
+package src;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.Vector;
 
-public class SimLogNewAutoNamingWin extends JDialog 
+public class SimLogNewAutoNamingWin extends JDialog
 		implements ActionListener {
 
 		//
@@ -55,7 +57,7 @@ public class SimLogNewAutoNamingWin extends JDialog
 		private int        nbrGates;
 		private JTextField tabGateNames[];
 		private JButton    bOk;
-	
+
 		/**
 		 *  create a panel with Ok button
 		 *
@@ -113,13 +115,13 @@ public class SimLogNewAutoNamingWin extends JDialog
 
 		public SimLogNewAutoNamingWin( SimLogWin parent, int nbr, int type ) {
 			super( parent, true );
-			if (type==SimLogGate.SWITCH_GATE) 
+			if (type==SimLogGate.SWITCH_GATE)
 				setTitle("Name Switch gates");
-			else if (type==SimLogGate.LED_GATE) 
+			else if (type==SimLogGate.LED_GATE)
 				setTitle("Name LED gates");
 			else
 				setTitle(" ");
-						
+
 			appli=parent;
 
 			nbrGates=nbr;

@@ -17,7 +17,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -37,6 +37,8 @@
  *  @version 2.1, 14 October 2002
  *  @author Jean-Michel Richer
  */
+
+package src;
 
 import java.awt.*;
 
@@ -103,7 +105,7 @@ public class SimLogSwitchGate extends SimLogGate {
 							g.drawLine( x+23, y+35, x+40, y+23 );
 							g.drawString( SimLogGate.FALSE_STRING, x+30,y+20);
 						}
-						paintOutput( g );									 
+						paintOutput( g );
 						break;
 				}
 			}

@@ -38,6 +38,8 @@
  *   @author Jean-Michel Richer
  */
 
+package src;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -110,8 +112,9 @@ implements ActionListener {
 		JScrollPane scrollpane=new JScrollPane(tFormula);
 
 		panel.setLayout(new BorderLayout());
-		panel.add("North",new JLabel("Enter formula :"));
-		panel.add("Center",scrollpane);
+		panel.add(BorderLayout.NORTH,new JLabel("Enter formula :"));
+		panel.add(BorderLayout.CENTER,scrollpane);
+		panel.add(BorderLayout.EAST, createHelpList());
 		return panel;
 	}
 
@@ -169,6 +172,17 @@ implements ActionListener {
 		pack();
 	}
 
+	/**
+	 * Create the help panel
+	 * @return Component
+	 */
+	private Component createHelpList() {
+		JTextPane helpList = new JTextPane();
+		helpList.setBackground(getBackground());
+		helpList.setText("HELP:\n\n +   : OR\n  .   : AND\n  -   : NOT\n ^   : XOR");
+		helpList.setEditable(false);
+		return helpList;
+	}
 
 	public boolean isOk(String s) {
 		SimLogAnaSynt anasynt=new SimLogAnaSynt(s);

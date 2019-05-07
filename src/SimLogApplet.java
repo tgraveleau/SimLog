@@ -1,9 +1,10 @@
+package src;
+
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
 
-
-public class SimLogApplet extends Applet 
+public class SimLogApplet extends Applet
 		implements ActionListener {
 
 		//

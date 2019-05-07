@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -38,17 +38,18 @@
  *   @author Jean-Michel Richer
  */
 
+package src;
+
 import java.io.*;
 import java.awt.*;
 import java.util.Vector;
 import java.util.StringTokenizer;
 
-
 public class SimLogCircuit {
-	
-		// 
+
+		//
 		// variables
-		// 
+		//
 
 		private final static String fileIdentifier = "# SimLog v2.1";
 
@@ -92,7 +93,7 @@ public class SimLogCircuit {
 		public void empty() {
 			int i;
 			SimLogGate gate;
-			
+
 			for (i = 0; i < listOfGates.size(); i++) {
 				gate = (SimLogGate) listOfGates.elementAt(i);
 				gate.getOutputLinks().removeAllElements();
@@ -116,7 +117,7 @@ public class SimLogCircuit {
 		}
 
 		/**
-		 *  return index of gate under mouse position 
+		 *  return index of gate under mouse position
 		 *
 		 *  @param x coordinate
 		 *  @param y coordinate
@@ -127,7 +128,7 @@ public class SimLogCircuit {
 		public int getGateIndexAtPos( int x, int y ) {
 				int i;
 				SimLogGate gate;
-				
+
 				for (i = 0; i < listOfGates.size(); i++) {
 						gate = (SimLogGate) listOfGates.elementAt(i);
 						if (gate.isInside( x,y )) return i;
@@ -136,7 +137,7 @@ public class SimLogCircuit {
 		}
 
 		/**
-		 *  return gate under mouse position 
+		 *  return gate under mouse position
 		 *
 		 *  @param x coordinate
 		 *  @param y coordinate
@@ -147,7 +148,7 @@ public class SimLogCircuit {
 		public SimLogGate getGateAtPos( int x, int y ) {
 				int i;
 				SimLogGate gate;
-				
+
 				for (i = 0; i < listOfGates.size(); i++) {
 						gate = (SimLogGate) listOfGates.elementAt(i);
 						if (gate.isInside( x,y )) return gate;
@@ -196,8 +197,8 @@ public class SimLogCircuit {
 		}
 
 		/**
-		 *  return gate that could possibly intersect if placed under mouse 
-     *         position 
+		 *  return gate that could possibly intersect if placed under mouse
+     *         position
 		 *
 		 *  @param x coordinate
 		 *  @param y coordinate
@@ -219,7 +220,7 @@ public class SimLogCircuit {
 		 *  return gate at given index
 		 *
 		 *  @param n index of gate in vector listOfGates
-		 *  @return gate at given index 
+		 *  @return gate at given index
 		 */
 
 
@@ -230,7 +231,7 @@ public class SimLogCircuit {
 		/**
 		 *  return index if gate in vector listOfGates
 		 *
-		 *  @param g gate to look for 
+		 *  @param g gate to look for
 		 *  @return index of gate in vector listOfGates
 		 */
 
@@ -253,7 +254,7 @@ public class SimLogCircuit {
 		}
 
 		/**
-		 *  remove gate 
+		 *  remove gate
 		 *
 		 *  @param g  gate to remove in vector listOfGates
 		 */
@@ -304,7 +305,7 @@ public class SimLogCircuit {
 		 *
 		 *  @return name of switch
 		 */
-		
+
 		private String getSwitchName() {
 				int i;
 
@@ -323,7 +324,7 @@ public class SimLogCircuit {
 		 *
 		 *  @return name of LED
 		 */
-		
+
 		private String getLEDName() {
 				int i;
 
@@ -342,7 +343,7 @@ public class SimLogCircuit {
 		 *
 		 *  @return name of gate
 		 */
-		
+
 		private String getStdGateName() {
 				return new String( "G" + String.valueOf( availGateNumber++ ) );
 		}
@@ -434,7 +435,7 @@ public class SimLogCircuit {
 				}
 				return false;
 		}
-	
+
 		/**
 		 *  add a new Link between two gates
 		 *
@@ -479,14 +480,14 @@ public class SimLogCircuit {
 			for (i=0;i<listOfGates.size();i++) {
 				g1=(SimLogGate)listOfGates.elementAt(i);
 				if (g1==g) break;
-			}			
+			}
 			listOfGates.removeElementAt(i);
 			g2=g1.replace(t);
 			listOfGates.add(g2);
 		}
 
 		/**
-		 *  create a gate that is being loaded from disk and add it to the 
+		 *  create a gate that is being loaded from disk and add it to the
 		 *  ector of gates of the circuit. Parameters of the
 		 *  gate are given as strings
 		 *
@@ -498,7 +499,7 @@ public class SimLogCircuit {
 
 		private void loadCreateGate( String sx, String sy, String st, String sn ) {
 				int x, y;
-				
+
 				x = Integer.parseInt( sx );
 				y = Integer.parseInt( sy );
 				switch( Integer.parseInt( st ) ) {
@@ -590,7 +591,7 @@ public class SimLogCircuit {
 
 								case 2: // read gates
 									token = new StringTokenizer( line );
-									if (token.countTokens() == 5) {	
+									if (token.countTokens() == 5) {
 										s1 = token.nextToken();
 										s2 = token.nextToken();
 										s3 = token.nextToken();
@@ -608,7 +609,7 @@ public class SimLogCircuit {
 
 								case 4:
 									token = new StringTokenizer( line );
-									if (token.countTokens() == 3) {	
+									if (token.countTokens() == 3) {
 										s1 = token.nextToken();
 									 	s2 = token.nextToken();
 									 	s3 = token.nextToken();
@@ -650,7 +651,7 @@ public class SimLogCircuit {
 					out.println( fileIdentifier );
 					out.println( "# Please do not remove the line above" );
 
-					// first write gates 
+					// first write gates
 					out.println( "# number of gates" );
 					out.println( size );
 
@@ -692,7 +693,7 @@ public class SimLogCircuit {
 
 		public boolean[] getAvailSwitchNames() {
 				return tabAvailSwitchNames;
-		}	
+		}
 
 		/**
 		 *	return array of available LEDs
@@ -702,7 +703,7 @@ public class SimLogCircuit {
 
 		public boolean[] getAvailLEDNames() {
 				return tabAvailLEDNames;
-		}	
+		}
 
 		/**
 		 *  return value to indicate if circuit has been modified
@@ -825,7 +826,7 @@ public class SimLogCircuit {
 		 *  build a circuit given root node of a formula
 		 *
 		 *	@param node SimLogFormulaNode
-		 * 
+		 *
 		 */
 
 		public void buildCircuit(SimLogFormulaNode node) {
@@ -858,7 +859,7 @@ public class SimLogCircuit {
 					addGate(0,0,node.getType(),null);
 					g = (SimLogGate) listOfGates.elementAt(listOfGates.size()-1);
 					addLink(gl,g);
-					addLink(gr,g);				
+					addLink(gr,g);
 					break;
 
 				case SimLogGate.NOT_GATE:
@@ -866,7 +867,7 @@ public class SimLogCircuit {
 					addGate(0,0,node.getType(),null);
 					g = (SimLogGate) listOfGates.elementAt(listOfGates.size()-1);
 					addLink(gl,g);
-					break;					
+					break;
 			}
 			return g;
 		}
@@ -897,7 +898,7 @@ public class SimLogCircuit {
 				//setPositions(LED.locc+1,LED,reorganizeY);
 				//reorganizeY+=SimLogGate.HEIGHT;
 				//repaint();
-			}	
+			}
 			reorganizeY=0;
 			for (i=0;i<nbrLEDs;i++) {
 				LED=getLED(i);
@@ -952,7 +953,7 @@ public class SimLogCircuit {
 						evaluate(g,depth);
 						gate.locc=g.locc;
 						gate.rocc=g.rocc;
-					}				
+					}
 			}
 			return 1+gate.locc+gate.rocc;
 		}

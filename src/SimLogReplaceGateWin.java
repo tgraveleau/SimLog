@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -37,12 +37,14 @@
  *   @author Jean-Michel Richer
  */
 
+package src;
+
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class SimLogReplaceGateWin extends JDialog 
+public class SimLogReplaceGateWin extends JDialog
 		implements ActionListener {
 
 		private JButton    bYes;
@@ -87,7 +89,7 @@ public class SimLogReplaceGateWin extends JDialog
 		/**
 		 *  method used to center window on screen
 		 */
-		
+
    	public void centerComponent( ) {
 				Toolkit tk = Toolkit.getDefaultToolkit();
 				Dimension screenDim = tk.getScreenSize();
@@ -106,7 +108,7 @@ public class SimLogReplaceGateWin extends JDialog
 
 		public SimLogReplaceGateWin( JFrame parent, SimLogGate g, SimLogCircuit c ) {
 			super( parent, true );
-	 	
+
 			getContentPane().setLayout( new BorderLayout() );
 			gate=g;
 			getContentPane().add( "Center", createCenterPanel() );

@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -37,6 +37,8 @@
  *  @author Jean-Michel Richer
  */
 
+package src;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -53,11 +55,11 @@ public class SimLogLicenceWin extends JDialog
 		private JButton bOk;
 
 
-		// 
+		//
 		// Licence to display
 		//
 
-		private String message = 
+		private String message =
 				"<BR><CENTER><H3>LICENCE AGREEMENT</H3></CENTER><BR>" +
 				"You are allowed to use, copy and distribute this software<BR>"+
 				"as a free software." +
@@ -74,7 +76,7 @@ public class SimLogLicenceWin extends JDialog
 		 *
 		 *  @return Panel
 		 */
-		
+
 		private JPanel createButtonPanel() {
 			JPanel p = new JPanel();
 			bOk = new JButton( "Ok" );
@@ -89,7 +91,7 @@ public class SimLogLicenceWin extends JDialog
 		 *
 		 *  @return Panel
 		 */
-		
+
 		private JPanel createMessagePanel() {
 			JPanel p = new JPanel();
 
@@ -136,7 +138,7 @@ public class SimLogLicenceWin extends JDialog
 		/**
 		 *  action manager
 		 */
-				
+
 		public void actionPerformed( ActionEvent e ) {
 				if (e.getSource() instanceof JButton) {
 					JButton b = (JButton) e.getSource();

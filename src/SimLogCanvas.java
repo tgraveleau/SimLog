@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -37,6 +37,7 @@
  *   @author Jean-Michel Richer
  */
 
+package src;
 
 import java.io.*;
 import java.awt.*;
@@ -85,7 +86,7 @@ class PopupListener extends MouseAdapter {
 					canvas.popupItems[1].setEnabled(false);
 				}
 				popup.show(e.getComponent(),e.getX(),e.getY());
-				
+
 			}
 		}
 	}
@@ -111,7 +112,7 @@ public class SimLogCanvas extends JPanel
 		private Vector        listOfGates;
 
 		// Parameters for popup menu
-		JPopupMenu popup;	
+		JPopupMenu popup;
 		JMenuItem  popupItems[];
 
 		private PopupListener popupListener;
@@ -147,7 +148,7 @@ public class SimLogCanvas extends JPanel
 		//
 		// display
 		//
-	
+
 		private Font 	font;
 		private boolean intersectFlag = false;
 		private int     intersectXPos;
@@ -179,8 +180,8 @@ public class SimLogCanvas extends JPanel
 				setBackground( Color.white );
 				setSize( new Dimension( 200, 200 ) );
 				setPreferredSize( new Dimension( 200, 200 ) );
-								
-		}			 
+
+		}
 
 		public void createPopupMenu() {
 				popupItems = new JMenuItem[6];
@@ -243,7 +244,7 @@ public class SimLogCanvas extends JPanel
 
 		private void paintGrid( Graphics g ) {
 			int i;
-			
+
 			g.setColor(Color.LIGHT_GRAY);
 			for (i=75;i<1000;i+=80) {
 				g.drawLine(0,i,10000,i);
@@ -254,7 +255,7 @@ public class SimLogCanvas extends JPanel
 		/**
 		 *  paint circuit (replace method paint by paintComponent)
 		 */
-			
+
 		public void paintComponent( Graphics g ) {
 				int i, size;
 				SimLogGate gate;
@@ -290,15 +291,15 @@ public class SimLogCanvas extends JPanel
 				// link
 				if (srcGateToLink != null) {
 						g.setColor( Color.magenta );
-						g.drawLine( srcGateToLink.x + SimLogGate.WIDTH/2, 
-						srcGateToLink.y + SimLogGate.HEIGHT/2, 
+						g.drawLine( srcGateToLink.x + SimLogGate.WIDTH/2,
+						srcGateToLink.y + SimLogGate.HEIGHT/2,
 						xMouseLink,
 						yMouseLink );
 				}
 			}
 
 		/**
-		 *  add a link to selected gates. The gates are selected using the 
+		 *  add a link to selected gates. The gates are selected using the
 		 *  mouse during a pressed, dragged and released event.
 		 */
 
@@ -319,12 +320,12 @@ public class SimLogCanvas extends JPanel
 			int i=0;
 			SimLogGate g;
 			Rectangle r=new Rectangle(
-					deleStartX, 
-					deleStartY, 
-					deleEndX-deleStartX, 
+					deleStartX,
+					deleStartY,
+					deleEndX-deleStartX,
 					deleEndY-deleStartY );
 			circuit.removeGatesIn( r );
-			r = null;														
+			r = null;
 		}
 
 		/**
@@ -390,7 +391,7 @@ public class SimLogCanvas extends JPanel
 				}
 		}
 
-		
+
 		public void unsetIntersectFlag() {
 			intersectFlag = false;
 			intersectXPos = 0;
@@ -458,7 +459,7 @@ public class SimLogCanvas extends JPanel
 											link = null;
 										}
 									}
-								} 
+								}
 							} else {
 								appli.messageWarning( "not pointing a gate" );
 							}
@@ -490,7 +491,7 @@ public class SimLogCanvas extends JPanel
 				int x = e.getX(), y = e.getY();
 
 				switch( toolbar.getState() ) {
-							  
+
 					case SimLogToolbar.STATE_MOVE: {
 							gate = circuit.getGateAtPos( x,y );
 							if (gate != null) {
@@ -589,10 +590,10 @@ public class SimLogCanvas extends JPanel
 							if (gate != null) {
 								dstGateToLink = gate;
 								addLink();
-							} 
+							}
 							srcGateToLink = null;
 							dstGateToLink = null;
-							repaint();										 
+							repaint();
 						}
 						break;
 
@@ -614,7 +615,7 @@ public class SimLogCanvas extends JPanel
 
 		public void mouseEntered( MouseEvent e ) {
 		}
- 
+
 		/**
 		 *  mouse exited
 		 */
@@ -707,7 +708,7 @@ public class SimLogCanvas extends JPanel
 				g.setNormalState();
 			}
 			repaint();
-		} 
+		}
 
 		/**
 		 *  enter simulation mode during which you can only change the
@@ -720,7 +721,7 @@ public class SimLogCanvas extends JPanel
 
 				for (i = 0; i < listOfGates.size(); i++) {
 					g = (SimLogGate) listOfGates.elementAt(i);
-					if (g.getType() != SimLogGate.SWITCH_GATE) 
+					if (g.getType() != SimLogGate.SWITCH_GATE)
 						g.setValue( SimLogGate.UNSET );
 					g.setActiveState();
 				}
@@ -810,7 +811,7 @@ public class SimLogCanvas extends JPanel
 						}
 						win = null;
 					}
-				}				
+				}
 			}
 
 			// truth table
@@ -826,7 +827,7 @@ public class SimLogCanvas extends JPanel
 		}
 
 		public void changeGridMode() {
-			if (showGrid==true) 
+			if (showGrid==true)
 				showGrid=false;
 			else
 				showGrid=true;
@@ -867,7 +868,7 @@ public class SimLogCanvas extends JPanel
 
 			gate=circuit.getGateAtPos(popupListener.mouseX,popupListener.mouseY);
 			if (gate!=null) {
-				if (gate.getType()!=SimLogGate.LED_GATE) return ;			
+				if (gate.getType()!=SimLogGate.LED_GATE) return ;
 				Vector vIn, vOut;
 
 				vIn=new Vector();
@@ -880,7 +881,7 @@ public class SimLogCanvas extends JPanel
 				tt.generateTable();
 				tt.print();
 				SimLogTruthTableWin win=new SimLogTruthTableWin(appli,tt);
-				win.show();			
+				win.show();
 			}
 		}
 

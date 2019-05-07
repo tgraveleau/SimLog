@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -32,7 +32,7 @@
 
 /**
  *   This class contains a lexical and syntaxic analyser to parse
- *   logical expressions. 
+ *   logical expressions.
  *
  *   Expressions are defined with the following symbols :
  *    '-' not
@@ -44,6 +44,8 @@
  *   @version 2.2, 14 October 2003
  *   @author Jean-Michel Richer
  */
+
+package src;
 
 import java.util.Vector;
 
@@ -79,7 +81,7 @@ public class SimLogAnaSynt {
 
 	/**
    *  Constructor
-	 * 
+	 *
    *  @param s String to analyze
    */
 
@@ -94,7 +96,7 @@ public class SimLogAnaSynt {
 
 	/**
    *  Record syntax error
-	 * 
+	 *
    *  @param s Error string
    */
 
@@ -104,10 +106,10 @@ public class SimLogAnaSynt {
 
 	/**
    *  indicates if expression is correct
-	 * 
+	 *
    */
 
-	public boolean isCorrect() {	
+	public boolean isCorrect() {
 		if (nbrErrors!=0) return false;
 		if (nbrOpenPar!=nbrClosePar) return false;
 		return true;
@@ -116,7 +118,7 @@ public class SimLogAnaSynt {
 	/**
    *  return next character, this is the main function of the syntaxic
    *  analyzer
-	 * 
+	 *
    *  @return character at current position
    */
 
@@ -131,7 +133,7 @@ public class SimLogAnaSynt {
 
 	/**
    *  return identifier at current syntaxic analyzer position
-   *  
+   *
 	 *  @return String corresponding to the identifier
    */
 

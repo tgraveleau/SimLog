@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -38,6 +38,8 @@
  *   @author Jean-Michel Richer
  */
 
+package src;
+
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -47,17 +49,17 @@ import javax.swing.*;
 import java.util.Vector;
 
 
-public class SimLogWin extends JFrame 
+public class SimLogWin extends JFrame
 		implements ActionListener {
 
-		// 
+		//
 		// class variables
 		//
 
 		public  SimLogToolbar  toolbar;
 		public  SimLogPanel    mainPanel;
 		private SimLogCircuit  circuit;
-		private String         circuitName; 
+		private String         circuitName;
 		private JTextField     message;
 
 		private SimLogApplet   applet = null;
@@ -73,10 +75,10 @@ public class SimLogWin extends JFrame
 			super( "SimLog v2.1" );
 
 			Properties p = System.getProperties();
-			currentDir = new File( p.getProperty("user.dir" ) );	
+			currentDir = new File( p.getProperty("user.dir" ) );
 			fileSeparator = p.getProperty( "file.separator" );
 
-			createUserInterface();					
+			createUserInterface();
 		}
 
 		/**
@@ -88,10 +90,10 @@ public class SimLogWin extends JFrame
 
 			applet = app;
 
-			currentDir = new File( ".");	
+			currentDir = new File( ".");
  			fileSeparator = "//";
 
-			createUserInterface();					
+			createUserInterface();
 		}
 
 		/**
@@ -104,12 +106,12 @@ public class SimLogWin extends JFrame
 			circuitName = null;
 
 			Font font = new Font( "SansSerif", Font.PLAIN, 10 );
-					
+
 			message = new JTextField( );
 			message.setEditable( false );
 			message.setFont( font );
 			toolbar = new SimLogToolbar( this );
-				
+
 			JPanel toolbarPanel = new JPanel();
 			toolbarPanel.setLayout( new FlowLayout() );
 			toolbarPanel.add( toolbar );
@@ -117,7 +119,7 @@ public class SimLogWin extends JFrame
 			JPanel topPanel = new JPanel();
 			topPanel.setLayout( new BorderLayout() );
 		  getContentPane().add( topPanel );
-			mainPanel = new SimLogPanel( this );	
+			mainPanel = new SimLogPanel( this );
 			//topPanel.add( toolbar, BorderLayout.NORTH );
 			topPanel.add( mainPanel, BorderLayout.CENTER );
 			topPanel.add( toolbarPanel, BorderLayout.WEST );
@@ -127,11 +129,11 @@ public class SimLogWin extends JFrame
 			//createGatePopup();
 
 			this.addWindowListener( new WindowAdapter() {
-					public void windowClosing( WindowEvent e ) { 
+					public void windowClosing( WindowEvent e ) {
 							saveAndExit();
 					}
 			} );
-			setSize( new Dimension ( 650, 650 ) );					
+			setSize( new Dimension ( 650, 650 ) );
 		}
 
 		/**
@@ -154,10 +156,10 @@ public class SimLogWin extends JFrame
    	// - the string "-" means a separator
 		//
 
-		private String menuLabels[] = { 
-			"Menu", "File", "New", "Load", "Save", "Quit", 
+		private String menuLabels[] = {
+			"Menu", "File", "New", "Load", "Save", "Quit",
 		  "Menu", "Action", "Edition", "Simulation",
-			"Menu", "Display", "!1", "Gate name", "Grid", 
+			"Menu", "Display", "!1", "Gate name", "Grid",
 			"Menu", "Tools", "Formula", "Karnaugh", "Nand/Nor", "Truth table", "Reorganize",
       "Menu", "?", "About", "Licence" };
 
@@ -209,7 +211,7 @@ public class SimLogWin extends JFrame
 			mi.addActionListener( this );
 		  m.add( mi );
 		  return mi;
-		}		
+		}
 
 		/**
      *  Create a menu bar using the menuLabels array
@@ -221,7 +223,7 @@ public class SimLogWin extends JFrame
 			JMenuItem mi;
 
 			JMenuBar menubar = new JMenuBar();
-			
+
 			menuFile = new JMenu( "File" );
 			menuFile.setMnemonic( 'F' );
 			menubar.add( menuFile );
@@ -270,8 +272,8 @@ public class SimLogWin extends JFrame
 
 		public void notImplemented( ) {
 				JOptionPane w = new JOptionPane();
-				w.showMessageDialog( this, "This functionality is not yet implemented" , "Not implemented", 
-					JOptionPane.WARNING_MESSAGE );			
+				w.showMessageDialog( this, "This functionality is not yet implemented" , "Not implemented",
+					JOptionPane.WARNING_MESSAGE );
 		}
 
 		/**
@@ -281,8 +283,8 @@ public class SimLogWin extends JFrame
 
 		public void notAllowedInAppletMode() {
 				JOptionPane w = new JOptionPane();
-				w.showMessageDialog( this, "Not allowed in Applet mode" , "Not Allowed", 
-					JOptionPane.WARNING_MESSAGE );						
+				w.showMessageDialog( this, "Not allowed in Applet mode" , "Not Allowed",
+					JOptionPane.WARNING_MESSAGE );
 		}
 
 		/**
@@ -302,7 +304,7 @@ public class SimLogWin extends JFrame
 		}
 
 		/**
-		 *  open a window displaying a message 
+		 *  open a window displaying a message
 		 *
 		 *  @param msg	message to display
 		 */
@@ -313,7 +315,7 @@ public class SimLogWin extends JFrame
 		}
 
 		/**
-		 *  open a window displaying a message and wait for answer of 
+		 *  open a window displaying a message and wait for answer of
 		 *  type Yes/No
 		 *
 		 *  @param msg	message to display
@@ -323,7 +325,7 @@ public class SimLogWin extends JFrame
 
 		public boolean yesno( String msg ) {
 				JOptionPane w = new JOptionPane();
-				if (w.showConfirmDialog( this, msg, "", JOptionPane.YES_NO_OPTION, 
+				if (w.showConfirmDialog( this, msg, "", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null ) == 0)
 					return true;
 				else
@@ -394,7 +396,7 @@ public class SimLogWin extends JFrame
 					}
 					gateNames.removeAllElements();
 					gateNames=null;
-						
+
 					mainPanel.edition();
 				}
 				win=null;
@@ -421,9 +423,9 @@ public class SimLogWin extends JFrame
 		/**
 		 *  manager for menu items
 		 */
-		
+
 		public void actionPerformed( ActionEvent e ) {
-			
+
 				if (e.getSource() == menuFileNew) {
 						newCircuit();
 				} else if (e.getSource() == menuFileLoad) {
@@ -468,7 +470,7 @@ public class SimLogWin extends JFrame
 				} else if (e.getSource() == menuInfosLicence) {
 						licence();
 				}
-		 
+
 		}
 
 
@@ -479,7 +481,7 @@ public class SimLogWin extends JFrame
 		public void saveCircuit() {
 				boolean save =  true;
 				JFileChooser fc = new JFileChooser();
-				
+
 				if (fc.showSaveDialog( this ) == JFileChooser.APPROVE_OPTION) {
 					String name = fc.getSelectedFile().toString();
 					if (name.length() > 0) {
@@ -495,7 +497,7 @@ public class SimLogWin extends JFrame
 					}
 				}
 		}
-	
+
 
 		/**
 		 *  replace current circuit by a circuit on disk
@@ -595,5 +597,5 @@ public class SimLogWin extends JFrame
 				win.pack();
 				win.centerComponent();
 				win.show();
-		}			 
+		}
 }

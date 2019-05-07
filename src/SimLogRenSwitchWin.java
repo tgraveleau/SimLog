@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -37,12 +37,14 @@
  *   @author Jean-Michel Richer
  */
 
+package src;
+
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class SimLogRenSwitchWin extends JDialog 
+public class SimLogRenSwitchWin extends JDialog
 		implements ActionListener {
 
 		private JComboBox  name;
@@ -50,7 +52,7 @@ public class SimLogRenSwitchWin extends JDialog
 		private JButton    bNo;
 		private boolean   state = true;
 		private int       initialValue;
-		private boolean   tab[];	
+		private boolean   tab[];
 
 		/**
 		 *  create a panel with Ok and Cancel buttons
@@ -76,7 +78,7 @@ public class SimLogRenSwitchWin extends JDialog
 		 *
 		 *  @return JPanel
 		 */
-	
+
 		private JPanel createMessagePanel( boolean t[], int n, String s ) {
 				char tabNames[] = new char[1];
 				//tabNames[1] = '\n';
@@ -101,7 +103,7 @@ public class SimLogRenSwitchWin extends JDialog
 		/**
 		 *  method used to center window on screen
 		 */
-		
+
    	public void centerComponent( ) {
 				Toolkit tk = Toolkit.getDefaultToolkit();
 				Dimension screenDim = tk.getScreenSize();
@@ -120,7 +122,7 @@ public class SimLogRenSwitchWin extends JDialog
 
 		public SimLogRenSwitchWin( JFrame parent, SimLogGate g, SimLogCircuit c ) {
 			super( parent, true );
-	 	
+
 			getContentPane().setLayout( new BorderLayout() );
 			tab = c.getAvailSwitchNames();
 			initialValue = (int) g.getName().charAt(0)-65;

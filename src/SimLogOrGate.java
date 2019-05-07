@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -36,6 +36,8 @@
  *  @version 2.1, 14 October 2002
  *  @author Jean-Michel Richer
  */
+
+package src;
 
 import java.awt.*;
 
@@ -99,9 +101,9 @@ public class SimLogOrGate extends SimLogGate {
 						g.fillPolygon( poly_a, poly_b, poly_a.length );
 						paintInputs( g );
 						paintOutput( g );
-							if (value==SimLogGate.TRUE) 
+							if (value==SimLogGate.TRUE)
 								g.drawString(SimLogGate.TRUE_STRING,x+60,y+30);
-							if (value==SimLogGate.FALSE) 
+							if (value==SimLogGate.FALSE)
 								g.drawString(SimLogGate.FALSE_STRING,x+60,y+30);
 						break;
 

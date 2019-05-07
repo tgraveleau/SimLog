@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -30,8 +30,10 @@
 /* //////////////////////////////////////////////////////////////////////// */
 
 /**
- *  interface PLA 
+ *  interface PLA
  */
+
+package src;
 
 
 import java.io.*;
@@ -41,33 +43,33 @@ import javax.swing.*;
 import java.util.*;
 
 
-public class SimLogPla extends JFrame 
+public class SimLogPla extends JFrame
 	implements ActionListener {
 
   // variables
-	
-  // dimensions de la zone graphique en pixels	
-  
+
+  // dimensions de la zone graphique en pixels
+
   private int TailleX;
   private int TailleY;
-	
+
  // dimensions (arbitraires) d'une zone d'intersection pour la PlaInterface
-  
+
   private int xZone = 40;
   private int yZone = 50;
-  
+
   // nombre de variables et nombre de monomes
   private int NbVar;
   private int NbMonome;
-	
+
   // boolean permettant de savoir si l'utilisateur a fait une erreur
   private boolean erreur = false;
-	
+
 	private JButton         bSimplify;
-	private JButton         bClose;	
+	private JButton         bClose;
 	private SimLogPlaCanvas canvas;
 	private SimLogWin       appli;
-	
+
 
 	private JPanel createUserInterface() {
 		JPanel panel=new JPanel();
@@ -86,27 +88,27 @@ public class SimLogPla extends JFrame
 
 		panel.add("South",buttonPanel);
 		panel.add("Center",canvas);
-		return panel;  	
+		return panel;
 	}
 
   /**
 	 *  Constructor
 	 */
 
-	public SimLogPla(SimLogWin parent,int nv,int nm) {	
+	public SimLogPla(SimLogWin parent,int nv,int nm) {
 		setTitle("PLA");
 		appli=parent;
-  	// initialisation des parametres	
+  	// initialisation des parametres
   	NbVar = nv;
   	NbMonome = nm;
-  
+
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add("Center",createUserInterface());
 		setResizable(false);
   	setLocationRelativeTo(this);
-		pack(); 
+		pack();
 	}
-	 
+
 	public void actionPerformed( ActionEvent e ) {
 		if (e.getSource()==bSimplify) {
 			simplify();

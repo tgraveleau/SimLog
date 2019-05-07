@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -30,6 +30,8 @@
 /* // ------------------------------------------------------------------ // */
 /* //////////////////////////////////////////////////////////////////////// */
 
+
+package src;
 
 /**
  *   This class implements a link between two gates
@@ -114,10 +116,10 @@ public class SimLogLink {
 		 *  remove link. The link is removed from output and input gate
 		 *  connections.
 		 */
-			
+
 		public void remove() {
 			inputGate.removeInputLink( inputPort );
 			outputGate.removeOutputLink( inputGate, inputPort );
 		}
- 
+
 }

@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -38,11 +38,13 @@
  *   @author Jean-Michel Richer
  */
 
+package src;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class SimLogNewCircuitWin extends JDialog 
+public class SimLogNewCircuitWin extends JDialog
 		implements ActionListener {
 
 		//
@@ -57,7 +59,7 @@ public class SimLogNewCircuitWin extends JDialog
 		private JButton    bCancel;
 		private boolean    state = true;
 
-	
+
 		/**
 		 *  create a panel with Ok and Cancel buttons
 		 *
@@ -86,7 +88,7 @@ public class SimLogNewCircuitWin extends JDialog
 		private JPanel createMessagePanel( ) {
 				int i;
 				JPanel panel = new JPanel();
-				
+
 				tNbrInputs = new JComboBox();
 				for (i=1;i<=20;i++) {
 				  tNbrInputs.addItem(Integer.toString(i));

@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -38,8 +38,9 @@
  *   @author Jean-Michel Richer
  */
 
-import java.util.Vector;
+package src;
 
+import java.util.Vector;
 
 public class SimLogFormula {
 
@@ -48,7 +49,7 @@ public class SimLogFormula {
 	//
 
 	private Vector            stack; // Expression in postfix form
-	private SimLogCircuit     circuit; 
+	private SimLogCircuit     circuit;
 	private SimLogFormulaNode rootNode; // root node of formula
 	private boolean           correct; // is the expression correct ?
 
@@ -81,17 +82,17 @@ public class SimLogFormula {
 		}
 		s=(String)stack.remove(stack.size()-1);
 		switch(s.charAt(0)) {
-			case '+': 
+			case '+':
 				node=new SimLogFormulaNode(SimLogGate.OR_GATE,buildFormula(),buildFormula());
 				break;
-			case '.': 
+			case '.':
 				node=new SimLogFormulaNode(SimLogGate.AND_GATE,buildFormula(),buildFormula());
 			break;
 
-			case '^': 
+			case '^':
 				node=new SimLogFormulaNode(SimLogGate.XOR_GATE,buildFormula(),buildFormula());
 				break;
-			case '-': 
+			case '-':
 				node=new SimLogFormulaNode(SimLogGate.NOT_GATE,buildFormula(),null);
 				break;
 			default:
@@ -102,16 +103,16 @@ public class SimLogFormula {
 	}
 
 	/**
-	 *  
+	 *
 	 *
 	 *  @param v Logic expression in postfix notation
 	 */
 
 	private int findNbrNodes(SimLogFormulaNode node) {
 		switch(node.getType()) {
-			case 0: 
+			case 0:
 				return 1;
-			case SimLogGate.OR_GATE: 
+			case SimLogGate.OR_GATE:
 			case SimLogGate.AND_GATE:
 			case SimLogGate.XOR_GATE:
 				return 1+findNbrNodes(node.getLeft())+findNbrNodes(node.getRight());

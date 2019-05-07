@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  *
- *  For any  comment please write to Jean-Michel RICHER at 
+ *  For any  comment please write to Jean-Michel RICHER at
  *  Jean-Michel.Richer@univ-angers.fr
  * ------------------------------------------------------------------------ */
 
@@ -30,45 +30,46 @@
 /* //////////////////////////////////////////////////////////////////////// */
 
 /**
- *  Classe Permettant de Créer un Rendu
+ *  Classe Permettant de Crï¿½er un Rendu
  *  Pour Afficher la Liste des Masques
  */
 
+package src;
 
 import javax.swing.*;
 import java.awt.*;
 
 
-public class SimLogCellRenderer extends JLabel implements ListCellRenderer 
+public class SimLogCellRenderer extends JLabel implements ListCellRenderer
 {
   // Champs
-  
+
   private Color[] TabColors;
 
-  
+
   // Constructeur
-  
+
   public SimLogCellRenderer ( Color[]Tab )
     {
       setOpaque( true );
       TabColors = Tab;
     }
-  
-  
+
+
   // Accesseur
-  
+
   public Component getListCellRendererComponent (JList list,Object value,int index,boolean isSelected,boolean cellHasFocus)
     {
 	  setText( value.toString() );
-	  
+
 	  if (isSelected)
 	  {setForeground( Color.white );}
 	  else
 	  {setForeground( Color.black );}
 	  setBackground( TabColors[index] );
-	  
+
 	  return this;
     }
-    
+
 
 } // Fin SimLogCellRenderer

@@ -1,3 +1,5 @@
+package src;
+
 import java.util.Vector;
 
 
@@ -31,12 +33,12 @@ public class SimLogTruthTable {
 		for (i=0;i<nbrInputs;i++) tabInputs[i]=(SimLogGate)vIn.elementAt(i);
 		nbrOutputs=vOut.size();
 		tabOutputs=new SimLogGate[nbrOutputs];
-		for (i=0;i<nbrOutputs;i++) tabOutputs[i]=(SimLogGate)vOut.elementAt(i);		
+		for (i=0;i<nbrOutputs;i++) tabOutputs[i]=(SimLogGate)vOut.elementAt(i);
 	}
 
 	public void generateTable() {
 		int i,j,val,digit[];
-		
+
 
 		nbrCols=nbrInputs+nbrOutputs;
 		nbrRows=1 << nbrInputs;
@@ -70,7 +72,7 @@ System.out.println(nbrInputs+" "+nbrOutputs+" "+nbrRows+" "+nbrCols);
 		 *  @param n decimal number to convert
 		 *  @param max length of table containing the binary representation
 		 *  @param tab array containing the binary digits
-		 */	
+		 */
 
 		void decToBin( int n, int max, int tab[] ) {
 			int i, r;
@@ -88,7 +90,7 @@ System.out.println(nbrInputs+" "+nbrOutputs+" "+nbrRows+" "+nbrCols);
 		 *  enter simulation mode during which you can only change the
 		 *  switches
 		 */
- 
+
 		public void simulation( ) {
 				int i;
 				SimLogGate g;
@@ -97,7 +99,7 @@ System.out.println(nbrInputs+" "+nbrOutputs+" "+nbrRows+" "+nbrCols);
 				listOfGates=circuit.getListOfGates();
 				for (i=0;i<listOfGates.size();i++) {
 					g = (SimLogGate) listOfGates.elementAt(i);
-					if (g.getType()!=SimLogGate.SWITCH_GATE) 
+					if (g.getType()!=SimLogGate.SWITCH_GATE)
 						g.setValue( SimLogGate.UNSET );
 				}
 				for (i=0;i<listOfGates.size();i++) {
