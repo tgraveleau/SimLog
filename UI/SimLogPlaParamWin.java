@@ -157,7 +157,7 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 
 				if (!error) {
 					SimLogPla win = new SimLogPla(appli, nbVar, nbMon);
-					win.show();
+					win.setVisible(true);
 					this.dispose();
 				}
 

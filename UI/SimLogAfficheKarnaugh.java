@@ -117,7 +117,7 @@ public class SimLogAfficheKarnaugh extends JFrame {
 		this.setBackground(Color.white);
 		this.setLocation(150, 30);
 		this.setResizable(false);
-		this.show();
+		this.setVisible(true);
 
 	} // Fin Constructeur
 

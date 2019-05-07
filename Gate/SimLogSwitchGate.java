@@ -45,7 +45,7 @@ public class SimLogSwitchGate extends SimLogGate {
 
 	/**
 	 * default constructor
-	 * 
+	 *
 	 * @param _x
 	 *            coordinate
 	 * @param _y

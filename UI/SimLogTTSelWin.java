@@ -124,7 +124,7 @@ public class SimLogTTSelWin extends JDialog implements ActionListener {
 
 	/**
 	 * obtain number of Outputs (LEDs)
-	 * 
+	 *
 	 */
 
 	private void getCircuitInformation() {
@@ -141,7 +141,7 @@ public class SimLogTTSelWin extends JDialog implements ActionListener {
 
 	/**
 	 * create a panel with Ok and Cancel buttons
-	 * 
+	 *
 	 * @return JPanel
 	 */
 
@@ -257,7 +257,7 @@ public class SimLogTTSelWin extends JDialog implements ActionListener {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param parent
 	 *            parent application
 	 */
@@ -303,7 +303,7 @@ public class SimLogTTSelWin extends JDialog implements ActionListener {
 
 	/**
 	 * Table Model for LED selection
-	 * 
+	 *
 	 */
 
 	class MyTableModel extends AbstractTableModel {
@@ -444,7 +444,7 @@ public class SimLogTTSelWin extends JDialog implements ActionListener {
 
 	/**
 	 * Table Model for SWITCH selection
-	 * 
+	 *
 	 */
 
 	class SelectInputTableModel extends AbstractTableModel {
@@ -541,7 +541,7 @@ public class SimLogTTSelWin extends JDialog implements ActionListener {
 		tt.generateTable();
 		tt.print();
 		SimLogTruthTableWin win = new SimLogTruthTableWin(appli, tt);
-		win.show();
+		win.setVisible(true);
 	}
 
 }

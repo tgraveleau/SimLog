@@ -74,7 +74,7 @@ public class SimLogListMask extends JFrame {
 		this.setSize(Longueur, Hauteur);
 		this.setLocation(0, 30);
 		this.setResizable(false);
-		this.show();
+		this.setVisible(true);
 
 		// si la table de Karnaugh n'est pas vide
 		if (NbMask > 0) {
@@ -107,7 +107,7 @@ public class SimLogListMask extends JFrame {
 			conteneur.add(BorderLayout.CENTER, jsplist);
 
 			this.setContentPane(conteneur);
-			this.show();
+			this.setVisible(true);
 
 			GenColors.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent event) {

@@ -38,7 +38,7 @@ public class SimLogApplet extends Applet implements ActionListener {
 			}
 			if (win == null) {
 				win = new SimLogWin(this);
-				win.show();
+				win.setVisible(true);
 			}
 		}
 	}

@@ -147,7 +147,7 @@ public class SimLogTruthTableWin extends JFrame implements ActionListener {
 
 	/**
 	 * Table Model for integer values
-	 * 
+	 *
 	 */
 
 	class IntegerTableModel extends AbstractTableModel {

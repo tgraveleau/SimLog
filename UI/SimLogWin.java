@@ -216,7 +216,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 
 	/**
 	 * Create a menu bar using the menuLabels array
-	 * 
+	 *
 	 * @return a menu bar
 	 */
 
@@ -303,7 +303,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 
 	/**
 	 * open a window displaying a message
-	 * 
+	 *
 	 * @param msg
 	 *            message to display
 	 */
@@ -315,7 +315,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 
 	/**
 	 * open a window displaying a message and wait for answer of type Yes/No
-	 * 
+	 *
 	 * @param msg
 	 *            message to display
 	 * @return <code>true</code> if the answer was Yes, <code>false</code>
@@ -338,7 +338,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 	public void newCircuit() {
 		SimLogNewCircuitWin win = new SimLogNewCircuitWin(this);
 		win.centerComponent();
-		win.show();
+		win.setVisible(true);
 		if (win.getState() == true) {
 			int i, n;
 			boolean auto;
@@ -355,7 +355,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 				SimLogNewAutoNamingWin win2 = new SimLogNewAutoNamingWin(this,
 						n, SimLogGate.SWITCH_GATE);
 				win2.centerComponent();
-				win2.show();
+				win2.setVisible(true);
 				gateNames = win2.getNames();
 			} else {
 				char tab[] = new char[1];
@@ -381,7 +381,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 				SimLogNewAutoNamingWin win2 = new SimLogNewAutoNamingWin(this,
 						n, SimLogGate.LED_GATE);
 				win2.centerComponent();
-				win2.show();
+				win2.setVisible(true);
 				gateNames = win2.getNames();
 			} else {
 				char tab[] = new char[3];
@@ -409,7 +409,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 	private void enterFormula() {
 		SimLogFormulaWin win = new SimLogFormulaWin(this);
 
-		win.show();
+		win.setVisible(true);
 		if (win.getState() == true) {
 			circuit.buildCircuit(win.getRoot());
 			circuit.reorganize();
@@ -420,7 +420,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 	private void karnaugh() {
 		SimLogPlaParamWin win = new SimLogPlaParamWin(this);
 		win.centerComponent();
-		win.show();
+		win.setVisible(true);
 	}
 
 	/**
@@ -463,7 +463,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 			} else {
 				if ((circuit.getNbrSwitch() > 0) && (circuit.getNbrLED() > 0)) {
 					SimLogTTSelWin win = new SimLogTTSelWin(this);
-					win.show();
+					win.setVisible(true);
 				}
 			}
 			mainPanel.edition();
@@ -549,7 +549,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 	public void about() {
 		SimLogContribWin win = new SimLogContribWin(this);
 		win.centerComponent();
-		win.show();
+		win.setVisible(true);
 		win = null;
 	}
 
@@ -560,13 +560,13 @@ public class SimLogWin extends JFrame implements ActionListener {
 	public void licence() {
 		SimLogLicenceWin win = new SimLogLicenceWin(this);
 		win.centerComponent();
-		win.show();
+		win.setVisible(true);
 		win = null;
 	}
 
 	/**
 	 * return variable containing the description of the circuit
-	 * 
+	 *
 	 * @return variable containing the description of the circuit
 	 */
 
@@ -600,6 +600,6 @@ public class SimLogWin extends JFrame implements ActionListener {
 		win = new SimLogWin();
 		win.pack();
 		win.centerComponent();
-		win.show();
+		win.setVisible(true);
 	}
 }

@@ -160,7 +160,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 
 	/**
 	 * default constructor
-	 * 
+	 *
 	 * @param win
 	 *            parent frame or application
 	 */
@@ -205,7 +205,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 
 	/**
 	 * define circuit to be displayed
-	 * 
+	 *
 	 * @param c
 	 *            circuit
 	 */
@@ -217,7 +217,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 
 	/**
 	 * add a new gate to the circuit given its position
-	 * 
+	 *
 	 * @param x
 	 *            coordinate
 	 * @param y
@@ -230,7 +230,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		if (toolbar.getGateType() == SimLogGate.SWITCH_GATE) {
 			SimLogNameSwitchWin win = new SimLogNameSwitchWin(appli);
 			win.centerComponent();
-			win.show();
+			win.setVisible(true);
 			if (win.getState() == true) {
 				name = win.getName();
 			} else
@@ -239,7 +239,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		if (toolbar.getGateType() == SimLogGate.LED_GATE) {
 			SimLogNameLEDWin win = new SimLogNameLEDWin(appli);
 			win.centerComponent();
-			win.show();
+			win.setVisible(true);
 			if (win.getState() == true) {
 				name = win.getName();
 			} else
@@ -341,7 +341,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 
 	/**
 	 * rename gate. The gate is renamed following its type.
-	 * 
+	 *
 	 * @param g
 	 *            gate to rename
 	 */
@@ -354,7 +354,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		case SimLogGate.SWITCH_GATE:
 			SimLogRenSwitchWin win = new SimLogRenSwitchWin(appli, g, circuit);
 			win.centerComponent();
-			win.show();
+			win.setVisible(true);
 			if (win.getState() == true) {
 				circuit.renameGate(g, win.getNewName());
 				repaint();
@@ -365,7 +365,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		case SimLogGate.LED_GATE:
 			SimLogRenLEDWin winl = new SimLogRenLEDWin(appli, g, circuit);
 			winl.centerComponent();
-			winl.show();
+			winl.setVisible(true);
 			if (winl.getState() == true) {
 				circuit.renameGate(g, winl.getNewName());
 				repaint();
@@ -376,7 +376,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		default:
 			SimLogRenameWin wind = new SimLogRenameWin(appli, g.getName());
 			wind.centerComponent();
-			wind.show();
+			wind.setVisible(true);
 			if (wind.getState() == true) {
 				name = wind.getNewName();
 				if (circuit.gateHasAlreadyNameExcept(g, name)) {
@@ -394,7 +394,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 
 	/**
 	 * open a window to ask ths user if he wants to rename a gate
-	 * 
+	 *
 	 * @param g
 	 *            gate to rename
 	 */
@@ -655,7 +655,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 
 	/**
 	 * check if circuit is valid, i.e. all input and output gates are connected
-	 * 
+	 *
 	 * @return <code>true</code> if circuit is valid , <code>false</code>
 	 *         otherwise
 	 */
@@ -815,7 +815,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 					SimLogReplaceGateWin win = new SimLogReplaceGateWin(appli,
 							gate, circuit);
 					win.centerComponent();
-					win.show();
+					win.setVisible(true);
 					if (win.getState() == true) {
 						circuit.replace(gate, win.getNewType());
 						repaint();
@@ -894,7 +894,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 			tt.generateTable();
 			tt.print();
 			SimLogTruthTableWin win = new SimLogTruthTableWin(appli, tt);
-			win.show();
+			win.setVisible(true);
 		}
 	}
 
@@ -904,7 +904,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		gate = circuit.getGateAtPos(popupListener.mouseX, popupListener.mouseY);
 		if (gate != null) {
 			SimLogFormulaWin win = new SimLogFormulaWin(appli, gate);
-			win.show();
+			win.setVisible(true);
 		}
 	}
 }

@@ -53,7 +53,7 @@ public class SimLogNameSwitchWin extends JDialog implements ActionListener {
 
 	/**
 	 * create a panel with Ok and Cancel buttons
-	 * 
+	 *
 	 * @return JPanel
 	 */
 
@@ -72,7 +72,7 @@ public class SimLogNameSwitchWin extends JDialog implements ActionListener {
 
 	/**
 	 * create a message panel
-	 * 
+	 *
 	 * @return JPanel
 	 */
 
@@ -82,6 +82,7 @@ public class SimLogNameSwitchWin extends JDialog implements ActionListener {
 		panel.setLayout(new FlowLayout());
 		panel.add(new JLabel(" Name : "));
 		name = new JTextField(6);
+		name.addActionListener(this);
 		panel.add(name);
 		return panel;
 	}
@@ -100,7 +101,7 @@ public class SimLogNameSwitchWin extends JDialog implements ActionListener {
 
 	/**
 	 * constructor
-	 * 
+	 *
 	 * @param parent
 	 *            parent Frame
 	 * @param g
@@ -112,6 +113,7 @@ public class SimLogNameSwitchWin extends JDialog implements ActionListener {
 	public SimLogNameSwitchWin(SimLogWin win) {
 		super(win, true);
 		setTitle("New Switch name");
+	    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		appli = win;
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add("Center", createMessagePanel());
@@ -124,8 +126,12 @@ public class SimLogNameSwitchWin extends JDialog implements ActionListener {
 	 */
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == bYes) {
-			if (alreadyExistsName()) {
+		if (e.getSource() == bYes || e.getSource() == name) {
+			if (name.getText().trim().isEmpty()) {
+				System.out.println("EMPTY NAME !");
+				appli.messageWarning("Enter a name please");
+				appli.windowWarning("Enter a name please");
+			} else if (alreadyExistsName()) {
 				System.out.println("ALREADY EXISTS !");
 				appli.messageWarning("Gate with same name already exists !");
 				appli.windowWarning("Gate with same name already exists !");
@@ -142,7 +148,7 @@ public class SimLogNameSwitchWin extends JDialog implements ActionListener {
 
 	/**
 	 * return user confirmation
-	 * 
+	 *
 	 * @return <code>true</code> if user clicked on the Ok button,
 	 *         <code>false</code> if user clicked on the Cancel button
 	 */
@@ -153,7 +159,7 @@ public class SimLogNameSwitchWin extends JDialog implements ActionListener {
 
 	/**
 	 * check if another gate has already the same name
-	 * 
+	 *
 	 * return true if another gate has already the same name
 	 */
 
@@ -167,7 +173,7 @@ public class SimLogNameSwitchWin extends JDialog implements ActionListener {
 
 	/**
 	 * return new name
-	 * 
+	 *
 	 * @return new name of Switch
 	 */
 
