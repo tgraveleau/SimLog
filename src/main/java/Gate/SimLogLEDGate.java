@@ -48,7 +48,7 @@ public class SimLogLEDGate extends SimLogGate {
 
 	/**
 	 * default constructor
-	 * 
+	 *
 	 * @param _x
 	 *            coordinate
 	 * @param _y
@@ -89,8 +89,8 @@ public class SimLogLEDGate extends SimLogGate {
 			paintInputs(g);
 			break;
 
-		case STATE_MOVING:
-			g.setColor(MOVE_COLOR);
+		case STATE_SELECTED:
+			g.setColor(SELECTED_COLOR);
 			g.drawRect(x, y, WIDTH, HEIGHT);
 			break;
 

@@ -89,8 +89,8 @@ public class SimLogSwitchGate extends SimLogGate {
 			paintOutput(g);
 			break;
 
-		case STATE_MOVING:
-			g.setColor(MOVE_COLOR);
+		case STATE_SELECTED:
+			g.setColor(SELECTED_COLOR);
 			g.drawRect(x, y, WIDTH, HEIGHT);
 			break;
 

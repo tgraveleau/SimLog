@@ -55,7 +55,7 @@ public class SimLogNorGate extends SimLogGate {
 
 	/**
 	 * default constructor
-	 * 
+	 *
 	 * @param _x
 	 *            coordinate
 	 * @param _y
@@ -94,9 +94,11 @@ public class SimLogNorGate extends SimLogGate {
 			paintOutput(g);
 			break;
 
-		case STATE_MOVING:
+		case STATE_SELECTED:
 			paintLinks(g);
-			g.setColor(MOVE_COLOR);
+			paintGrid(g);
+			paintName(g);
+			g.setColor(SELECTED_COLOR);
 			g.drawRect(x, y, WIDTH, HEIGHT);
 			break;
 
