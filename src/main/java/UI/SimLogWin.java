@@ -42,8 +42,11 @@ package UI;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.applet.Applet;
 import java.util.Properties;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import Gate.SimLogGate;
@@ -79,7 +82,12 @@ public class SimLogWin extends JFrame implements ActionListener {
 		Properties p = System.getProperties();
 		currentDir = new File(p.getProperty("user.dir"));
 		fileSeparator = p.getProperty("file.separator");
-
+		try {
+			BufferedImage image = ImageIO.read( getClass().getClassLoader().getResource("img/logo.png")); //reading the image file
+            setIconImage(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 		createUserInterface();
 	}
 
@@ -94,6 +102,13 @@ public class SimLogWin extends JFrame implements ActionListener {
 
 		currentDir = new File(".");
 		fileSeparator = "//";
+		
+		try {
+			BufferedImage image = ImageIO.read( getClass().getClassLoader().getResource("img/logo.png")); //reading the image file
+            setIconImage(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 		createUserInterface();
 	}
@@ -130,6 +145,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 		setJMenuBar(createMenuBar());
 		// createGatePopup();
 
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				saveAndExit();
@@ -290,7 +306,8 @@ public class SimLogWin extends JFrame implements ActionListener {
 	 */
 
 	public void messageWarning(String s) {
-		message.setText(s);
+		message.setFont( new Font("Verdana", Font.BOLD, 15));
+		message.setText( s );
 	}
 
 	/**
@@ -521,25 +538,28 @@ public class SimLogWin extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Save circuit if needed and exit
+	 *  Save circuit if needed and exit
 	 */
 
 	public void saveAndExit() {
-		if (applet == null) {
-			if (circuit.hasBeenModified()) {
-				if (yesno("Do you want to save file ?") == true) {
-					if (circuitName == null) {
-						saveCircuit();
-					} else {
-						circuit.save(circuitName);
+		int n = JOptionPane.showConfirmDialog(this, "Do you really want to quit SimLog?", "Quit", JOptionPane.YES_NO_OPTION);
+		if (n==0) {
+			if (applet == null) {
+				if (circuit.hasBeenModified()) {
+		    	if (yesno( "Do you want to save file ?" ) == true) {
+						if (circuitName == null) {
+							saveCircuit();
+						} else {
+							circuit.save( circuitName );
+						}
 					}
 				}
 			}
+			if (applet == null)
+				System.exit(0);
+			else
+				applet.destroyFrame();
 		}
-		if (applet == null)
-			System.exit(0);
-		else
-			applet.destroyFrame();
 	}
 
 	/**

@@ -369,61 +369,72 @@ public class SimLogCircuit {
 	}
 
 	/**
-	 * add a new gate to the circuit
-	 *
-	 * @return 0 mean ok, -1 means <I>no more switch available</I>, -2 means
-	 *         <I>no more LED available</I>
+	 *  find a name for a standard gate (AND, OR, ...). The name is given
+	 *  by the type of the gate followed by a number which is incremented.
+	 *	@param gate the type of the gate
+	 *  @return name of gate
 	 */
 
-	public int addGate(int x, int y, int type, String name) {
+	private String getStdGateName(String gate) {
+			return new String( gate + String.valueOf( availGateNumber++ ) );
+	}
+	
+	/**
+	 *  add a new gate to the circuit
+	 *
+	 *  @return 0 mean ok, -1 means <I>no more switch available</I>,
+	 *  -2 means <I>no more LED available</I>
+	 */
+
+	public int addGate( int x, int y, int type, String name ) {
 		modified = true;
-		switch (type) {
+		switch( type ) {
 
-		case SimLogGate.AND_GATE:
-			listOfGates.add(new SimLogAndGate(x, y, getStdGateName()));
-			break;
+			case SimLogGate.AND_GATE:
+					listOfGates.add( new SimLogAndGate(x,y,getStdGateName("AND")) );
+					break;
 
-		case SimLogGate.NAND_GATE:
-			listOfGates.add(new SimLogNandGate(x, y, getStdGateName()));
-			break;
+			case SimLogGate.NAND_GATE:
+					listOfGates.add( new SimLogNandGate(x,y,getStdGateName("NAND")) );
+					break;
 
-		case SimLogGate.OR_GATE:
-			listOfGates.add(new SimLogOrGate(x, y, getStdGateName()));
-			break;
+			case SimLogGate.OR_GATE:
+					listOfGates.add( new SimLogOrGate(x,y,getStdGateName("OR")) );
+					break;
 
-		case SimLogGate.NOR_GATE:
-			listOfGates.add(new SimLogNorGate(x, y, getStdGateName()));
-			break;
+			case SimLogGate.NOR_GATE:
+					listOfGates.add( new SimLogNorGate(x,y,getStdGateName("NOR")) );
+					break;
 
-		case SimLogGate.NOT_GATE:
-			listOfGates.add(new SimLogNotGate(x, y, getStdGateName()));
-			break;
+			case SimLogGate.NOT_GATE:
+					listOfGates.add( new SimLogNotGate(x,y,getStdGateName("NOT")) );
+					break;
 
-		case SimLogGate.XOR_GATE:
-			listOfGates.add(new SimLogXorGate(x, y, getStdGateName()));
-			break;
+			case SimLogGate.XOR_GATE:
+					listOfGates.add( new SimLogXorGate(x,y,getStdGateName("XOR")) );
+					break;
 
-		case SimLogGate.SWITCH_GATE:
-			// name = getSwitchName();
-			if (name != null) {
-				listOfGates.add(new SimLogSwitchGate(x, y, name));
-			} else {
-				return -1;
-			}
-			break;
+			case SimLogGate.SWITCH_GATE:
+					//name =  getSwitchName();
+					if (name != null) {
+						listOfGates.add( new SimLogSwitchGate(x,y,name) );
+					} else {
+						return -1;
+					}
+					break;
 
-		case SimLogGate.LED_GATE:
-			// name = getLEDName();
-			if (name != null) {
-				listOfGates.add(new SimLogLEDGate(x, y, name));
-			} else {
-				return -2;
-			}
-			break;
-		}
-		;
+			case SimLogGate.LED_GATE:
+					//name = getLEDName();
+					if (name != null) {
+						listOfGates.add( new SimLogLEDGate(x,y,name) );
+					} else {
+						return -2;
+					}
+					break;
+		};
 		return 0;
 	}
+
 
 	/**
 	 * rename a gate
