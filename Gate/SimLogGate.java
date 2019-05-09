@@ -80,9 +80,10 @@ public abstract class SimLogGate extends Rectangle {
 
 	public final static Color GRID_COLOR = Color.gray;
 	public final static Color GATE_COLOR = Color.blue;
-	public final static Color MOVE_COLOR = Color.magenta;
+//	public final static Color MOVE_COLOR = Color.magenta;
 	public final static Color FOCUS_COLOR = Color.red;
 	public final static Color ACTIVE_COLOR = Color.blue;
+	public final static Color SELECTED_COLOR = Color.green;
 
 	//
 	// gate dimensions
@@ -99,9 +100,10 @@ public abstract class SimLogGate extends Rectangle {
 	protected int state;
 
 	public final static int STATE_NORMAL = 1;
-	public final static int STATE_MOVING = 2;
+//	public final static int STATE_MOVING = 2;
 	public final static int STATE_FOCUS = 3;
 	public final static int STATE_ACTIVE = 4;
+	public final static int STATE_SELECTED = 5;
 
 	//
 	// values
@@ -277,13 +279,13 @@ public abstract class SimLogGate extends Rectangle {
 		state = STATE_NORMAL;
 	}
 
-	/**
-	 * set gate in a MOVING state, when gate is being moved
-	 */
-
-	public void setMovingState() {
-		state = STATE_MOVING;
-	}
+//	/**
+//	 * set gate in a MOVING state, when gate is being moved
+//	 */
+//
+//	public void setMovingState() {
+//		state = STATE_MOVING;
+//	}
 
 	/**
 	 * set gate in a Focus state, when all inputs or outputs are not connected
@@ -299,6 +301,14 @@ public abstract class SimLogGate extends Rectangle {
 
 	public void setActiveState() {
 		state = STATE_ACTIVE;
+	}
+
+	/**
+	 * set gate in an SELECTED state, when in edition
+	 */
+
+	public void setSelectedState() {
+		state = STATE_SELECTED;
 	}
 
 	/**
@@ -734,7 +744,7 @@ public abstract class SimLogGate extends Rectangle {
 
 	public void paintName(Graphics g) {
 		if (name != null) {
-			g.setColor(GATE_COLOR);
+//			g.setColor(GATE_COLOR);
 			g.drawString(name, x + 5, y + 15);
 		}
 	}
@@ -744,9 +754,9 @@ public abstract class SimLogGate extends Rectangle {
 	 */
 
 	public void paintGrid(Graphics g) {
-		g.setColor(GRID_COLOR);
+//		g.setColor(GRID_COLOR);
 		g.draw3DRect(x, y, WIDTH, HEIGHT, true);
-		g.setColor(GATE_COLOR);
+//		g.setColor(GATE_COLOR);
 		g.drawRect(x + 50, y, 20, 20);
 		g.drawLine(x + 50, y, x + 70, y + 20);
 		g.drawLine(x + 50, y + 20, x + 70, y);

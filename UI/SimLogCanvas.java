@@ -114,6 +114,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 
 	public SimLogCircuit circuit;
 	private Vector listOfGates;
+	private SimLogGate selectedGate = null;
 
 	// Parameters for popup menu
 	JPopupMenu popup;
@@ -500,14 +501,15 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	public void mousePressed(MouseEvent e) {
 		SimLogGate gate;
 		int x = e.getX(), y = e.getY();
-
 		switch (toolbar.getState()) {
 
-		case SimLogToolbar.STATE_MOVE: {
+		case SimLogToolbar.STATE_SELECTED:
+//		case SimLogToolbar.STATE_MOVE:
 			gate = circuit.getGateAtPos(x, y);
 			if (gate != null) {
 				gateToMove = gate;
-				gateToMove.setMovingState();
+//				gateToMove.setMovingState();
+				gateToMove.setSelectedState();
 				gateToMoveXOld = gateToMove.x;
 				gateToMoveYOld = gateToMove.y;
 				gateToMoveDX = gateToMove.x - x;
@@ -515,24 +517,21 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 			} else {
 				gateToMove = null;
 			}
-		}
 			break;
 
-		case SimLogToolbar.STATE_LINK: {
+		case SimLogToolbar.STATE_LINK:
 			gate = circuit.getGateAtPos(x, y);
 			if (gate != null) {
 				srcGateToLink = gate;
 			} else {
 				srcGateToLink = null;
 			}
-		}
 			break;
 
-		case SimLogToolbar.STATE_DELE: {
+		case SimLogToolbar.STATE_DELE:
 			deleStartX = x;
 			deleStartY = y;
 			deleFlag = true;
-		}
 			break;
 
 		}
@@ -543,33 +542,32 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	 */
 
 	public void mouseDragged(MouseEvent e) {
-		int gateNbr;
 		int x = e.getX(), y = e.getY();
 
 		switch (toolbar.getState()) {
 
-		case SimLogToolbar.STATE_MOVE: {
+		case SimLogToolbar.STATE_SELECTED:
+//		case SimLogToolbar.STATE_MOVE:
 			if (gateToMove != null) {
 				gateToMove.moveTo(x + gateToMoveDX, y + gateToMoveDY);
+//				gateToMove.setMovingState();
 				repaint();
 			}
-		}
 			break;
 
-		case SimLogToolbar.STATE_LINK: {
+		case SimLogToolbar.STATE_LINK:
 			if (srcGateToLink != null) {
 				xMouseLink = e.getX();
 				yMouseLink = e.getY();
 				repaint();
 			}
-		}
 			break;
 
-		case SimLogToolbar.STATE_DELE: {
+		case SimLogToolbar.STATE_DELE:
 			deleEndX = x;
 			deleEndY = y;
 			repaint();
-		}
+			break;
 
 		}
 	}
@@ -584,19 +582,25 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 
 		switch (toolbar.getState()) {
 
-		case SimLogToolbar.STATE_MOVE: {
+		case SimLogToolbar.STATE_SELECTED:
+//		case SimLogToolbar.STATE_MOVE:
 			if (gateToMove != null) {
-				gateToMove.setNormalState();
 				if (circuit.getIntersectedGate(gateToMove) != null) {
 					gateToMove.moveTo(gateToMoveXOld, gateToMoveYOld);
 				}
+				gateToMove.setSelectedState();
+				if (selectedGate != null)
+					selectedGate.setNormalState();
+				selectedGate = gateToMove;
 				gateToMove = null;
-				repaint();
+			} else if (selectedGate != null) {
+				selectedGate.setNormalState();
+				selectedGate = null;
 			}
-		}
+			repaint();
 			break;
 
-		case SimLogToolbar.STATE_LINK: {
+		case SimLogToolbar.STATE_LINK:
 			gate = circuit.getGateAtPos(x, y);
 			if (gate != null) {
 				dstGateToLink = gate;
@@ -605,16 +609,14 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 			srcGateToLink = null;
 			dstGateToLink = null;
 			repaint();
-		}
 			break;
 
-		case SimLogToolbar.STATE_DELE: {
+		case SimLogToolbar.STATE_DELE:
 			deleEndX = e.getX();
 			deleEndY = e.getY();
 			deleteArea();
 			deleFlag = false;
 			repaint();
-		}
 			break;
 
 		}
@@ -632,18 +634,18 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	 */
 
 	public void mouseExited(MouseEvent e) {
-
-		switch (toolbar.getState()) {
-		case SimLogToolbar.STATE_MOVE: {
-			if (gateToMove != null) {
-				gateToMove.setNormalState();
-				gateToMove.moveTo(gateToMoveXOld, gateToMoveYOld);
-				gateToMove = null;
-				repaint();
-			}
-		}
-			break;
-		}
+//
+//		switch (toolbar.getState()) {
+//		case SimLogToolbar.STATE_MOVE: {
+//			if (gateToMove != null) {
+//				gateToMove.setNormalState();
+//				gateToMove.moveTo(gateToMoveXOld, gateToMoveYOld);
+//				gateToMove = null;
+//				repaint();
+//			}
+//		}
+//			break;
+//		}
 	}
 
 	/**
