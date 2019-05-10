@@ -18,10 +18,10 @@ import Moteur.SimLogCircuit;
 
 public class SimLogTopBar extends JToolBar implements ActionListener {
 	
-	private final String buttonLabels[] = { "formula", "karnaugh", "nandnor", "truthtable", "reorganise", };
+	private final String buttonLabels[] = { "formula", "karnaugh", "nandnor", "truthtable", "reorganise", "edit", "simulation"};
 
 	private final String tabTips[] = { "Enter a formula", "Generate a Karnaugh table", "Do...something?",
-			"Generate the truth table", "Reorganise the elements", };
+			"Generate the truth table", "Reorganise the elements","Edition mode", "Simulation mode",  };
 	
 	private JButton tabButtons[];
 	//private int markedButton = 0;
@@ -65,6 +65,7 @@ public class SimLogTopBar extends JToolBar implements ActionListener {
 				tabButtons[i] = b;
 				add(b);
 			}
+			tabButtons[5].setEnabled(false);
 		} else {
 			Image tabImg[] = new Image[buttonLabels.length];
 			MediaTracker tracker = new MediaTracker(this);
@@ -92,6 +93,7 @@ public class SimLogTopBar extends JToolBar implements ActionListener {
 				tabButtons[i] = b;
 				add(b);
 			}
+
 		}
 		//tabButtons[0].setBackground(Color.red);
 	}
@@ -132,35 +134,27 @@ public class SimLogTopBar extends JToolBar implements ActionListener {
 						circuit.reorganize();
 						appli.repaint();
 						break;
-					}
-						
+					case 5:
+						mainPanel.edition();
+						tabButtons[5].setEnabled(false);
+						tabButtons[6].setEnabled(true);
+						break;
+					case 6:
+						if (!mainPanel.validation()) {
+							appli.windowWarning("Circuit is not valid	");
+						} else {
+							mainPanel.simulation();
+							tabButtons[5].setEnabled(true);
+							tabButtons[6].setEnabled(false);
+						}
+						break;
 					
-					break;
+					}					
+					
 				}
 			}
 			appli.mainPanel.unsetCanvasIntersectFlag();
-//			
-//			if (e.getSource() == menuToolsFormula) {
-//				  enterFormula();
-//			} else if (e.getSource() == menuToolsKarnaugh) {
-//					karnaugh();
-//			} else if (e.getSource() == menuToolsNandNor) {
-//					notImplemented();
-//			} else if (e.getSource() == menuToolsTruthTable) {
-//					if (!mainPanel.validation()) {
-//						windowWarning( "Circuit is not valid	" );
-//					}  else {
-//						if ((circuit.getNbrSwitch()>0) && (circuit.getNbrLED()>0)) {
-//							SimLogTTSelWin win=new SimLogTTSelWin(this);
-//							win.setVisible(true);
-//						}
-//					}
-//					mainPanel.edition();
-//			} else if (e.getSource() == menuToolsReorganize) {
-//					circuit.reorganize();
-//					repaint();
-//			}
-			
+		
 
 		}
 	}

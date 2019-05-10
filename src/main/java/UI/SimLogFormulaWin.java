@@ -148,7 +148,7 @@ public class SimLogFormulaWin extends JDialog implements ActionListener {
 
 	public SimLogFormulaWin(SimLogWin parent) {
 		super(parent, true);
-		setTitle("Forumla");
+		setTitle("Formula");
 		appli = parent;
 		mode = ENTER_FORMULA;
 		getContentPane().setLayout(new BorderLayout());
@@ -169,7 +169,7 @@ public class SimLogFormulaWin extends JDialog implements ActionListener {
 
 	public SimLogFormulaWin(SimLogWin parent, SimLogGate gate) {
 		super(parent, true);
-		setTitle("Enter forumla");
+		setTitle("Enter formula");
 		appli = parent;
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add("Center", createMessagePanel());
