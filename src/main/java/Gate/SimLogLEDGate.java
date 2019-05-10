@@ -75,36 +75,28 @@ public class SimLogLEDGate extends SimLogGate {
 
 	public void paint(Graphics g) {
 		int i, dist;
+		g.setColor(getColorFromState(state));
 
 		switch (state) {
 
-		case STATE_NORMAL:
-		case STATE_FOCUS:
-			paintLinks(g);
-			paintGrid(g);
-			paintName(g);
-			g.setColor((state == SimLogGate.STATE_NORMAL) ? GATE_COLOR
-					: FOCUS_COLOR);
-			g.drawOval(x + 20, y + 20, 30, 30);
-			paintInputs(g);
-			break;
-
-		case STATE_SELECTED:
-			g.setColor(SELECTED_COLOR);
-			g.drawRect(x, y, WIDTH, HEIGHT);
-			break;
-
-		case STATE_ACTIVE:
-			paintLinks(g);
-			if (value == SimLogGate.TRUE) {
-				g.setColor(Color.yellow);
-				g.fillOval(x + 20, y + 20, 30, 30);
-			}
-			g.setColor(ACTIVE_COLOR);
-			g.drawOval(x + 20, y + 20, 30, 30);
-			paintInputs(g);
-			break;
+			case STATE_SELECTED:
+			case STATE_NORMAL:
+			case STATE_FOCUS:
+				paintGrid(g);
+				paintName(g);
+				break;
+	
+			case STATE_ACTIVE:
+				if (value == SimLogGate.TRUE) {
+					g.setColor(Color.yellow);
+					g.fillOval(x + 20, y + 20, 30, 30);
+				}
+				g.setColor(ACTIVE_COLOR);
+				break;
 		}
+		paintLinks(g);
+		g.drawOval(x + 20, y + 20, 30, 30);
+		paintInputs(g);
 	}
 
 	/**

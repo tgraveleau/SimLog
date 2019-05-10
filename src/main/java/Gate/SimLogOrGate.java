@@ -74,50 +74,33 @@ public class SimLogOrGate extends SimLogGate {
 
 	public void paint(Graphics g) {
 		int i, dist;
+		g.setColor(getColorFromState(state));
 
 		switch (state) {
 
-		case STATE_NORMAL:
-		case STATE_FOCUS:
-			paintLinks(g);
-			paintGrid(g);
-			paintName(g);
-			g.setColor((state == SimLogGate.STATE_NORMAL) ? GATE_COLOR
-					: FOCUS_COLOR);
-			for (i = 0; i < poly_x.length; i++) {
-				poly_a[i] = x + 20 + poly_x[i];
-				poly_b[i] = y + 20 + poly_y[i];
-			}
-			g.fillPolygon(poly_a, poly_b, poly_a.length);
-			paintInputs(g);
-			paintOutput(g);
-			break;
-
-		case STATE_SELECTED:
-			paintLinks(g);
-			paintGrid(g);
-			paintName(g);
-			g.setColor(SELECTED_COLOR);
-			g.drawRect(x, y, WIDTH, HEIGHT);
-			break;
-
-		case STATE_ACTIVE:
-			paintLinks(g);
-			g.setColor(ACTIVE_COLOR);
-			for (i = 0; i < poly_x.length; i++) {
-				poly_a[i] = x + 20 + poly_x[i];
-				poly_b[i] = y + 20 + poly_y[i];
-			}
-			g.fillPolygon(poly_a, poly_b, poly_a.length);
-			paintInputs(g);
-			paintOutput(g);
-			if (value == SimLogGate.TRUE)
-				g.drawString(SimLogGate.TRUE_STRING, x + 60, y + 30);
-			if (value == SimLogGate.FALSE)
-				g.drawString(SimLogGate.FALSE_STRING, x + 60, y + 30);
-			break;
+			case STATE_SELECTED:
+			case STATE_NORMAL:
+			case STATE_FOCUS:
+				paintGrid(g);
+				paintName(g);
+				break;
+	
+			case STATE_ACTIVE:
+				if (value == SimLogGate.TRUE)
+					g.drawString(SimLogGate.TRUE_STRING, x + 60, y + 30);
+				if (value == SimLogGate.FALSE)
+					g.drawString(SimLogGate.FALSE_STRING, x + 60, y + 30);
+				break;
 
 		}
+		paintLinks(g);
+		for (i = 0; i < poly_x.length; i++) {
+			poly_a[i] = x + 20 + poly_x[i];
+			poly_b[i] = y + 20 + poly_y[i];
+		}
+		g.fillPolygon(poly_a, poly_b, poly_a.length);
+		paintInputs(g);
+		paintOutput(g);
 	}
 
 	/**

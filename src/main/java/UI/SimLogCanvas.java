@@ -514,8 +514,14 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 				gateToMoveYOld = gateToMove.y;
 				gateToMoveDX = gateToMove.x - x;
 				gateToMoveDY = gateToMove.y - y;
+				if (selectedGate != null)
+					selectedGate.setNormalState();
 			} else {
 				gateToMove = null;
+				if (selectedGate != null) {
+					selectedGate.setNormalState();
+					selectedGate = null;
+				}
 			}
 			break;
 
@@ -589,13 +595,8 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 					gateToMove.moveTo(gateToMoveXOld, gateToMoveYOld);
 				}
 				gateToMove.setSelectedState();
-				if (selectedGate != null)
-					selectedGate.setNormalState();
 				selectedGate = gateToMove;
 				gateToMove = null;
-			} else if (selectedGate != null) {
-				selectedGate.setNormalState();
-				selectedGate = null;
 			}
 			repaint();
 			break;

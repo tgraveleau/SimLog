@@ -47,6 +47,7 @@ package Gate;
  */
 
 import java.awt.*;
+import java.lang.Thread.State;
 import java.util.Vector;
 
 import Moteur.SimLogLink;
@@ -713,7 +714,7 @@ public abstract class SimLogGate extends Rectangle {
 		SimLogGate dstGate;
 		SimLogLink link;
 
-		g.setColor(GATE_COLOR);
+//		g.setColor(GATE_COLOR);
 		for (i = 0; i < outputLinks.size(); i++) {
 			link = (SimLogLink) outputLinks.elementAt(i);
 			dstGate = link.getInputGate();
@@ -839,5 +840,27 @@ public abstract class SimLogGate extends Rectangle {
 			g.outputLinks.add(lnk);
 		}
 		return g;
+	}
+	
+	protected Color getColorFromState(int state) {
+		Color color = null;
+		switch (state) {
+			case STATE_NORMAL:
+				color = GATE_COLOR;
+				break;
+			case STATE_FOCUS:
+				color = FOCUS_COLOR;
+				break;
+			case STATE_ACTIVE:
+				color = ACTIVE_COLOR;
+				break;
+			case STATE_SELECTED:
+				color = SELECTED_COLOR;
+				break;
+			default:
+				color = GATE_COLOR;
+				break;
+		}
+		return color;
 	}
 }

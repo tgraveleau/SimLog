@@ -73,43 +73,32 @@ public class SimLogSwitchGate extends SimLogGate {
 
 	public void paint(Graphics g) {
 		int i, dist;
+		g.setColor(getColorFromState(state));
 
 		switch (state) {
 
-		case STATE_NORMAL:
-		case STATE_FOCUS:
-			paintLinks(g);
-			paintGrid(g);
-			paintName(g);
-			g.setColor((state == SimLogGate.STATE_NORMAL) ? GATE_COLOR
-					: FOCUS_COLOR);
-			g.fillOval(x + 20, y + 32, 6, 6);
-			g.fillOval(x + 44, y + 32, 6, 6);
-			g.drawLine(x + 23, y + 35, x + 40, y + 23);
-			paintOutput(g);
-			break;
-
-		case STATE_SELECTED:
-			g.setColor(SELECTED_COLOR);
-			g.drawRect(x, y, WIDTH, HEIGHT);
-			break;
-
-		case STATE_ACTIVE:
-			paintLinks(g);
-			paintName(g);
-			g.setColor(ACTIVE_COLOR);
-			g.fillOval(x + 20, y + 32, 6, 6);
-			g.fillOval(x + 44, y + 32, 6, 6);
-			if (value == SimLogGate.TRUE) {
-				g.drawLine(x + 23, y + 35, x + 47, y + 35);
-				g.drawString(SimLogGate.TRUE_STRING, x + 30, y + 20);
-			} else {
+			case STATE_SELECTED:
+			case STATE_NORMAL:
+			case STATE_FOCUS:
+				paintGrid(g);
 				g.drawLine(x + 23, y + 35, x + 40, y + 23);
-				g.drawString(SimLogGate.FALSE_STRING, x + 30, y + 20);
-			}
-			paintOutput(g);
-			break;
+				break;
+	
+			case STATE_ACTIVE:
+				if (value == SimLogGate.TRUE) {
+					g.drawLine(x + 23, y + 35, x + 47, y + 35);
+					g.drawString(SimLogGate.TRUE_STRING, x + 30, y + 20);
+				} else {
+					g.drawLine(x + 23, y + 35, x + 40, y + 23);
+					g.drawString(SimLogGate.FALSE_STRING, x + 30, y + 20);
+				}
+				break;
 		}
+		paintLinks(g);
+		paintName(g);
+		g.fillOval(x + 20, y + 32, 6, 6);
+		g.fillOval(x + 44, y + 32, 6, 6);
+		paintOutput(g);
 	}
 
 	/**

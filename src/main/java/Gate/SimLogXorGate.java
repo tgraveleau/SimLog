@@ -76,54 +76,18 @@ public class SimLogXorGate extends SimLogGate {
 
 	public void paint(Graphics g) {
 		int i, dist;
+		g.setColor(getColorFromState(state));
 
 		switch (state) {
 
+		case STATE_SELECTED:
 		case STATE_NORMAL:
 		case STATE_FOCUS:
-			paintLinks(g);
 			paintGrid(g);
 			paintName(g);
-			g.setColor((state == SimLogGate.STATE_NORMAL) ? GATE_COLOR
-					: FOCUS_COLOR);
-			for (i = 0; i < poly_x.length; i++) {
-				poly_a[i] = x + 20 + poly_x[i];
-				poly_b[i] = y + 20 + poly_y[i];
-			}
-			g.fillPolygon(poly_a, poly_b, poly_a.length);
-			for (i = 0; i < line_x.length; i++) {
-				poly_a[i] = x + 15 + line_x[i];
-				poly_b[i] = y + 20 + line_y[i];
-			}
-			for (i = 0; i < line_x.length - 1; i++) {
-				g.drawLine(poly_a[i], poly_b[i], poly_a[i + 1], poly_b[i + 1]);
-			}
-			paintInputs(g);
-			paintOutput(g);
-			break;
-
-		case STATE_SELECTED:
-			g.setColor(SELECTED_COLOR);
-			g.drawRect(x, y, WIDTH, HEIGHT);
 			break;
 
 		case STATE_ACTIVE:
-			paintLinks(g);
-			g.setColor(GATE_COLOR);
-			for (i = 0; i < poly_x.length; i++) {
-				poly_a[i] = x + 20 + poly_x[i];
-				poly_b[i] = y + 20 + poly_y[i];
-			}
-			g.fillPolygon(poly_a, poly_b, poly_a.length);
-			for (i = 0; i < line_x.length; i++) {
-				poly_a[i] = x + 15 + line_x[i];
-				poly_b[i] = y + 20 + line_y[i];
-			}
-			for (i = 0; i < line_x.length - 1; i++) {
-				g.drawLine(poly_a[i], poly_b[i], poly_a[i + 1], poly_b[i + 1]);
-			}
-			paintInputs(g);
-			paintOutput(g);
 			if (value == SimLogGate.TRUE)
 				g.drawString(SimLogGate.TRUE_STRING, x + 60, y + 30);
 			if (value == SimLogGate.FALSE)
@@ -131,6 +95,21 @@ public class SimLogXorGate extends SimLogGate {
 			break;
 
 		}
+		paintLinks(g);
+		for (i = 0; i < poly_x.length; i++) {
+			poly_a[i] = x + 20 + poly_x[i];
+			poly_b[i] = y + 20 + poly_y[i];
+		}
+		g.fillPolygon(poly_a, poly_b, poly_a.length);
+		for (i = 0; i < line_x.length; i++) {
+			poly_a[i] = x + 15 + line_x[i];
+			poly_b[i] = y + 20 + line_y[i];
+		}
+		for (i = 0; i < line_x.length - 1; i++) {
+			g.drawLine(poly_a[i], poly_b[i], poly_a[i + 1], poly_b[i + 1]);
+		}
+		paintInputs(g);
+		paintOutput(g);
 	}
 
 	/**
