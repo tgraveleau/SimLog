@@ -101,7 +101,7 @@ class PopupListener extends MouseAdapter {
 // Main class
 
 public class SimLogCanvas extends JPanel implements MouseListener,
-		MouseMotionListener, ActionListener {
+		MouseMotionListener, ActionListener, KeyListener {
 
 	//
 	// variables
@@ -113,7 +113,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	private SimLogToolbar toolbar;
 
 	public SimLogCircuit circuit;
-	private Vector listOfGates;
+	private Vector<SimLogGate> listOfGates;
 	private SimLogGate selectedGate = null;
 
 	// Parameters for popup menu
@@ -150,6 +150,10 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	private int xMouseLink;
 	private int yMouseLink;
 
+	// Gate for copy
+	private SimLogGate gateToCopy = null;
+	private int nbGateCopied = 0;
+	
 	//
 	// display
 	//
@@ -186,6 +190,8 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		setSize(new Dimension(200, 200));
 		setPreferredSize(new Dimension(200, 200));
 
+		addKeyListener(this);
+		setFocusable(true);
 	}
 
 	public void createPopupMenu() {
@@ -418,6 +424,39 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	}
 
 	// ============================================================
+	// methods for KeyListener
+	// ============================================================
+
+    public void keyTyped(KeyEvent e) {}
+
+    public void keyPressed(KeyEvent e) {
+    	if (e.isControlDown()) {
+    		switch (e.getKeyCode()) {
+	    		case KeyEvent.VK_C:
+	    			if (selectedGate != null) {
+	    				gateToCopy = selectedGate;
+	    				nbGateCopied = 0;
+	    			}
+	    			break;
+	    		case KeyEvent.VK_V:
+	    			if (gateToCopy != null) {
+	    				gateToCopy.setNormalState();
+	    				nbGateCopied++;
+	    				SimLogGate newGate = (SimLogGate) gateToCopy.clone();
+	    				newGate.x += 10*nbGateCopied;
+	    				newGate.y += 10*nbGateCopied;
+	    				newGate.setName("clone " + nbGateCopied + " - " +newGate.getName());
+	    				listOfGates.add(newGate);
+	    				repaint();
+	    			}
+	    			break;
+    		}
+    	}
+    }
+
+    public void keyReleased(KeyEvent e) {}
+    
+	// ============================================================
 	// methods for MouseListener
 	// ============================================================
 
@@ -427,6 +466,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	 */
 
 	public void mouseClicked(MouseEvent e) {
+		requestFocusInWindow();
 		int gateNbr;
 		int x = e.getX();
 		int y = e.getY();
