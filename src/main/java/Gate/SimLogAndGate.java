@@ -24,7 +24,7 @@ package Gate;
 
 /* //////////////////////////////////////////////////////////////////////// */
 /* // ------------------------------------------------------------------ // */
-/* // | class   :  SimLogXorGate                                       | // */
+/* // | class   :  SimLogAndGate                                       | // */
 /* // | author  :  Jean Michel RICHER                                  | // */
 /* // |            Jean-Michel.Richer@univ-angers.fr                   | // */
 /* // | date    :  October 14, 2002                                    | // */
@@ -33,7 +33,7 @@ package Gate;
 /* //////////////////////////////////////////////////////////////////////// */
 
 /**
- *  This class implements a logic XOR gate
+ *  This class implements a logic AND gate
  *
  *  @version 2.1, 14 October 2002
  *  @author Jean-Michel Richer
@@ -44,20 +44,11 @@ import java.awt.*;
 import Moteur.SimLogLink;
 
 
-public class SimLogXorGate extends SimLogGate {
-
-	private static int poly_x[] = { 0, 10, 20, 25, 30, 25, 20, 10, 0, 3, 6, 3,
-			0 };
-	private static int poly_y[] = { 0, 0, 5, 10, 15, 20, 25, 30, 30, 25, 15, 5,
-			0 };
-	private static int line_x[] = { 0, 3, 6, 3, 0 };
-	private static int line_y[] = { 0, 5, 15, 25, 30 };
-	private int poly_a[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	private int poly_b[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+public class SimLogAndGate extends SimLogGate {
 
 	/**
 	 * default constructor
-	 * 
+	 *
 	 * @param _x
 	 *            coordinate
 	 * @param _y
@@ -66,8 +57,8 @@ public class SimLogXorGate extends SimLogGate {
 	 *            name
 	 */
 
-	public SimLogXorGate(int _x, int _y, String s) {
-		super(_x, _y, SimLogGate.XOR_GATE, 2, s);
+	public SimLogAndGate(int _x, int _y, String s) {
+		super(_x, _y, SimLogGate.AND_GATE, 2, s);
 	}
 
 	/**
@@ -86,42 +77,25 @@ public class SimLogXorGate extends SimLogGate {
 			paintName(g);
 			g.setColor((state == SimLogGate.STATE_NORMAL) ? GATE_COLOR
 					: FOCUS_COLOR);
-			for (i = 0; i < poly_x.length; i++) {
-				poly_a[i] = x + 20 + poly_x[i];
-				poly_b[i] = y + 20 + poly_y[i];
-			}
-			g.fillPolygon(poly_a, poly_b, poly_a.length);
-			for (i = 0; i < line_x.length; i++) {
-				poly_a[i] = x + 15 + line_x[i];
-				poly_b[i] = y + 20 + line_y[i];
-			}
-			for (i = 0; i < line_x.length - 1; i++) {
-				g.drawLine(poly_a[i], poly_b[i], poly_a[i + 1], poly_b[i + 1]);
-			}
+			g.fillRect(x + 20, y + 20, 20, 30);
+			g.fillOval(x + 20, y + 20, 30, 30);
 			paintInputs(g);
 			paintOutput(g);
 			break;
 
-		case STATE_MOVING:
-			g.setColor(MOVE_COLOR);
+		case STATE_SELECTED:
+			paintLinks(g);
+			paintGrid(g);
+			paintName(g);
+			g.setColor(SELECTED_COLOR);
 			g.drawRect(x, y, WIDTH, HEIGHT);
 			break;
 
 		case STATE_ACTIVE:
 			paintLinks(g);
 			g.setColor(GATE_COLOR);
-			for (i = 0; i < poly_x.length; i++) {
-				poly_a[i] = x + 20 + poly_x[i];
-				poly_b[i] = y + 20 + poly_y[i];
-			}
-			g.fillPolygon(poly_a, poly_b, poly_a.length);
-			for (i = 0; i < line_x.length; i++) {
-				poly_a[i] = x + 15 + line_x[i];
-				poly_b[i] = y + 20 + line_y[i];
-			}
-			for (i = 0; i < line_x.length - 1; i++) {
-				g.drawLine(poly_a[i], poly_b[i], poly_a[i + 1], poly_b[i + 1]);
-			}
+			g.fillRect(x + 20, y + 20, 20, 30);
+			g.fillOval(x + 20, y + 20, 30, 30);
 			paintInputs(g);
 			paintOutput(g);
 			if (value == SimLogGate.TRUE)
@@ -129,7 +103,6 @@ public class SimLogXorGate extends SimLogGate {
 			if (value == SimLogGate.FALSE)
 				g.drawString(SimLogGate.FALSE_STRING, x + 60, y + 30);
 			break;
-
 		}
 	}
 
@@ -138,26 +111,19 @@ public class SimLogXorGate extends SimLogGate {
 	 */
 
 	public void compute() {
-		int i, n;
+		int i;
 		SimLogLink link;
 		SimLogGate gate;
 
-		n = 0;
-		value = FALSE;
+		value = TRUE;
 		for (i = 0; i < maxInputLinks; i++) {
 			link = inputLinks[i];
 			gate = link.getOutputGate();
 			if (gate.getValue() == SimLogGate.UNSET)
 				gate.compute();
-			if (gate.getValue() == SimLogGate.TRUE)
-				++n;
-		}
-		if (n == 0)
-			value = SimLogGate.FALSE;
-		else if ((n % 2) == 0) {
-			value = SimLogGate.FALSE;
-		} else {
-			value = SimLogGate.TRUE;
+			if (gate.getValue() == SimLogGate.FALSE)
+				value = SimLogGate.FALSE;
 		}
 	}
+
 }

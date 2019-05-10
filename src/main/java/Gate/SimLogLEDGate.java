@@ -24,7 +24,7 @@ package Gate;
 
 /* //////////////////////////////////////////////////////////////////////// */
 /* // ------------------------------------------------------------------ // */
-/* // | class   :  SimLogNorGate                                       | // */
+/* // | class   :  SimLogLEDGate                                       | // */
 /* // | author  :  Jean Michel RICHER                                  | // */
 /* // |            Jean-Michel.Richer@univ-angers.fr                   | // */
 /* // | date    :  October 14, 2002                                    | // */
@@ -33,7 +33,7 @@ package Gate;
 /* //////////////////////////////////////////////////////////////////////// */
 
 /**
- *  This class implements a logic NOR gate
+ *  This class implements a logic LED gate
  *
  *  @version 2.1, 14 October 2002
  *  @author Jean-Michel Richer
@@ -44,18 +44,11 @@ import java.awt.*;
 import Moteur.SimLogLink;
 
 
-public class SimLogNorGate extends SimLogGate {
-
-	private static int poly_x[] = { 0, 10, 20, 25, 30, 25, 20, 10, 0, 3, 6, 3,
-			0 };
-	private static int poly_y[] = { 0, 0, 5, 10, 15, 20, 25, 30, 30, 25, 15, 5,
-			0 };
-	private int poly_a[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	private int poly_b[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+public class SimLogLEDGate extends SimLogGate {
 
 	/**
 	 * default constructor
-	 * 
+	 *
 	 * @param _x
 	 *            coordinate
 	 * @param _y
@@ -64,8 +57,16 @@ public class SimLogNorGate extends SimLogGate {
 	 *            name
 	 */
 
-	public SimLogNorGate(int _x, int _y, String s) {
-		super(_x, _y, SimLogGate.NOR_GATE, 2, s);
+	public SimLogLEDGate(int _x, int _y, String s) {
+		super(_x, _y, SimLogGate.LED_GATE, 1, s);
+	}
+
+	/**
+	 * redefine the default paintInputs method
+	 */
+
+	public void paintInputs(Graphics g) {
+		g.drawLine(x, y + 35, x + 20, y + 35);
 	}
 
 	/**
@@ -84,39 +85,25 @@ public class SimLogNorGate extends SimLogGate {
 			paintName(g);
 			g.setColor((state == SimLogGate.STATE_NORMAL) ? GATE_COLOR
 					: FOCUS_COLOR);
-			for (i = 0; i < poly_x.length; i++) {
-				poly_a[i] = x + 20 + poly_x[i];
-				poly_b[i] = y + 20 + poly_y[i];
-			}
-			g.fillPolygon(poly_a, poly_b, poly_a.length);
-			g.drawOval(x + 50, y + 32, 5, 6);
+			g.drawOval(x + 20, y + 20, 30, 30);
 			paintInputs(g);
-			paintOutput(g);
 			break;
 
-		case STATE_MOVING:
-			paintLinks(g);
-			g.setColor(MOVE_COLOR);
+		case STATE_SELECTED:
+			g.setColor(SELECTED_COLOR);
 			g.drawRect(x, y, WIDTH, HEIGHT);
 			break;
 
 		case STATE_ACTIVE:
 			paintLinks(g);
-			g.setColor(GATE_COLOR);
-			for (i = 0; i < poly_x.length; i++) {
-				poly_a[i] = x + 20 + poly_x[i];
-				poly_b[i] = y + 20 + poly_y[i];
+			if (value == SimLogGate.TRUE) {
+				g.setColor(Color.yellow);
+				g.fillOval(x + 20, y + 20, 30, 30);
 			}
-			g.fillPolygon(poly_a, poly_b, poly_a.length);
-			g.drawOval(x + 50, y + 32, 5, 6);
+			g.setColor(ACTIVE_COLOR);
+			g.drawOval(x + 20, y + 20, 30, 30);
 			paintInputs(g);
-			paintOutput(g);
-			if (value == SimLogGate.TRUE)
-				g.drawString(SimLogGate.TRUE_STRING, x + 60, y + 30);
-			if (value == SimLogGate.FALSE)
-				g.drawString(SimLogGate.FALSE_STRING, x + 60, y + 30);
 			break;
-
 		}
 	}
 
@@ -129,15 +116,10 @@ public class SimLogNorGate extends SimLogGate {
 		SimLogLink link;
 		SimLogGate gate;
 
-		value = FALSE;
-		for (i = 0; i < maxInputLinks; i++) {
-			link = inputLinks[i];
-			gate = link.getOutputGate();
-			if (gate.getValue() == SimLogGate.UNSET)
-				gate.compute();
-			if (gate.getValue() == SimLogGate.TRUE)
-				value = SimLogGate.TRUE;
-		}
-		value = (value == SimLogGate.TRUE) ? SimLogGate.FALSE : SimLogGate.TRUE;
+		link = inputLinks[0];
+		gate = link.getOutputGate();
+		if (gate.getValue() == SimLogGate.UNSET)
+			gate.compute();
+		value = gate.getValue();
 	}
 }

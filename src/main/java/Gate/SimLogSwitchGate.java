@@ -24,7 +24,7 @@ package Gate;
 
 /* //////////////////////////////////////////////////////////////////////// */
 /* // ------------------------------------------------------------------ // */
-/* // | class   :  SimLogOrGate                                        | // */
+/* // | class   :  SimLogRenSwitchGate                                 | // */
 /* // | author  :  Jean Michel RICHER                                  | // */
 /* // |            Jean-Michel.Richer@univ-angers.fr                   | // */
 /* // | date    :  October 14, 2002                                    | // */
@@ -33,7 +33,7 @@ package Gate;
 /* //////////////////////////////////////////////////////////////////////// */
 
 /**
- *  This class implements a logic OR gate
+ *  This class implements a logic SWITCH gate
  *
  *  @version 2.1, 14 October 2002
  *  @author Jean-Michel Richer
@@ -41,21 +41,11 @@ package Gate;
 
 import java.awt.*;
 
-import Moteur.SimLogLink;
-
-
-public class SimLogOrGate extends SimLogGate {
-
-	private static int poly_x[] = { 0, 10, 20, 25, 30, 25, 20, 10, 0, 3, 6, 3,
-			0 };
-	private static int poly_y[] = { 0, 0, 5, 10, 15, 20, 25, 30, 30, 25, 15, 5,
-			0 };
-	private int poly_a[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	private int poly_b[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+public class SimLogSwitchGate extends SimLogGate {
 
 	/**
 	 * default constructor
-	 * 
+	 *
 	 * @param _x
 	 *            coordinate
 	 * @param _y
@@ -64,8 +54,17 @@ public class SimLogOrGate extends SimLogGate {
 	 *            name
 	 */
 
-	public SimLogOrGate(int _x, int _y, String s) {
-		super(_x, _y, SimLogGate.OR_GATE, 2, s);
+	public SimLogSwitchGate(int _x, int _y, String s) {
+		super(_x, _y, SimLogGate.SWITCH_GATE, 0, s);
+		value = SimLogGate.FALSE;
+	}
+
+	/**
+	 * change switch value from TRUE to FALSE
+	 */
+
+	public void switchOnOff() {
+		value = (value == SimLogGate.TRUE) ? SimLogGate.FALSE : SimLogGate.TRUE;
 	}
 
 	/**
@@ -84,37 +83,32 @@ public class SimLogOrGate extends SimLogGate {
 			paintName(g);
 			g.setColor((state == SimLogGate.STATE_NORMAL) ? GATE_COLOR
 					: FOCUS_COLOR);
-			for (i = 0; i < poly_x.length; i++) {
-				poly_a[i] = x + 20 + poly_x[i];
-				poly_b[i] = y + 20 + poly_y[i];
-			}
-			g.fillPolygon(poly_a, poly_b, poly_a.length);
-			paintInputs(g);
+			g.fillOval(x + 20, y + 32, 6, 6);
+			g.fillOval(x + 44, y + 32, 6, 6);
+			g.drawLine(x + 23, y + 35, x + 40, y + 23);
 			paintOutput(g);
 			break;
 
-		case STATE_MOVING:
-			paintLinks(g);
-			g.setColor(MOVE_COLOR);
+		case STATE_SELECTED:
+			g.setColor(SELECTED_COLOR);
 			g.drawRect(x, y, WIDTH, HEIGHT);
 			break;
 
 		case STATE_ACTIVE:
 			paintLinks(g);
+			paintName(g);
 			g.setColor(ACTIVE_COLOR);
-			for (i = 0; i < poly_x.length; i++) {
-				poly_a[i] = x + 20 + poly_x[i];
-				poly_b[i] = y + 20 + poly_y[i];
+			g.fillOval(x + 20, y + 32, 6, 6);
+			g.fillOval(x + 44, y + 32, 6, 6);
+			if (value == SimLogGate.TRUE) {
+				g.drawLine(x + 23, y + 35, x + 47, y + 35);
+				g.drawString(SimLogGate.TRUE_STRING, x + 30, y + 20);
+			} else {
+				g.drawLine(x + 23, y + 35, x + 40, y + 23);
+				g.drawString(SimLogGate.FALSE_STRING, x + 30, y + 20);
 			}
-			g.fillPolygon(poly_a, poly_b, poly_a.length);
-			paintInputs(g);
 			paintOutput(g);
-			if (value == SimLogGate.TRUE)
-				g.drawString(SimLogGate.TRUE_STRING, x + 60, y + 30);
-			if (value == SimLogGate.FALSE)
-				g.drawString(SimLogGate.FALSE_STRING, x + 60, y + 30);
 			break;
-
 		}
 	}
 
@@ -123,18 +117,7 @@ public class SimLogOrGate extends SimLogGate {
 	 */
 
 	public void compute() {
-		int i;
-		SimLogLink link;
-		SimLogGate gate;
-
-		value = FALSE;
-		for (i = 0; i < maxInputLinks; i++) {
-			link = inputLinks[i];
-			gate = link.getOutputGate();
-			if (gate.getValue() == SimLogGate.UNSET)
-				gate.compute();
-			if (gate.getValue() == SimLogGate.TRUE)
-				value = SimLogGate.TRUE;
-		}
+		// in fact there is no need to compute a value because the switch
+		// value is decided by the user switching on/off
 	}
 }

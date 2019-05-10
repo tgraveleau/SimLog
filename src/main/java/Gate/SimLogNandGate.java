@@ -24,7 +24,7 @@ package Gate;
 
 /* //////////////////////////////////////////////////////////////////////// */
 /* // ------------------------------------------------------------------ // */
-/* // | class   :  SimLogRenSwitchGate                                 | // */
+/* // | class   :  SimLogNandGate                                      | // */
 /* // | author  :  Jean Michel RICHER                                  | // */
 /* // |            Jean-Michel.Richer@univ-angers.fr                   | // */
 /* // | date    :  October 14, 2002                                    | // */
@@ -33,15 +33,18 @@ package Gate;
 /* //////////////////////////////////////////////////////////////////////// */
 
 /**
- *  This class implements a logic SWITCH gate
+ *  This class implements a logic NAND gate
  *
- *  @version 2.1, 14 October 2002
- *  @author Jean-Michel Richer
+ *   @version 2.1, 14 October 2002
+ *   @author Jean-Michel Richer
  */
 
 import java.awt.*;
 
-public class SimLogSwitchGate extends SimLogGate {
+import Moteur.SimLogLink;
+
+
+public class SimLogNandGate extends SimLogGate {
 
 	/**
 	 * default constructor
@@ -54,17 +57,8 @@ public class SimLogSwitchGate extends SimLogGate {
 	 *            name
 	 */
 
-	public SimLogSwitchGate(int _x, int _y, String s) {
-		super(_x, _y, SimLogGate.SWITCH_GATE, 0, s);
-		value = SimLogGate.FALSE;
-	}
-
-	/**
-	 * change switch value from TRUE to FALSE
-	 */
-
-	public void switchOnOff() {
-		value = (value == SimLogGate.TRUE) ? SimLogGate.FALSE : SimLogGate.TRUE;
+	public SimLogNandGate(int _x, int _y, String s) {
+		super(_x, _y, SimLogGate.NAND_GATE, 2, s);
 	}
 
 	/**
@@ -81,33 +75,36 @@ public class SimLogSwitchGate extends SimLogGate {
 			paintLinks(g);
 			paintGrid(g);
 			paintName(g);
+			paintName(g);
 			g.setColor((state == SimLogGate.STATE_NORMAL) ? GATE_COLOR
 					: FOCUS_COLOR);
-			g.fillOval(x + 20, y + 32, 6, 6);
-			g.fillOval(x + 44, y + 32, 6, 6);
-			g.drawLine(x + 23, y + 35, x + 40, y + 23);
+			g.fillRect(x + 20, y + 20, 20, 30);
+			g.fillOval(x + 20, y + 20, 30, 30);
+			g.drawOval(x + 50, y + 32, 5, 6);
+			paintInputs(g);
 			paintOutput(g);
 			break;
 
-		case STATE_MOVING:
-			g.setColor(MOVE_COLOR);
+		case STATE_SELECTED:
+			paintLinks(g);
+			paintGrid(g);
+			paintName(g);
+			g.setColor(SELECTED_COLOR);
 			g.drawRect(x, y, WIDTH, HEIGHT);
 			break;
 
 		case STATE_ACTIVE:
 			paintLinks(g);
-			paintName(g);
 			g.setColor(ACTIVE_COLOR);
-			g.fillOval(x + 20, y + 32, 6, 6);
-			g.fillOval(x + 44, y + 32, 6, 6);
-			if (value == SimLogGate.TRUE) {
-				g.drawLine(x + 23, y + 35, x + 47, y + 35);
-				g.drawString(SimLogGate.TRUE_STRING, x + 30, y + 20);
-			} else {
-				g.drawLine(x + 23, y + 35, x + 40, y + 23);
-				g.drawString(SimLogGate.FALSE_STRING, x + 30, y + 20);
-			}
+			g.fillRect(x + 20, y + 20, 20, 30);
+			g.fillOval(x + 20, y + 20, 30, 30);
+			g.drawOval(x + 50, y + 32, 5, 6);
+			paintInputs(g);
 			paintOutput(g);
+			if (value == SimLogGate.TRUE)
+				g.drawString(SimLogGate.TRUE_STRING, x + 60, y + 30);
+			if (value == SimLogGate.FALSE)
+				g.drawString(SimLogGate.FALSE_STRING, x + 60, y + 30);
 			break;
 		}
 	}
@@ -117,7 +114,19 @@ public class SimLogSwitchGate extends SimLogGate {
 	 */
 
 	public void compute() {
-		// in fact there is no need to compute a value because the switch
-		// value is decided by the user switching on/off
+		int i;
+		SimLogLink link;
+		SimLogGate gate;
+
+		value = TRUE;
+		for (i = 0; i < maxInputLinks; i++) {
+			link = inputLinks[i];
+			gate = link.getOutputGate();
+			if (gate.getValue() == SimLogGate.UNSET)
+				gate.compute();
+			if (gate.getValue() == SimLogGate.FALSE)
+				value = SimLogGate.FALSE;
+		}
+		value = (value == SimLogGate.TRUE) ? SimLogGate.FALSE : SimLogGate.TRUE;
 	}
 }
