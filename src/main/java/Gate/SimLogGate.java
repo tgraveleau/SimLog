@@ -449,6 +449,38 @@ public abstract class SimLogGate extends Rectangle {
 	}
 
 	/**
+	 * check if gate is fully inside rectangle
+	 *
+	 * @param x1
+	 *            coordinate on canvas
+	 * @param y1
+	 *            coordinate on canvas
+	 * @param x2
+	 *            coordinate on canvas
+	 * @param y2
+	 *            coordinate on canvas
+	 * @return <code>true</code> if point is inside gate, <code>false</code>
+	 *         otherwise
+	 */
+
+	public boolean isInside(int x1, int y1, int x2, int y2) {
+//		System.out.println(name + " " + x + ", " + y + ", "+ (x + WIDTH) + ", " + (y + HEIGHT));
+//		System.out.println(x1 + ", " + y1 + ", "+ x2 + ", " + y2);
+//		System.out.println((
+//				x1 <= x
+//				&& y1 <= y
+//				&& x2 >= x + WIDTH
+//				&& y2 >= y + HEIGHT
+//		) ? "in" : "out");
+		return (
+				x1 <= x
+				&& y1 <= y
+				&& x2 >= x + WIDTH
+				&& y2 >= y + HEIGHT
+		);
+	}
+
+	/**
 	 * check if a gate at position x,y will intersect with current gate
 	 *
 	 * @param _x

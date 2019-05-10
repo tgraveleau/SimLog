@@ -146,6 +146,32 @@ public class SimLogCircuit {
 	}
 
 	/**
+	 * return index of gates in rectangle
+	 *
+	 * @param x1
+	 *            coordinate
+	 * @param y1
+	 *            coordinate
+	 * @param x2
+	 *            coordinate
+	 * @param y2
+	 *            coordinate
+	 * @return Vector<SimLogGate>
+	 */
+
+	public Vector<SimLogGate> getGatesInRectangle(int x1, int y1, int x2, int y2) {
+		int i;
+		Vector<SimLogGate> gates = new Vector<SimLogGate>();
+
+		for (i = 0; i < listOfGates.size(); i++) {
+			SimLogGate gate = (SimLogGate) listOfGates.elementAt(i);
+			if (gate.isInside(x1, y1, x2, y2))
+				gates.add(gate);
+		}
+		return gates;
+	}
+
+	/**
 	 * return gate under mouse position
 	 *
 	 * @param x
@@ -189,6 +215,17 @@ public class SimLogCircuit {
 		return -1;
 	}
 
+	/**
+	 * Reset all the gates to their normal state
+	 */
+	public void resetGatesState() {
+		SimLogGate gate;
+		for (int i = 0; i < listOfGates.size(); i++) {
+			gate = (SimLogGate) listOfGates.elementAt(i);
+			gate.setNormalState();
+		}
+	}
+	
 	/**
 	 * return gate that intersects with given gate
 	 *

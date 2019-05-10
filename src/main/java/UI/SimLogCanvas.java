@@ -154,6 +154,13 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	private SimLogGate gateToCopy = null;
 	private int nbGateCopied = 0;
 	
+	// Selection parameters
+	private boolean isSelecting = false;
+	private int selectedAreaX1;
+	private int selectedAreaX2;
+	private int selectedAreaY1;
+	private int selectedAreaY2;
+	
 	//
 	// display
 	//
@@ -315,6 +322,10 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 			g.drawLine(srcGateToLink.x + SimLogGate.WIDTH / 2, srcGateToLink.y
 					+ SimLogGate.HEIGHT / 2, xMouseLink, yMouseLink);
 		}
+		
+		if (isSelecting) {
+			g.drawRect(selectedAreaX1, selectedAreaY1, selectedAreaX2-selectedAreaX1, selectedAreaY2-selectedAreaY1);
+		}
 	}
 
 	/**
@@ -447,7 +458,6 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	    				newGate.y += 10*nbGateCopied;
 	    				newGate.setName("clone " + nbGateCopied + " - " +newGate.getName());
 	    				listOfGates.add(newGate);
-	    				repaint();
 	    			}
 	    			break;
     		}
@@ -558,10 +568,12 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 					selectedGate.setNormalState();
 			} else {
 				gateToMove = null;
-				if (selectedGate != null) {
-					selectedGate.setNormalState();
-					selectedGate = null;
-				}
+				circuit.resetGatesState();
+				selectedGate = null;
+				// On initialise la zone de sélection
+				isSelecting = true;
+				selectedAreaX1 = x;
+				selectedAreaY1 = y;
 			}
 			break;
 
@@ -597,6 +609,12 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 			if (gateToMove != null) {
 				gateToMove.moveTo(x + gateToMoveDX, y + gateToMoveDY);
 //				gateToMove.setMovingState();
+				repaint();
+			}
+			if (isSelecting) {
+				// On commence la zone de sélection
+				selectedAreaX2 = x;
+				selectedAreaY2 = y;
 				repaint();
 			}
 			break;
@@ -637,6 +655,15 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 				gateToMove.setSelectedState();
 				selectedGate = gateToMove;
 				gateToMove = null;
+			}
+			if (isSelecting) {
+				isSelecting = false;
+				// On récupère toutes les gates dans le rectangle et on les passe en selected
+				Vector<SimLogGate> gatesToSelect = circuit.getGatesInRectangle(selectedAreaX1, selectedAreaY1, selectedAreaX2, selectedAreaY2);
+				circuit.resetGatesState();
+				for (int i=0; i<gatesToSelect.size(); i++) {
+					gatesToSelect.get(i).setSelectedState();					
+				}
 			}
 			repaint();
 			break;

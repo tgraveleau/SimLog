@@ -99,7 +99,7 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 	private int markedButton = 0;
 	private int oldMarkedButton;
 
-	private int state = STATE_GATE;
+	private int state = STATE_SELECTED;
 	private SimLogWin appli = null;
 
 	/**
