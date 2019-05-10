@@ -62,6 +62,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 	//
 
 	public SimLogToolbar toolbar;
+	public SimLogTopBar topBar;
 	public SimLogPanel mainPanel;
 	private SimLogCircuit circuit;
 	private String circuitName;
@@ -123,6 +124,9 @@ public class SimLogWin extends JFrame implements ActionListener {
 		circuitName = null;
 
 		Font font = new Font("SansSerif", Font.PLAIN, 10);
+		
+		
+		
 
 		message = new JTextField();
 		message.setEditable(false);
@@ -137,7 +141,13 @@ public class SimLogWin extends JFrame implements ActionListener {
 		topPanel.setLayout(new BorderLayout());
 		getContentPane().add(topPanel);
 		mainPanel = new SimLogPanel(this);
-		// topPanel.add( toolbar, BorderLayout.NORTH );
+		
+		topBar = new SimLogTopBar(this, circuit,mainPanel);
+		JPanel topBarPanel = new JPanel();
+		topBarPanel.setLayout(new FlowLayout());
+		topBarPanel.add(topBar);
+		
+		 topPanel.add( topBar, BorderLayout.NORTH );
 		topPanel.add(mainPanel, BorderLayout.CENTER);
 		topPanel.add(toolbarPanel, BorderLayout.WEST);
 		topPanel.add(message, BorderLayout.SOUTH);
@@ -260,7 +270,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 		menubar.add(menuDisplay);
 		menuDisplayGateName = createMenuItem(menuDisplay, "Gate name", 'G');
 		menuDisplayGrid = createCheckBoxMenuItem(menuDisplay, "Grid");
-
+		/*
 		menuTools = new JMenu("Tools");
 		menuTools.setMnemonic('T');
 		menubar.add(menuTools);
@@ -268,7 +278,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 		menuToolsKarnaugh = createMenuItem(menuTools, "Karnaugh", 'K');
 		menuToolsNandNor = createMenuItem(menuTools, "Nand/Nor", 'N');
 		menuToolsTruthTable = createMenuItem(menuTools, "Truth Table", 'T');
-		menuToolsReorganize = createMenuItem(menuTools, "Reorganize", 'R');
+		menuToolsReorganize = createMenuItem(menuTools, "Reorganize", 'R');*/
 
 		menuInfos = new JMenu("?");
 		menuInfos.setMnemonic('?');
@@ -468,7 +478,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 			} else {
 				mainPanel.simulation();
 			}
-		} else if (e.getSource() == menuToolsFormula) {
+		}/* else if (e.getSource() == menuToolsFormula) {
 			enterFormula();
 		} else if (e.getSource() == menuToolsKarnaugh) {
 			karnaugh();
@@ -487,7 +497,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 		} else if (e.getSource() == menuToolsReorganize) {
 			circuit.reorganize();
 			repaint();
-		} else if (e.getSource() == menuDisplayGrid) {
+		}*/ else if (e.getSource() == menuDisplayGrid) {
 			mainPanel.changeGridMode();
 		} else if (e.getSource() == menuInfosAbout) {
 			about();
