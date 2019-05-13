@@ -42,6 +42,8 @@ package UI;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
+import java.util.function.Consumer;
+
 import javax.swing.*;
 
 
@@ -114,7 +116,6 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 
 	public SimLogCircuit circuit;
 	private Vector<SimLogGate> listOfGates;
-	private SimLogGate selectedGate = null;
 
 	// Parameters for popup menu
 	JPopupMenu popup;
@@ -152,9 +153,11 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 
 	// Gate for copy
 	private SimLogGate gateToCopy = null;
-	private int nbGateCopied = 0;
+	private Vector<SimLogGate> gatesToCopy = new Vector<SimLogGate>();
+	private int nbCopy = 0;
 	
 	// Selection parameters
+	private Vector<SimLogGate> selectedGates = new Vector<SimLogGate>();
 	private boolean isSelecting = false;
 	private int selectedAreaX1;
 	private int selectedAreaX2;
@@ -187,6 +190,8 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		listOfGates = new Vector();
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
+		addKeyListener(this);
+		setFocusable(true);
 
 		createPopupMenu();
 		popupListener = new PopupListener(this, popup);
@@ -196,9 +201,6 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		setBackground(Color.white);
 		setSize(new Dimension(200, 200));
 		setPreferredSize(new Dimension(200, 200));
-
-		addKeyListener(this);
-		setFocusable(true);
 	}
 
 	public void createPopupMenu() {
@@ -441,30 +443,65 @@ public class SimLogCanvas extends JPanel implements MouseListener,
     public void keyTyped(KeyEvent e) {}
 
     public void keyPressed(KeyEvent e) {
+    	System.out.println("keypressed");
     	if (e.isControlDown()) {
     		switch (e.getKeyCode()) {
 	    		case KeyEvent.VK_C:
-	    			if (selectedGate != null) {
-	    				gateToCopy = selectedGate;
-	    				nbGateCopied = 0;
-	    			}
+	    			copy();
 	    			break;
 	    		case KeyEvent.VK_V:
-	    			if (gateToCopy != null) {
-	    				gateToCopy.setNormalState();
-	    				nbGateCopied++;
-	    				SimLogGate newGate = (SimLogGate) gateToCopy.clone();
-	    				newGate.x += 10*nbGateCopied;
-	    				newGate.y += 10*nbGateCopied;
-	    				newGate.setName("clone " + nbGateCopied + " - " +newGate.getName());
-	    				listOfGates.add(newGate);
-	    			}
+	    			paste();
 	    			break;
     		}
     	}
     }
 
     public void keyReleased(KeyEvent e) {}
+
+    private void copy() {
+		System.out.println("size selected : "+selectedGates.size());
+		if (!selectedGates.isEmpty()) {
+	    	System.out.println("copy");
+	    	// On copie les gates sélectionnées
+			gatesToCopy.clear();
+			selectedGates.forEach(new Consumer<SimLogGate>() {
+				public void accept(SimLogGate g) {
+					gatesToCopy.add(g);
+				}
+			});
+			nbCopy = 0;
+			System.out.println("size copy : "+gatesToCopy.size());
+		}
+    }
+    private void paste() {
+    	System.out.println("paste");
+		if (!gatesToCopy.isEmpty()) {
+			gatesToCopy.forEach(new Consumer<SimLogGate>() {
+				public void accept(SimLogGate g) {
+					nbCopy++;
+					g.setNormalState();
+					SimLogGate newGate = (SimLogGate) g.clone();
+					newGate.x += 20*nbCopy;
+					newGate.y += 20*nbCopy;
+					newGate.setName("clone_" + nbCopy + " " +newGate.getName());
+					listOfGates.add(newGate);
+				}
+			});
+			repaint();
+		}
+    }
+    
+    private void selectGate(SimLogGate g) {
+    	if (!selectedGates.contains(g) ) {
+    		g.setSelectedState();		
+    		selectedGates.add(g);    
+    	}	
+    }
+    
+    private void resetSelectedGates() {
+		circuit.resetGatesState();
+		selectedGates.clear();
+    }
     
 	// ============================================================
 	// methods for MouseListener
@@ -476,11 +513,11 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	 */
 
 	public void mouseClicked(MouseEvent e) {
-		requestFocusInWindow();
 		int gateNbr;
 		int x = e.getX();
 		int y = e.getY();
 		SimLogGate gate;
+		System.out.println("click");
 
 		switch (toolbar.getState()) {
 
@@ -549,8 +586,10 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	 */
 
 	public void mousePressed(MouseEvent e) {
+		requestFocusInWindow();
 		SimLogGate gate;
 		int x = e.getX(), y = e.getY();
+		System.out.println("pressed");
 		switch (toolbar.getState()) {
 
 		case SimLogToolbar.STATE_SELECTED:
@@ -559,17 +598,18 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 			if (gate != null) {
 				gateToMove = gate;
 //				gateToMove.setMovingState();
-				gateToMove.setSelectedState();
+				// Si la gate n'est pas sélectionnée, on la sélectionne et on reset les autres
+				if (gate.getState() != SimLogGate.STATE_SELECTED) {
+					resetSelectedGates();
+					selectGate(gate);
+				}
 				gateToMoveXOld = gateToMove.x;
 				gateToMoveYOld = gateToMove.y;
 				gateToMoveDX = gateToMove.x - x;
 				gateToMoveDY = gateToMove.y - y;
-				if (selectedGate != null)
-					selectedGate.setNormalState();
 			} else {
 				gateToMove = null;
-				circuit.resetGatesState();
-				selectedGate = null;
+				resetSelectedGates();
 				// On initialise la zone de sélection
 				isSelecting = true;
 				selectedAreaX1 = x;
@@ -653,17 +693,17 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 					gateToMove.moveTo(gateToMoveXOld, gateToMoveYOld);
 				}
 				gateToMove.setSelectedState();
-				selectedGate = gateToMove;
 				gateToMove = null;
 			}
 			if (isSelecting) {
 				isSelecting = false;
 				// On récupère toutes les gates dans le rectangle et on les passe en selected
 				Vector<SimLogGate> gatesToSelect = circuit.getGatesInRectangle(selectedAreaX1, selectedAreaY1, selectedAreaX2, selectedAreaY2);
-				circuit.resetGatesState();
+				resetSelectedGates();
 				for (int i=0; i<gatesToSelect.size(); i++) {
-					gatesToSelect.get(i).setSelectedState();					
+					selectGate(gatesToSelect.get(i));
 				}
+				System.out.println("nb copied "+selectedGates.size());
 			}
 			repaint();
 			break;

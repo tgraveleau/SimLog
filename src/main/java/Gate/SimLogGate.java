@@ -231,11 +231,7 @@ public abstract class SimLogGate extends Rectangle {
 	 */
 
 	public void setName(String s) {
-		if (s.length() > 5) {
-			name = s.substring(0, 4);
-		} else {
-			name = s;
-		}
+		name = s;
 	}
 
 	/**
