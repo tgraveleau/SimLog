@@ -271,6 +271,11 @@ public class SimLogCircuit {
 		removeGate((SimLogGate) listOfGates.elementAt(n));
 		listOfGates.removeElementAt(n);
 	}
+	
+	public void removeGateWithName(SimLogGate g) {
+		int index = listOfGates.indexOf(g);
+		removeGateAtIndex(index);
+	}
 
 	/**
 	 * remove gate
@@ -285,11 +290,14 @@ public class SimLogCircuit {
 		g.removeAllLinks();
 		if (g.getType() == SimLogGate.SWITCH_GATE) {
 			if (name != null) {
-				tabAvailSwitchNames[(name.charAt(0)) - 65] = true;
+				//tabAvailSwitchNames[(name.charAt(0)) - 65] = true;
+				listOfGates.remove(g);
 			}
 		} else if (g.getType() == SimLogGate.LED_GATE) {
 			if (name != null) {
-				tabAvailLEDNames[Integer.parseInt(name.substring(1)) - 1] = true;
+				//tabAvailLEDNames[Integer.parseInt(name.substring(1)) - 1] = true;
+				listOfGates.remove(g);
+				//tabAvailLEDNames[(name.charAt(0)) - 65] = true;
 			}
 		} else {
 		}
@@ -515,6 +523,7 @@ public class SimLogCircuit {
 	public void replace(SimLogGate g, int t) {
 		int i;
 		SimLogGate g1 = null, g2;
+		//int nbGate;
 
 		if (g == null)
 			return;
@@ -525,6 +534,7 @@ public class SimLogCircuit {
 		}
 		listOfGates.removeElementAt(i);
 		g2 = g1.replace(t);
+		//g2.setName(g.getGenericName());
 		listOfGates.add(g2);
 	}
 
