@@ -42,8 +42,11 @@ package UI;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.applet.Applet;
 import java.util.Properties;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import Gate.SimLogGate;
@@ -59,6 +62,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 	//
 
 	public SimLogToolbar toolbar;
+	public SimLogTopBar topBar;
 	public SimLogPanel mainPanel;
 	private SimLogCircuit circuit;
 	private String circuitName;
@@ -79,7 +83,12 @@ public class SimLogWin extends JFrame implements ActionListener {
 		Properties p = System.getProperties();
 		currentDir = new File(p.getProperty("user.dir"));
 		fileSeparator = p.getProperty("file.separator");
-
+		try {
+			BufferedImage image = ImageIO.read( getClass().getClassLoader().getResource("img/logo.png")); //reading the image file
+            setIconImage(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 		createUserInterface();
 	}
 
@@ -94,6 +103,13 @@ public class SimLogWin extends JFrame implements ActionListener {
 
 		currentDir = new File(".");
 		fileSeparator = "//";
+		
+		try {
+			BufferedImage image = ImageIO.read( getClass().getClassLoader().getResource("img/logo.png")); //reading the image file
+            setIconImage(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 		createUserInterface();
 	}
@@ -108,6 +124,9 @@ public class SimLogWin extends JFrame implements ActionListener {
 		circuitName = null;
 
 		Font font = new Font("SansSerif", Font.PLAIN, 10);
+		
+		
+		
 
 		message = new JTextField();
 		message.setEditable(false);
@@ -122,7 +141,13 @@ public class SimLogWin extends JFrame implements ActionListener {
 		topPanel.setLayout(new BorderLayout());
 		getContentPane().add(topPanel);
 		mainPanel = new SimLogPanel(this);
-		// topPanel.add( toolbar, BorderLayout.NORTH );
+		
+		topBar = new SimLogTopBar(this, circuit,mainPanel);
+		JPanel topBarPanel = new JPanel();
+		topBarPanel.setLayout(new FlowLayout());
+		topBarPanel.add(topBar);
+		
+		 topPanel.add( topBar, BorderLayout.NORTH );
 		topPanel.add(mainPanel, BorderLayout.CENTER);
 		topPanel.add(toolbarPanel, BorderLayout.WEST);
 		topPanel.add(message, BorderLayout.SOUTH);
@@ -130,6 +155,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 		setJMenuBar(createMenuBar());
 		// createGatePopup();
 
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				saveAndExit();
@@ -244,7 +270,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 		menubar.add(menuDisplay);
 		menuDisplayGateName = createMenuItem(menuDisplay, "Gate name", 'G');
 		menuDisplayGrid = createCheckBoxMenuItem(menuDisplay, "Grid");
-
+		/*
 		menuTools = new JMenu("Tools");
 		menuTools.setMnemonic('T');
 		menubar.add(menuTools);
@@ -252,7 +278,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 		menuToolsKarnaugh = createMenuItem(menuTools, "Karnaugh", 'K');
 		menuToolsNandNor = createMenuItem(menuTools, "Nand/Nor", 'N');
 		menuToolsTruthTable = createMenuItem(menuTools, "Truth Table", 'T');
-		menuToolsReorganize = createMenuItem(menuTools, "Reorganize", 'R');
+		menuToolsReorganize = createMenuItem(menuTools, "Reorganize", 'R');*/
 
 		menuInfos = new JMenu("?");
 		menuInfos.setMnemonic('?');
@@ -290,7 +316,8 @@ public class SimLogWin extends JFrame implements ActionListener {
 	 */
 
 	public void messageWarning(String s) {
-		message.setText(s);
+		message.setFont( new Font("Verdana", Font.BOLD, 15));
+		message.setText( s );
 	}
 
 	/**
@@ -451,7 +478,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 			} else {
 				mainPanel.simulation();
 			}
-		} else if (e.getSource() == menuToolsFormula) {
+		}/* else if (e.getSource() == menuToolsFormula) {
 			enterFormula();
 		} else if (e.getSource() == menuToolsKarnaugh) {
 			karnaugh();
@@ -470,7 +497,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 		} else if (e.getSource() == menuToolsReorganize) {
 			circuit.reorganize();
 			repaint();
-		} else if (e.getSource() == menuDisplayGrid) {
+		}*/ else if (e.getSource() == menuDisplayGrid) {
 			mainPanel.changeGridMode();
 		} else if (e.getSource() == menuInfosAbout) {
 			about();
@@ -521,25 +548,28 @@ public class SimLogWin extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Save circuit if needed and exit
+	 *  Save circuit if needed and exit
 	 */
 
 	public void saveAndExit() {
-		if (applet == null) {
-			if (circuit.hasBeenModified()) {
-				if (yesno("Do you want to save file ?") == true) {
-					if (circuitName == null) {
-						saveCircuit();
-					} else {
-						circuit.save(circuitName);
+		int n = JOptionPane.showConfirmDialog(this, "Do you really want to quit SimLog?", "Quit", JOptionPane.YES_NO_OPTION);
+		if (n==0) {
+			if (applet == null) {
+				if (circuit.hasBeenModified()) {
+		    	if (yesno( "Do you want to save file ?" ) == true) {
+						if (circuitName == null) {
+							saveCircuit();
+						} else {
+							circuit.save( circuitName );
+						}
 					}
 				}
 			}
+			if (applet == null)
+				System.exit(0);
+			else
+				applet.destroyFrame();
 		}
-		if (applet == null)
-			System.exit(0);
-		else
-			applet.destroyFrame();
 	}
 
 	/**

@@ -70,6 +70,7 @@ public class SimLogFormulaWin extends JDialog implements ActionListener {
 	//
 
 	private SimLogWin appli;
+	private SimLogCircuit circuit;
 	private JTextArea tFormula;
 	private JButton bOk;
 	private JButton bCancel;
@@ -123,7 +124,62 @@ public class SimLogFormulaWin extends JDialog implements ActionListener {
 		panel.add(BorderLayout.NORTH, new JLabel("Enter formula :"));
 		panel.add(BorderLayout.CENTER, scrollpane);
 		panel.add(BorderLayout.EAST, createHelpList());
+		panel.add(BorderLayout.SOUTH, createLightsPanel());
 		return panel;
+	}
+	
+	/**
+	 * create a JRadio panel
+	 * 
+	 * @return JPanel
+	 */
+
+	private JPanel createLightsPanel() {
+		
+		JPanel panel = new JPanel();
+		circuit = appli.getCircuit();
+		Vector<SimLogGate> gates = circuit.getListOfGates();		
+		ButtonGroup group = new ButtonGroup();
+		
+		panel.setLayout(new FlowLayout());
+		panel.add(new JLabel("Show : "));
+		JRadioButton none = new JRadioButton("None",true);
+		none.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				tFormula.setText("");
+				
+			}
+		});
+		panel.add(none);
+		group.add(none);
+		JRadioButton radio;
+		for (SimLogGate gate : gates) {
+			if (gate.getType() == SimLogGate.LED_GATE) {
+				radio = new JRadioButton(gate.getName());
+				group.add(radio);
+				radio.setActionCommand(gate.getName());
+				radio.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						String name = e.getActionCommand();
+						SimLogGate g = circuit.findGateByName(name);
+						showFormula(g);
+						
+					}
+					
+				});
+				panel.add(radio);
+			}
+		}
+		return panel;
+	}
+	
+	/**
+	 * Show the formula of the selected light
+	 */
+	private void showFormula(SimLogGate g) {
+		String f = buildFormulaFromGate(g);
+		tFormula.setText(f);
 	}
 
 	/**
@@ -148,7 +204,7 @@ public class SimLogFormulaWin extends JDialog implements ActionListener {
 
 	public SimLogFormulaWin(SimLogWin parent) {
 		super(parent, true);
-		setTitle("Forumla");
+		setTitle("Formula");
 		appli = parent;
 		mode = ENTER_FORMULA;
 		getContentPane().setLayout(new BorderLayout());
@@ -169,7 +225,7 @@ public class SimLogFormulaWin extends JDialog implements ActionListener {
 
 	public SimLogFormulaWin(SimLogWin parent, SimLogGate gate) {
 		super(parent, true);
-		setTitle("Enter forumla");
+		setTitle("Enter formula");
 		appli = parent;
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add("Center", createMessagePanel());

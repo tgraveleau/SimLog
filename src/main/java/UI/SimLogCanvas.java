@@ -204,13 +204,15 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	}
 
 	public void createPopupMenu() {
-		popupItems = new JMenuItem[6];
+		popupItems = new JMenuItem[8];
 		popupItems[0] = new JMenuItem("delete");
 		popupItems[1] = new JMenuItem("exchange links");
 		popupItems[2] = new JMenuItem("rename gate");
 		popupItems[3] = new JMenuItem("replace gate");
 		popupItems[4] = new JMenuItem("truth table");
 		popupItems[5] = new JMenuItem("get formula");
+		popupItems[6] = new JMenuItem("copy \t(Ctrl+c)");
+		popupItems[7] = new JMenuItem("paste \t(Ctrl+v)");
 
 		popup = new JPopupMenu();
 		for (int i = 0; i < popupItems.length; i++) {
@@ -922,23 +924,28 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 
 	public void actionPerformed(ActionEvent e) {
 		SimLogGate gate;
+		gate = circuit.getGateAtPos(popupListener.mouseX,
+				popupListener.mouseY);
 
 		// delete
 		if (e.getSource() == popupItems[0]) {
-			int gateNbr = circuit.getGateIndexAtPos(popupListener.mouseX,
+			/*int gateNbr = circuit.getGateIndexAtPos(popupListener.mouseX,
 					popupListener.mouseY);
-			if (gateNbr != -1) {
+			System.out.println(gateNbr);*/
+
+			circuit.removeGateWithName(gate);
+			repaint();
+			/*if (gateNbr != -1) {
 				int n;
 				// gate = (SimLogGate) listOfGates.elementAt( gateNbr );
 				circuit.removeGateAtIndex(gateNbr);
-				// circuit.removeGateAtIndex(gateNbr);
+				//circuit.removeGate(gate);
+				//circuit.removeGateAtIndex(gateNbr);
 				repaint();
-			}
+			}*/
 		}
 		// exchange
 		if (e.getSource() == popupItems[1]) {
-			gate = circuit.getGateAtPos(popupListener.mouseX,
-					popupListener.mouseY);
 			if (gate != null) {
 				gate.exchangeLinks();
 				repaint();
@@ -948,12 +955,20 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		// rename
 		if (e.getSource() == popupItems[2]) {
 			// System.err.println("popup 2 - rename not implemented");
+			String name;
+			SimLogRenameGateWin win = new SimLogRenameGateWin(appli, gate.getName());
+			win.centerComponent();
+			win.setVisible(true);
+			if (win.getState() == true) {
+				name = win.getName();
+			} else
+				return;
+			circuit.renameGate(gate, name);
+			
 		}
 
 		// replace
 		if (e.getSource() == popupItems[3]) {
-			gate = circuit.getGateAtPos(popupListener.mouseX,
-					popupListener.mouseY);
 			if (gate != null) {
 				if ((gate.getType() >= SimLogGate.AND_GATE)
 						&& (gate.getType() <= SimLogGate.XOR_GATE)) {
@@ -978,6 +993,17 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		// get formula
 		if (e.getSource() == popupItems[5]) {
 			getFormula();
+		}
+
+		// copy
+		if (e.getSource() == popupItems[6]) {
+			selectGate(gate);
+			copy();
+		}
+
+		// paste
+		if (e.getSource() == popupItems[7]) {
+			paste();
 		}
 
 	}

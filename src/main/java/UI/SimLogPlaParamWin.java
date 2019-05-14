@@ -39,129 +39,270 @@ package UI;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileReader;
+import java.util.Properties;
+
 import javax.swing.*;
+
+import com.opencsv.CSVReader;
 
 
 public class SimLogPlaParamWin extends JFrame implements ActionListener {
 
-	// PARTIE GRAPHIQUE
+	  // PARTIE GRAPHIQUE
+	  
+		private SimLogWin  appli;  
+		private JTextField tNbVar;
+	  	private JTextField tNbMon;
+	  	private JButton    bOk;
+		private JButton    bCancel;
+		private JButton	   bLoad;
+		private SimLogCsvOutputChoiceWin choiceWin;
+		
 
-	private SimLogWin appli;
-	private JTextField tNbVar;
-	private JTextField tNbMon;
-	private JButton bOk;
-	private JButton bCancel;
+			
+	  
+		private JPanel createUserInterface() {
+			JPanel panel=new JPanel();
+			panel.setLayout(new BorderLayout());
 
-	private JPanel createUserInterface() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
+			tNbVar = new JTextField("",5);
+			tNbMon = new JTextField("",5);
+			bOk=new JButton("  Ok  ");
+			bOk.addActionListener(this);
+			bCancel=new JButton("  Cancel  ");
+			bCancel.addActionListener(this);
+			bLoad = new JButton(" Load CSV ");
+			bLoad.addActionListener(this);
 
-		tNbVar = new JTextField("", 5);
-		tNbMon = new JTextField("", 5);
-		bOk = new JButton("  Ok  ");
-		bOk.addActionListener(this);
-		bCancel = new JButton("  Cancel  ");
-		bCancel.addActionListener(this);
+			JPanel centerPanel=new JPanel();
+			JPanel centerSubPanel1=new JPanel();
+			JPanel centerSubPanel2=new JPanel();
+			centerPanel.setLayout(new GridLayout(2,1));
+			centerSubPanel1.setLayout(new FlowLayout());
+			centerSubPanel2.setLayout(new FlowLayout());
+			centerSubPanel1.add(new JLabel("Number of Variables :"));
+			centerSubPanel1.add(tNbVar);
+			centerSubPanel2.add(new JLabel("Number of monomials :"));
+			centerSubPanel2.add(tNbMon);
+			centerPanel.add(centerSubPanel1);
+			centerPanel.add(centerSubPanel2);
 
-		JPanel centerPanel = new JPanel();
-		JPanel centerSubPanel1 = new JPanel();
-		JPanel centerSubPanel2 = new JPanel();
-		centerPanel.setLayout(new GridLayout(2, 1));
-		centerSubPanel1.setLayout(new FlowLayout());
-		centerSubPanel2.setLayout(new FlowLayout());
-		centerSubPanel1.add(new JLabel("Number of Variables :"));
-		centerSubPanel1.add(tNbVar);
-		centerSubPanel2.add(new JLabel("Number of monomials :"));
-		centerSubPanel2.add(tNbMon);
-		centerPanel.add(centerSubPanel1);
-		centerPanel.add(centerSubPanel2);
+			JPanel buttonPanel=new JPanel();
+			buttonPanel.setLayout(new FlowLayout());
+			buttonPanel.add(bOk);
+			buttonPanel.add(bCancel);
+			buttonPanel.add(bLoad);
 
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout());
-		buttonPanel.add(bOk);
-		buttonPanel.add(bCancel);
-
-		panel.add("South", buttonPanel);
-		panel.add("Center", centerPanel);
-		return panel;
-	}
-
-	/**
-	 * method used to center window on screen
-	 */
-
-	public void centerComponent() {
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		Dimension screenDim = tk.getScreenSize();
-		screenDim.width = (screenDim.width - this.getWidth()) / 2;
-		screenDim.height = (screenDim.height - this.getHeight()) / 2;
-		this.setLocation(screenDim.width, screenDim.height);
-	}
-
-	// CONSTRUCTEUR
-
-	public SimLogPlaParamWin(SimLogWin parent) {
-		appli = parent;
-		setTitle("Monomial formula");
-		setResizable(false);
-		// Cursor cur = new Cursor( Cursor.HAND_CURSOR );
-		getContentPane().setLayout(new BorderLayout());
-		getContentPane().add("Center", createUserInterface());
-		pack();
-	}
-
-	// LISTENER
-
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == bCancel) {
-			dispose();
+			panel.add("South",buttonPanel);
+			panel.add("Center",centerPanel);
+			return panel;
 		}
-		if (e.getSource() == bOk) {
-			String s1, s2;
-			boolean error = false;
 
-			s1 = tNbVar.getText().trim();
-			s2 = tNbMon.getText().trim();
-			if ((s1.length() != 0) && (s2.length() != 0)) {
-				int nbVar, nbMon;
+			/**
+			 *  method used to center window on screen
+			 */
 
-				try {
-					nbVar = Integer.parseInt(s1);
-				} catch (NumberFormatException e1) {
-					nbVar = 0;
-					appli.windowWarning("Bad format number for Number of Variables");
-					error = true;
+			public void centerComponent( ) {
+				Toolkit tk = Toolkit.getDefaultToolkit();
+				Dimension screenDim = tk.getScreenSize();
+				screenDim.width  = (screenDim.width - this.getWidth()) / 2;
+				screenDim.height = (screenDim.height - this.getHeight()) / 2;
+				this.setLocation( screenDim.width, screenDim.height );
+	    }
+
+	  // CONSTRUCTEUR
+	  
+	  public SimLogPlaParamWin(SimLogWin parent) {
+			appli=parent;
+		  setTitle("Monomial formula");
+		  setResizable(false);
+		  //Cursor cur = new Cursor( Cursor.HAND_CURSOR ); 
+	    getContentPane().setLayout(new BorderLayout());
+			getContentPane().add("Center",createUserInterface());
+			pack();
+		}
+
+	  // LISTENER
+		 
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource()==bCancel) {
+				dispose();
+			}
+			if (e.getSource()==bOk) {
+				String s1, s2;
+				boolean error=false;
+
+				s1=tNbVar.getText().trim();
+				s2=tNbMon.getText().trim();
+	  		if ((s1.length()!=0) && (s2.length()!=0)) {
+		 			int nbVar, nbMon;
+
+		  		try {
+			  		nbVar = Integer.parseInt(s1);
+					} catch(NumberFormatException e1) {
+				  	nbVar = 0;
+						appli.windowWarning("Bad format number for Number of Variables");
+						error=true;
+					}
+
+			  	try {
+				  	nbMon = Integer.parseInt(s2);
+					} catch(NumberFormatException e2) {
+			  		nbMon = 0;
+						if (!error) appli.windowWarning("Bad format number for Number of Monomials");
+						error=true;
+					}
+		  
+		  		if ((nbVar<2) || (nbVar>8)) {
+						nbVar=0;
+						if (!error) appli.windowWarning("Number of variables must be between 2 and 8.");
+						error=true;
+					}
+		  		if ((nbMon<2) || (nbMon>8)) {
+						nbMon=0;
+						if (!error) appli.windowWarning("Number of monomials must be between 2 and 8.");
+						error=true;
+					}
+
+					if (!error)  {
+				  	SimLogPla win=new SimLogPla(appli,nbVar,nbMon);
+						win.show();
+						this.dispose();
+					}
+					
 				}
-
-				try {
-					nbMon = Integer.parseInt(s2);
-				} catch (NumberFormatException e2) {
-					nbMon = 0;
-					if (!error)
-						appli.windowWarning("Bad format number for Number of Monomials");
-					error = true;
+			}
+			if(e.getSource()==bLoad) {
+				chargerCSV();
+			}
+		} 
+		
+		public void chargerCSV() {
+			JFileChooser fc = new JFileChooser();
+			Properties p = System.getProperties();
+			File currentDir = currentDir = new File( p.getProperty("user.dir" ) );
+			fc.setCurrentDirectory( currentDir );
+			if (fc.showOpenDialog( this ) == JFileChooser.APPROVE_OPTION) {
+				String CSVFile = new String( fc.getSelectedFile().toString() );
+				currentDir  = fc.getCurrentDirectory();
+				if (!CSVFile.endsWith(".csv")) {
+					appli.windowWarning("Bad format for file, CSV file required");
 				}
-
-				if ((nbVar < 2) || (nbVar > 8)) {
-					nbVar = 0;
-					if (!error)
-						appli.windowWarning("Number of variables must be between 2 and 8.");
-					error = true;
-				}
-				if ((nbMon < 2) || (nbMon > 8)) {
-					nbMon = 0;
-					if (!error)
-						appli.windowWarning("Number of monomials must be between 2 and 8.");
-					error = true;
-				}
-
-				if (!error) {
-					SimLogPla win = new SimLogPla(appli, nbVar, nbMon);
-					win.setVisible(true);
+				else {
+					checkCsvFile(CSVFile);
 					this.dispose();
 				}
-
 			}
 		}
-	}
+		
+		public void checkCsvFile(String filename) {
+			try {
+				int compteurLigne = 1;
+				int ligneTableVerite = 0;
+				int outputChoice = 0;
+				
+				FileReader fr = new FileReader(filename);
+				CSVReader csvReader = new CSVReader(fr);
+				String[] nextRecord;
+				
+				nextRecord = csvReader.readNext();
+				int nbrInputs = new Integer(nextRecord[1]);
+				if(nbrInputs<2 || nbrInputs>8) {
+					throw(new Exception("Outputs must be between 2 and 8, line "+ Integer.toString(compteurLigne)));
+				}
+				
+				nextRecord = csvReader.readNext();
+				compteurLigne++;
+				int nbrOutputs = new Integer(nextRecord[1]);
+
+				nextRecord = csvReader.readNext();
+				nextRecord = csvReader.readNext();
+				compteurLigne+=2;
+				if(nextRecord.length != nbrInputs+nbrOutputs) {
+					throw(new Exception("Error on the output and input names, line "+ Integer.toString(compteurLigne)));
+				}
+				
+				compteurLigne++;
+				
+				int nbMonome = 0;
+				while((nextRecord = csvReader.readNext()) != null) {
+					if(nextRecord.length == nbrInputs+nbrOutputs) {
+						for(int i =0 ; i<nextRecord.length ; i++) {
+							if(!nextRecord[nbrInputs].equals("0") && !nextRecord[nbrInputs].equals("1")) {
+								throw(new Exception("Error on the output or input value line "+ Integer.toString(compteurLigne)));
+							}
+						}
+						if(nextRecord[nbrInputs+outputChoice].equals("1")) {
+							nbMonome++;
+						}
+					}
+					else
+					{
+						throw(new Exception("Error on the line length, line " + compteurLigne));
+					}
+					compteurLigne++;
+					ligneTableVerite++;
+				}
+				
+				if(ligneTableVerite != 1<<nbrInputs) {
+					throw( new Exception("Truth table is not complete"));
+				}
+				
+				 csvReader.close();
+				 fr.close();
+				 
+				 if(nbrOutputs>1) {
+				 choiceWin = new SimLogCsvOutputChoiceWin(appli,this, filename, nbrInputs, nbrOutputs);
+				 choiceWin.show();
+				 }
+				 else {
+					 toKarnaugh(filename, nbrInputs, outputChoice, nbMonome, outputChoice);
+				 }
+				
+			} catch (Exception e) {
+				//e.printStackTrace();
+				appli.windowWarning("Error on CSV file. " + e.getMessage());
+			}
+		}
+		
+		public void toKarnaugh(String filename,int nbInput, int nbOutput, int nbMonome, int outputChoice) {
+			try {
+
+				FileReader fr = new FileReader(filename);
+				CSVReader csvReader = new CSVReader(fr);
+				String[] nextRecord;
+				
+				nextRecord = csvReader.readNext();
+				for(int i =0 ; i<3 ; i++) {
+					nextRecord = csvReader.readNext();
+				}
+				
+				 int lignePla = 0;
+				 boolean [][] TablePla = new boolean [nbMonome][nbInput*2];
+				 while((nextRecord = csvReader.readNext()) != null) {
+					 if(nextRecord[nbInput+outputChoice].equals("1")) {
+						 for(int i=0 ; i<nbInput ;i++) {
+							 if(nextRecord[i].equals("1")) {
+								 TablePla[lignePla][i*2] = true;
+								 TablePla[lignePla][i*2 +1] = false;
+							 }
+							 else{
+								 TablePla[lignePla][i*2] = false;
+								 TablePla[lignePla][i*2 +1] = true;
+							 }
+						 }
+						 lignePla++;
+					 }
+				 }
+				 csvReader.close();
+				 fr.close();
+				 new SimLogListMask(TablePla,nbInput,nbMonome);
+				 
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
 }
