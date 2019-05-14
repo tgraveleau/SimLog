@@ -1,5 +1,9 @@
 package Moteur;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Vector;
 
 import Gate.SimLogGate;
@@ -182,5 +186,49 @@ public class SimLogTruthTable {
 			}
 		}
 		return data;
+	}
+	
+	public int save(String fileName) {
+		PrintWriter out;
+		
+		if(!fileName.endsWith(".csv")) {
+			fileName += ".csv";
+		}
+		
+		try {
+			out = new PrintWriter( new BufferedWriter( new FileWriter( fileName ) ) );
+			out.print("Number of inputs :,");
+			out.println(getNbrInputs());
+			out.print("Number of outputs :,");
+			out.println(getNbrOutputs());
+			
+			out.print("\n");
+			
+			for(int i=0; i<tabInputs.length;i++) {
+				out.print(tabInputs[i].getName());
+				out.print(",");
+			}
+			for(int i=0; i<tabOutputs.length-1;i++) {
+				out.print(tabOutputs[i].getName());
+				out.print(",");
+			}
+			out.print(tabOutputs[tabOutputs.length-1].getName());
+			out.print("\n");
+			
+			for(int i=0 ; i<nbrRows ; i++) {
+				for(int j=0 ; j<nbrCols-1 ; j++) {
+					out.print(tabData[i][j]);
+					out.print(",");
+				}
+				out.print(tabData[i][nbrCols-1]);
+				out.print("\n");
+			}	
+			out.close();
+		}
+		catch(IOException e) {
+
+			return -1; 
+		}
+		return 0; 
 	}
 }

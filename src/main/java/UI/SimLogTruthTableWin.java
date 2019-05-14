@@ -41,6 +41,8 @@ package UI;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -56,9 +58,11 @@ public class SimLogTruthTableWin extends JFrame implements ActionListener {
 
 	private SimLogWin parent;
 	private SimLogCircuit circuit;
-	private JButton bOk;
+	private JButton 	bOk;
+	private JButton		  bSave;
 	private JTable table;
 	private IntegerTableModel tableModel;
+	private String		  truthTableName;
 
 	private SimLogTruthTable truthTable;
 
@@ -123,6 +127,9 @@ public class SimLogTruthTableWin extends JFrame implements ActionListener {
 		bOk = new JButton("  OK  ");
 		bOk.addActionListener(this);
 		buttonPanel.add(bOk);
+		bSave=new JButton(" Save ");
+		bSave.addActionListener(this);
+		buttonPanel.add(bSave);
 
 		JScrollPane scrollpane = new JScrollPane(createTable());
 		scrollpane.setPreferredSize(new Dimension(200, 100));
@@ -143,7 +150,29 @@ public class SimLogTruthTableWin extends JFrame implements ActionListener {
 		if (e.getSource() == bOk) {
 			dispose();
 		}
+		else if (e.getSource()==bSave) {
+			saveTruthTable();
+		}
 	}
+	
+	public void saveTruthTable() {
+		boolean save =  true;
+		JFileChooser fc = new JFileChooser();
+		
+		if (fc.showSaveDialog( this ) == JFileChooser.APPROVE_OPTION) {
+			String name = fc.getSelectedFile().toString();
+			if (name.length() > 0) {
+				File file = new File( name );
+				if (file.exists()) {
+					save = parent.yesno( "File exits. Do you want to overwrite file ?" );
+				}
+			}
+			if (save) {
+				truthTableName = new String( name );
+				truthTable.save( truthTableName );
+			}
+		}
+}
 
 	/**
 	 * Table Model for integer values
