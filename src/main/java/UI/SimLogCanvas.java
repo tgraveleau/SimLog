@@ -649,6 +649,8 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 				isSelecting = true;
 				selectedAreaX1 = x;
 				selectedAreaY1 = y;
+				selectedAreaX2 = x;
+				selectedAreaY2 = y;
 			}
 			break;
 
