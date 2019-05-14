@@ -326,7 +326,22 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		}
 		
 		if (isSelecting) {
-			g.drawRect(selectedAreaX1, selectedAreaY1, selectedAreaX2-selectedAreaX1, selectedAreaY2-selectedAreaY1);
+			int x1, x2, y1, y2;
+			if (selectedAreaX1 <= selectedAreaX2) {
+				x1 = selectedAreaX1;
+				x2 = selectedAreaX2;
+			} else {
+				x1 = selectedAreaX2;
+				x2 = selectedAreaX1;
+			}
+			if (selectedAreaY1 <= selectedAreaY2) {
+				y1 = selectedAreaY1;
+				y2 = selectedAreaY2;
+			} else {
+				y1 = selectedAreaY2;
+				y2 = selectedAreaY1;
+			}
+			g.drawRect(x1, y1, x2-x1, y2-y1);
 		}
 	}
 
@@ -716,7 +731,12 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 			if (isSelecting) {
 				isSelecting = false;
 				// On récupère toutes les gates dans le rectangle et on les passe en selected
-				Vector<SimLogGate> gatesToSelect = circuit.getGatesInRectangle(selectedAreaX1, selectedAreaY1, selectedAreaX2, selectedAreaY2);
+				Vector<SimLogGate> gatesToSelect = circuit.getGatesInRectangle(
+						Math.min(selectedAreaX1,selectedAreaX2),
+						Math.min(selectedAreaY1,selectedAreaY2),
+						Math.max(selectedAreaX1,selectedAreaX2),
+						Math.max(selectedAreaY1,selectedAreaY2)
+						);
 				resetSelectedGates();
 				for (int i=0; i<gatesToSelect.size(); i++) {
 					selectGate(gatesToSelect.get(i));
