@@ -976,7 +976,8 @@ public class SimLogCircuit {
 		}
 		return g;
 	}
-
+	
+	
 	/**
 	 * reorganize circuit for display
 	 *
