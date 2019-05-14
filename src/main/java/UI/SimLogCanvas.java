@@ -81,6 +81,9 @@ class PopupListener extends MouseAdapter {
 			mouseY = e.getY();
 			gate = canvas.circuit.getGateAtPos(mouseX, mouseY);
 			canvas.setPopupGate(gate);
+			for (JMenuItem mi : canvas.popupItems) {
+				mi.setEnabled(gate != null);
+			}
 			if (gate != null) {
 				if (gate.getType() == SimLogGate.LED_GATE) {
 					canvas.popupItems[1].setEnabled(false);
@@ -92,9 +95,10 @@ class PopupListener extends MouseAdapter {
 				if (gate.getType() == SimLogGate.SWITCH_GATE) {
 					canvas.popupItems[1].setEnabled(false);
 				}
-				popup.show(e.getComponent(), e.getX(), e.getY());
-
+			} else {
+				canvas.popupItems[7].setEnabled(true);
 			}
+			popup.show(e.getComponent(), e.getX(), e.getY());
 		}
 	}
 
@@ -133,6 +137,8 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	private Vector<Integer> gatesToMoveYOld = new Vector<Integer>();
 
 	private boolean showGrid = false;
+
+	private boolean isCtrlKeyDown = false;
 
 	// parameters for delete Area
 
@@ -245,17 +251,8 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	private void addGate(int x, int y) {
 		String name = null;
 
-		if (toolbar.getGateType() == SimLogGate.SWITCH_GATE) {
-			SimLogNameSwitchWin win = new SimLogNameSwitchWin(appli);
-			win.centerComponent();
-			win.setVisible(true);
-			if (win.getState() == true) {
-				name = win.getName();
-			} else
-				return;
-		}
-		if (toolbar.getGateType() == SimLogGate.LED_GATE) {
-			SimLogNameLEDWin win = new SimLogNameLEDWin(appli);
+		if (toolbar.getGateType() == SimLogGate.SWITCH_GATE || toolbar.getGateType() == SimLogGate.LED_GATE) {
+			SimLogNameWin win = new SimLogNameWin(appli);
 			win.centerComponent();
 			win.setVisible(true);
 			if (win.getState() == true) {
@@ -468,8 +465,10 @@ public class SimLogCanvas extends JPanel implements MouseListener,
      * Reset states of selected gates and clear the selected gates array
      */
     private void resetSelectedGates() {
-		circuit.resetGatesState();
-		selectedGates.clear();
+		if (!isCtrlKeyDown ) {
+			circuit.resetGatesState();
+			selectedGates.clear();
+		}
     }
     
     private void initGatesToMove(int x, int y) {
@@ -507,6 +506,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 
     public void keyPressed(KeyEvent e) {
     	if (e.isControlDown()) {
+    		isCtrlKeyDown = true;
     		switch (e.getKeyCode()) {
 	    		case KeyEvent.VK_C:
 	    			copy();
@@ -518,7 +518,11 @@ public class SimLogCanvas extends JPanel implements MouseListener,
     	}
     }
 
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+    	if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+    		isCtrlKeyDown = false;
+    	}
+    }
 
     private void copy() {
 		if (!selectedGates.isEmpty()) {
@@ -636,8 +640,9 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 //		case SimLogToolbar.STATE_MOVE:
 			gate = circuit.getGateAtPos(x, y);
 			if (gate != null) {
-				// Si la gate n'est pas sélectionnée, on la sélectionne et on reset les autres
+				// Si la gate n'est pas sélectionnée, on la sélectionne
 				if (gate.getState() != SimLogGate.STATE_SELECTED) {
+					// Si la touche ctrl n'est pas appuyée, on reset les autres
 					resetSelectedGates();
 					selectGate(gate);
 				}

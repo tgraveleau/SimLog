@@ -43,7 +43,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class SimLogNameSwitchWin extends JDialog implements ActionListener {
+public class SimLogNameWin extends JDialog implements ActionListener {
 
 	private SimLogWin appli = null;
 	private JTextField name = null;
@@ -110,7 +110,7 @@ public class SimLogNameSwitchWin extends JDialog implements ActionListener {
 	 *            SimLogCircuit
 	 */
 
-	public SimLogNameSwitchWin(SimLogWin win) {
+	public SimLogNameWin(SimLogWin win) {
 		super(win, true);
 		setTitle("New Switch name");
 	    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -128,15 +128,12 @@ public class SimLogNameSwitchWin extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == bYes || e.getSource() == name) {
 			if (name.getText().trim().isEmpty()) {
-				System.out.println("EMPTY NAME !");
 				appli.messageWarning("Enter a name please");
 				appli.windowWarning("Enter a name please");
 			} else if (alreadyExistsName()) {
-				System.out.println("ALREADY EXISTS !");
 				appli.messageWarning("Gate with same name already exists !");
 				appli.windowWarning("Gate with same name already exists !");
 			} else {
-				System.out.println("OK");
 				state = true;
 				dispose();
 			}
