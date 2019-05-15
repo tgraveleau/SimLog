@@ -44,6 +44,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import Moteur.SimLogCircuit;
+import Moteur.SimLogTruthTable;
 
 
 
@@ -143,4 +144,5 @@ public class SimLogPanel extends JPanel {
 	public void changeGridMode() {
 		canvas.changeGridMode();
 	}
+	
 }

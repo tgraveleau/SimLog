@@ -42,10 +42,14 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileReader;
 import java.util.Properties;
+import java.util.Vector;
 
 import javax.swing.*;
 
 import com.opencsv.CSVReader;
+
+import Gate.SimLogGate;
+import Moteur.SimLogTruthTable;
 
 
 public class SimLogPlaParamWin extends JFrame implements ActionListener {
@@ -58,6 +62,7 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 	  	private JButton    bOk;
 		private JButton    bCancel;
 		private JButton	   bLoad;
+		private JButton	   bFromCircuit;
 		private SimLogCsvOutputChoiceWin choiceWin;
 		
 
@@ -75,6 +80,8 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 			bCancel.addActionListener(this);
 			bLoad = new JButton(" Load CSV ");
 			bLoad.addActionListener(this);
+			bFromCircuit = new JButton(" Karnaugh from circuit ");
+			bFromCircuit.addActionListener(this);
 
 			JPanel centerPanel=new JPanel();
 			JPanel centerSubPanel1=new JPanel();
@@ -94,6 +101,7 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 			buttonPanel.add(bOk);
 			buttonPanel.add(bCancel);
 			buttonPanel.add(bLoad);
+			buttonPanel.add(bFromCircuit);
 
 			panel.add("South",buttonPanel);
 			panel.add("Center",centerPanel);
@@ -177,6 +185,9 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 			if(e.getSource()==bLoad) {
 				chargerCSV();
 			}
+			if(e.getSource()==bFromCircuit) {
+				circuitToKarnaugh();
+			}
 		} 
 		
 		public void chargerCSV() {
@@ -202,6 +213,8 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 				int compteurLigne = 1;
 				int ligneTableVerite = 0;
 				int outputChoice = 0;
+				String[] enTete;
+				boolean[][] tableVerite;
 				
 				FileReader fr = new FileReader(filename);
 				CSVReader csvReader = new CSVReader(fr);
@@ -216,12 +229,17 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 				nextRecord = csvReader.readNext();
 				compteurLigne++;
 				int nbrOutputs = new Integer(nextRecord[1]);
+				enTete = new String[nbrInputs+nbrOutputs];
+				tableVerite = new boolean[1<<nbrInputs][nbrInputs+nbrOutputs];
 
 				nextRecord = csvReader.readNext();
 				nextRecord = csvReader.readNext();
 				compteurLigne+=2;
 				if(nextRecord.length != nbrInputs+nbrOutputs) {
 					throw(new Exception("Error on the output and input names, line "+ Integer.toString(compteurLigne)));
+				}
+				for(int i=0 ; i<nbrInputs+nbrOutputs ; i++) {
+					enTete[i] = nextRecord[i];
 				}
 				
 				compteurLigne++;
@@ -230,9 +248,11 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 				while((nextRecord = csvReader.readNext()) != null) {
 					if(nextRecord.length == nbrInputs+nbrOutputs) {
 						for(int i =0 ; i<nextRecord.length ; i++) {
-							if(!nextRecord[nbrInputs].equals("0") && !nextRecord[nbrInputs].equals("1")) {
+							if(!nextRecord[i].equals("0") && !nextRecord[i].equals("1")) {
 								throw(new Exception("Error on the output or input value line "+ Integer.toString(compteurLigne)));
 							}
+							tableVerite[ligneTableVerite][i] = (nextRecord[i].equals("1"))?true:false;
+							
 						}
 						if(nextRecord[nbrInputs+outputChoice].equals("1")) {
 							nbMonome++;
@@ -254,11 +274,11 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 				 fr.close();
 				 
 				 if(nbrOutputs>1) {
-				 choiceWin = new SimLogCsvOutputChoiceWin(appli,this, filename, nbrInputs, nbrOutputs);
+				 choiceWin = new SimLogCsvOutputChoiceWin(appli,this, tableVerite, enTete, nbrInputs, nbrOutputs);
 				 choiceWin.show();
 				 }
 				 else {
-					 toKarnaugh(filename, nbrInputs, outputChoice, nbMonome, outputChoice);
+					 toKarnaugh(tableVerite, nbrInputs, outputChoice, nbMonome, outputChoice);
 				 }
 				
 			} catch (Exception e) {
@@ -267,42 +287,75 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 			}
 		}
 		
-		public void toKarnaugh(String filename,int nbInput, int nbOutput, int nbMonome, int outputChoice) {
-			try {
-
-				FileReader fr = new FileReader(filename);
-				CSVReader csvReader = new CSVReader(fr);
-				String[] nextRecord;
-				
-				nextRecord = csvReader.readNext();
-				for(int i =0 ; i<3 ; i++) {
-					nextRecord = csvReader.readNext();
-				}
-				
+		public void toKarnaugh(boolean[][] tableVerite,int nbInput, int nbOutput, int nbMonome, int outputChoice) {
+			try {	
 				 int lignePla = 0;
 				 boolean [][] TablePla = new boolean [nbMonome][nbInput*2];
-				 while((nextRecord = csvReader.readNext()) != null) {
-					 if(nextRecord[nbInput+outputChoice].equals("1")) {
-						 for(int i=0 ; i<nbInput ;i++) {
-							 if(nextRecord[i].equals("1")) {
-								 TablePla[lignePla][i*2] = true;
-								 TablePla[lignePla][i*2 +1] = false;
+				 for(int i=0 ; i<(1<<nbInput) ; i++) {
+					 if(tableVerite[i][nbInput+outputChoice]) {
+						 for(int j=0 ; j<nbInput ;j++) {
+							 if(tableVerite[i][j]) {
+								 TablePla[lignePla][j*2] = true;
+								 TablePla[lignePla][j*2 +1] = false;
 							 }
 							 else{
-								 TablePla[lignePla][i*2] = false;
-								 TablePla[lignePla][i*2 +1] = true;
+								 TablePla[lignePla][j*2] = false;
+								 TablePla[lignePla][j*2 +1] = true;
 							 }
 						 }
 						 lignePla++;
 					 }
 				 }
-				 csvReader.close();
-				 fr.close();
 				 new SimLogListMask(TablePla,nbInput,nbMonome);
 				 
 			}
 			catch(Exception e) {
 				e.printStackTrace();
 			}
+		}
+		
+		public void circuitToKarnaugh() {
+				SimLogGate g;
+				Vector vIn;
+				Vector vOut;
+				int nbMonome = 0;
+				
+				vIn = new Vector();
+				vOut = new Vector();
+				for(int i=0 ; i<appli.getCircuit().getListOfGates().size() ; i ++) {
+					g =(SimLogGate)appli.getCircuit().getListOfGates().elementAt(i);
+					
+					if(g.getGenericName().equals("SWITCH")) {
+						vIn.add(g);
+					}
+					if(g.getGenericName().equals("LED")) {
+						vOut.add(g);
+					}
+				}
+				
+				SimLogTruthTable table = new SimLogTruthTable(appli.getCircuit(), vIn, vOut);
+					System.out.println(table.getNbrInputs());
+					table.generateTable();
+					String[] enTete = new String[vIn.size()+vOut.size()];
+					for(int i = 0; i<table.getNbrInputs() ; i++) {
+						enTete[i] = table.getInput(i).getName();
+					}
+					for(int i = 0; i<table.getNbrOutputs() ; i++) {
+						enTete[i+table.getNbrInputs()] = table.getOutput(i).getName();
+					}
+					
+					for(int i=0 ; i<(1<<vIn.size()) ; i++) {
+						if(table.getDataBool()[i][vIn.size()])nbMonome++;
+					}
+					
+					if(vOut.size() > 1 ) {
+						choiceWin = new SimLogCsvOutputChoiceWin(appli,this, table.getDataBool(), enTete, vIn.size(), vOut.size());
+						choiceWin.show();
+					}
+					else {
+						toKarnaugh(table.getDataBool(), vIn.size(), vOut.size(), nbMonome, 0);
+					}
+					this.dispose();
+
 		}
 }

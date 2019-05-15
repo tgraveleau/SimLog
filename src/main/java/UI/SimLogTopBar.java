@@ -4,6 +4,7 @@ import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,6 +14,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import Moteur.SimLogCircuit;
+import Moteur.SimLogTruthTable;
 
 //import m2.acdi.SimLogTTSelWin;
 
@@ -172,7 +174,7 @@ public class SimLogTopBar extends JToolBar implements ActionListener {
 		mainPanel.edition();
 	}
 
-	private void karnaugh() {
+	private void karnaugh() {	
 		SimLogPlaParamWin win = new SimLogPlaParamWin(appli);
 		win.centerComponent();
 		win.setVisible(true);

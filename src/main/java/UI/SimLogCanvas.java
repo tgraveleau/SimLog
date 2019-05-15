@@ -1085,4 +1085,6 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 			win.setVisible(true);
 		}
 	}
+	
+	
 }

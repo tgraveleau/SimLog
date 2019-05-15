@@ -140,8 +140,19 @@ public class SimLogTruthTable {
 		return tabOutputs[n];
 	}
 
+
 	public int[][] getData() {
 		return tabData;
+	}
+	
+	public boolean[][] getDataBool(){
+		boolean[][] renvoi = new boolean[nbrRows][nbrCols];
+		for(int i=0 ; i<nbrRows ; i++) {
+			for(int j=0 ; j<nbrCols ; j++) {
+				renvoi[i][j] = (tabData[i][j]==1)? true : false;
+			}
+		}
+		return renvoi;
 	}
 
 	public void print() {
