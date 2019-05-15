@@ -334,7 +334,6 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 				}
 				
 				SimLogTruthTable table = new SimLogTruthTable(appli.getCircuit(), vIn, vOut);
-					System.out.println(table.getNbrInputs());
 					table.generateTable();
 					String[] enTete = new String[vIn.size()+vOut.size()];
 					for(int i = 0; i<table.getNbrInputs() ; i++) {
