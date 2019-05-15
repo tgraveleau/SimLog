@@ -190,6 +190,10 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 			}
 		} 
 		
+		/**
+		 * Ouvre une fenêtre qui permet de choisir un fichier et de vérifier que ce dernier
+		 * soit un fichier CSV.
+		 */
 		public void chargerCSV() {
 			JFileChooser fc = new JFileChooser();
 			Properties p = System.getProperties();
@@ -208,13 +212,20 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 			}
 		}
 		
+		/**
+		 * À partir du nom de fichier cette fonction à pour but de vérifier que le fichier CSV soit
+		 * rédiger dans la bonne syntaxe. Si ce n'est pas le cas la fonction arrête le traitement.
+		 * 
+		 * la structure utilisé est celle de la fonction de sauvegarde d'une table de vérité.
+		 * @param filename
+		 */
 		public void checkCsvFile(String filename) {
 			try {
-				int compteurLigne = 1;
-				int ligneTableVerite = 0;
+				int compteurLigne = 1; //Variable permettant de savoir à quel ligne du fichier est le curseur
+				int ligneTableVerite = 0; //Variable qui sert à compté le nombre de ligne dans la table de vérité
 				int outputChoice = 0;
-				String[] enTete;
-				boolean[][] tableVerite;
+				String[] enTete; //Tableau contenant le nom des entrées et sorties
+				boolean[][] tableVerite; //tableau contenant les valeurs de la table de vérité.
 				
 				FileReader fr = new FileReader(filename);
 				CSVReader csvReader = new CSVReader(fr);
@@ -235,6 +246,10 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 				nextRecord = csvReader.readNext();
 				nextRecord = csvReader.readNext();
 				compteurLigne+=2;
+				
+				/**
+				 * Récupération des noms des entrées et des sorties
+				 */
 				if(nextRecord.length != nbrInputs+nbrOutputs) {
 					throw(new Exception("Error on the output and input names, line "+ Integer.toString(compteurLigne)));
 				}
@@ -244,7 +259,7 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 				
 				compteurLigne++;
 				
-				int nbMonome = 0;
+				int nbMonome = 0; //Cette variable sert à compter le nombre de ligne qui ont leur sortie à 1 pour la première LED du tableau
 				while((nextRecord = csvReader.readNext()) != null) {
 					if(nextRecord.length == nbrInputs+nbrOutputs) {
 						for(int i =0 ; i<nextRecord.length ; i++) {
@@ -273,6 +288,10 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 				 csvReader.close();
 				 fr.close();
 				 
+				 /**
+				  * Dans le cas où il y a plusieurs sorties, une fenêtre est instancié pour savoir sur quel LED il faut
+				  * faire le tableau de Karnaugh. Sinon le calcul est directement lancé avec la seule sortie disponible.
+				  */
 				 if(nbrOutputs>1) {
 				 choiceWin = new SimLogCsvOutputChoiceWin(appli,this, tableVerite, enTete, nbrInputs, nbrOutputs);
 				 choiceWin.show();
@@ -287,8 +306,22 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 			}
 		}
 		
+		/**
+		 * Fonction qui est appelé lorsque 
+		 * 
+		 * @param tableVerite Table de vérité correspondant au circuit
+		 * @param nbInput Nombre d'entrées
+		 * @param nbOutput Nombre de sorties
+		 * @param nbMonome Nombre de ligne qui ont une sortie à 1 
+		 * @param outputChoice
+		 */
 		public void toKarnaugh(boolean[][] tableVerite,int nbInput, int nbOutput, int nbMonome, int outputChoice) {
-			try {	
+			try {
+				/**
+				 * La table Pla est une table regroupant les lignes de la table de vérité étant à 1 (d'où le nombre
+				 * de ligne égale à NbMonome)
+				 * La des tailles des colonnes est de nbInput*2 pour renseigner une variable et sa négation.
+				 */
 				 int lignePla = 0;
 				 boolean [][] TablePla = new boolean [nbMonome][nbInput*2];
 				 for(int i=0 ; i<(1<<nbInput) ; i++) {
@@ -314,6 +347,10 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 			}
 		}
 		
+		/**
+		 * Lorsqu'un circuit est présent sur le logiciel il est possible de calculer la table de 
+		 * Karnaugh à partir de ce dernier.
+		 */
 		public void circuitToKarnaugh() {
 				SimLogGate g;
 				Vector vIn;
