@@ -31,18 +31,19 @@ public class SimLogCsvOutputChoiceWin extends JFrame implements ActionListener {
 	private int[]		  nbMonome;
 	private String[] 	  enTete;
 	private JRadioButton[] listeChoix;
+	private boolean[][]	   tableVerite;
 	
-	public SimLogCsvOutputChoiceWin(SimLogWin appli,SimLogPlaParamWin param, String filename, int nbInput, int nbOutput) {
+	public SimLogCsvOutputChoiceWin(SimLogWin appli,SimLogPlaParamWin param, boolean[][] tableVerite, String[] enTete, int nbInput, int nbOutput) {
 		setTitle("Choice of output for Karnaugh table");
 		this.parent = appli;
-		this.fileName = filename;
 		this.nbInput = nbInput;
 		this.nbOutput = nbOutput;
 		this.outputChoice = 1;
 		this.param = param;
 		this.nbMonome = new int[nbOutput];
-		this.enTete = new String[nbOutput];
+		this.enTete = enTete;
 		this.listeChoix = new JRadioButton[nbOutput];
+		this.tableVerite = tableVerite;
 		createUserInterface();
 		pack();
 	}
@@ -53,37 +54,25 @@ public class SimLogCsvOutputChoiceWin extends JFrame implements ActionListener {
 		Object data[][];
 		
 		try {
-			FileReader fr = new FileReader(fileName);
-			CSVReader csvReader = new CSVReader(fr);
-			String[] nextRecord = csvReader.readNext();
-			
-			for(i = 0; i<3 ;i++) {
-				nextRecord = csvReader.readNext();
-			}
 			
 			cols=new String[nbOutput];
 			for(i=0 ; i<nbOutput ; i++) {
-				cols[i] = nextRecord[i+nbInput];
-				enTete[i] = nextRecord[i+nbInput];
+				cols[i] = enTete[i+nbInput];
 			}
-			
 			data= new Object[1<<nbInput][nbOutput];
 			
 			for(i=0 ; i<nbOutput ;i++) {
 				nbMonome[i] = 0;
 			}
 			i = 0;
-			while((nextRecord = csvReader.readNext()) != null) {
+			for(i=0 ; i<(1<<nbInput) ; i++) {
 				for(j=0 ; j<nbOutput ; j++) {
-					data[i][j] = nextRecord[j+nbInput];
-					if(nextRecord[j+nbInput].equals("1")) {
+					data[i][j] = (tableVerite[i][j+nbInput])? "1" : "0";
+					if(tableVerite[i][j+nbInput]) {
 						nbMonome[j]++;
 					}
 				}
-				i++;
 			}
-			csvReader.close();
-			fr.close();
 			table=new JTable(data,cols);
 			return table;
 		}catch(Exception e) {
@@ -108,7 +97,7 @@ public class SimLogCsvOutputChoiceWin extends JFrame implements ActionListener {
 		scrollpane.getViewport().setBackground(Color.white);
 
 		for(int i=0 ; i<nbOutput ; i++) {
-			listeChoix[i] = new JRadioButton(enTete[i], true);
+			listeChoix[i] = new JRadioButton(enTete[i+nbInput], true);
 			x.add(listeChoix[i]);
 			buttonPanel.add(listeChoix[i]);
 		}
@@ -127,7 +116,7 @@ public class SimLogCsvOutputChoiceWin extends JFrame implements ActionListener {
 					outputChoice = i;
 				}
 			}
-			param.toKarnaugh(fileName, nbInput, nbOutput, nbMonome[outputChoice], outputChoice);
+			param.toKarnaugh(tableVerite, nbInput, nbOutput, nbMonome[outputChoice], outputChoice);
 			dispose();
 		}		
 	}
