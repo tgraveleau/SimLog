@@ -175,6 +175,15 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 	public int getGateType() {
 		return tabGates[markedButton];
 	}
+	
+	/**
+	 * sets type of chosen gate
+	 *
+	 */
+
+	public void setGateType(int type) {
+		tabGates[markedButton]=type;
+	}
 
 	/**
 	 * return state of Toolbar
@@ -184,6 +193,15 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 
 	public int getState() {
 		return state;
+	}
+	
+	/**
+	 * sets state of Toolbar
+	 *
+	 */
+
+	public void setState(int state) {
+		this.state=state;
 	}
 
 	/**
@@ -212,6 +230,19 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 			appli.messageWarning(tabWarningMessages[i]);
 
 		}
+	}
+	
+	public void selectTab(int tab) {
+		if (markedButton != -1) {
+			tabButtons[markedButton].setBackground(Color.white);
+			repaint();
+		}
+		tabButtons[tab].setBackground(Color.red);
+		markedButton = tab;
+		appli.mainPanel.unsetCanvasIntersectFlag();
+
+		state = tabStates[markedButton];
+		appli.messageWarning(tabWarningMessages[tab]);
 	}
 
 	/**

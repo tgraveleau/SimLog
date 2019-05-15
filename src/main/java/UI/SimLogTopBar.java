@@ -136,16 +136,16 @@ public class SimLogTopBar extends JToolBar implements ActionListener {
 						break;
 					case 5:
 						mainPanel.edition();
-						tabButtons[5].setEnabled(false);
-						tabButtons[6].setEnabled(true);
+						//tabButtons[5].setEnabled(false);
+						//tabButtons[6].setEnabled(true);
 						break;
 					case 6:
 						if (!mainPanel.validation()) {
 							appli.windowWarning("Circuit is not valid	");
 						} else {
 							mainPanel.simulation();
-							tabButtons[5].setEnabled(true);
-							tabButtons[6].setEnabled(false);
+							//tabButtons[5].setEnabled(true);
+							//tabButtons[6].setEnabled(false);
 						}
 						break;
 					
@@ -176,6 +176,25 @@ public class SimLogTopBar extends JToolBar implements ActionListener {
 		SimLogPlaParamWin win = new SimLogPlaParamWin(appli);
 		win.centerComponent();
 		win.setVisible(true);
+	}
+	
+	/**
+	 * chose simulation mode in which the Toolbar is not accessible
+	 */
+
+	public void simulation() {
+		
+		tabButtons[5].setEnabled(true);
+		tabButtons[6].setEnabled(false);
+	}
+
+	/**
+	 * chose edition mode in which the Toolbar is accessible
+	 */
+
+	public void edition() {
+		tabButtons[5].setEnabled(false);
+		tabButtons[6].setEnabled(true);
 	}
 
 }
