@@ -41,6 +41,7 @@ package UI;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Stack;
 import java.util.Vector;
 import java.util.function.Consumer;
 
@@ -120,6 +121,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 
 	public SimLogCircuit circuit;
 	private Vector<SimLogGate> listOfGates;
+	private Stack<Vector<SimLogGate>> savedCircuit = new Stack<Vector<SimLogGate>>();
 
 	// Parameters for popup menu
 	JPopupMenu popup;
@@ -249,6 +251,8 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	 */
 
 	private void addGate(int x, int y) {
+		// On sauvegarde l'état du circuit avant de le modifier
+		saveCircuitOnStack();
 		String name = null;
 
 		if (toolbar.getGateType() == SimLogGate.SWITCH_GATE || toolbar.getGateType() == SimLogGate.LED_GATE) {
@@ -350,6 +354,8 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	 */
 
 	private int addLink() {
+		// On sauvegarde l'état du circuit avant de le modifier
+//		saveCircuitOnStack();
 		if (srcGateToLink == null)
 			return -1;
 		if (dstGateToLink == null)
@@ -458,7 +464,10 @@ public class SimLogCanvas extends JPanel implements MouseListener,
     	if (!selectedGates.contains(g) ) {
     		g.setSelectedState();		
     		selectedGates.add(g);    
-    	}	
+    	} else {
+    		g.setNormalState();
+    		selectedGates.remove(g);
+    	}
     }
     
     /**
@@ -497,32 +506,6 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 //		gateToMove.setMovingState();
 		repaint();
     }
-    
-	// ============================================================
-	// methods for KeyListener
-	// ============================================================
-
-    public void keyTyped(KeyEvent e) {}
-
-    public void keyPressed(KeyEvent e) {
-    	if (e.isControlDown()) {
-    		isCtrlKeyDown = true;
-    		switch (e.getKeyCode()) {
-	    		case KeyEvent.VK_C:
-	    			copy();
-	    			break;
-	    		case KeyEvent.VK_V:
-	    			paste();
-	    			break;
-    		}
-    	}
-    }
-
-    public void keyReleased(KeyEvent e) {
-    	if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
-    		isCtrlKeyDown = false;
-    	}
-    }
 
     private void copy() {
 		if (!selectedGates.isEmpty()) {
@@ -536,6 +519,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
     }
     private void paste() {
 		if (!gatesToCopy.isEmpty()) {
+			saveCircuitOnStack();
 	    	for (SimLogGate g : gatesToCopy) {
 				nbCopy++;
 				g.setNormalState();
@@ -549,6 +533,85 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		}
     }
     
+    /**
+     * Sauvegarde l'état du circuit pour le retour en arrière
+     */
+	private void saveCircuitOnStack() {
+//    	System.out.println("\nsave : "+circuit.getListOfGates().size());
+//    	for (SimLogGate g: circuit.getListOfGates()) {
+//    		System.out.println("gate: "+g);
+//    		System.out.println("in:");
+//        	for (SimLogLink l: g.inputLinks)
+//        		System.out.print(l == null ? "x\t" : "link\t");
+//    		System.out.println("out:");
+//        	for (SimLogLink l: g.getOutputLinks())
+//        		System.out.print(l == null ? "x\t" : "link\t");
+//    	}
+		// On sauvegarde l'état du circuit à ce moment
+		savedCircuit.push(copyListOfGates());
+    }
+
+	public Vector<SimLogGate> copyListOfGates() {
+		Vector<SimLogGate> gates = new Vector<SimLogGate>();
+		for (SimLogGate g: listOfGates) {
+			gates.add((SimLogGate) g.clone());
+		}
+		return gates;
+	}
+
+	/**
+	 * Retour à l'état du circuit précédent
+	 */
+    private void returnBack() {
+    	if (!savedCircuit.empty()) {
+        	Vector<SimLogGate> oldList = savedCircuit.pop();
+//        	System.out.println("\nBack : "+oldList.size());
+//        	for (SimLogGate g: oldList) {
+//        		System.out.println("gate: "+g);
+//        		System.out.println("in:");
+//            	for (SimLogLink l: g.inputLinks)
+//            		System.out.print(l == null ? "x\t" : "link\t");
+//        		System.out.println("out:");
+//            	for (SimLogLink l: g.getOutputLinks())
+//            		System.out.print(l == null ? "x\t" : "link\t");
+//        	}
+        	circuit.replaceListOfGates(oldList);
+//        	listOfGates = circuit.getListOfGates();
+        	repaint();
+    	}
+    }
+
+	// ============================================================
+	// methods for KeyListener
+	// ============================================================
+
+    public void keyTyped(KeyEvent e) {}
+
+    public void keyPressed(KeyEvent e) {
+    	if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+    		isCtrlKeyDown = true;
+    	}
+    	if (e.isControlDown()) {
+    		switch (e.getKeyCode()) {
+	    		case KeyEvent.VK_C:
+	    			copy();
+	    			break;
+	    		case KeyEvent.VK_V:
+	    			paste();
+	    			break;
+	    		case KeyEvent.VK_Z:
+	    			returnBack();
+	    			break;
+    		}
+    	}
+    }
+
+    public void keyReleased(KeyEvent e) {
+    	if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+    		isCtrlKeyDown = false;
+    	}
+    }
+
 	// ============================================================
 	// methods for MouseListener
 	// ============================================================
@@ -559,6 +622,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	 */
 
 	public void mouseClicked(MouseEvent e) {
+		requestFocusInWindow();
 		int gateNbr;
 		int x = e.getX();
 		int y = e.getY();
@@ -640,12 +704,11 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 //		case SimLogToolbar.STATE_MOVE:
 			gate = circuit.getGateAtPos(x, y);
 			if (gate != null) {
-				// Si la gate n'est pas sélectionnée, on la sélectionne
-				if (gate.getState() != SimLogGate.STATE_SELECTED) {
-					// Si la touche ctrl n'est pas appuyée, on reset les autres
+				// Si la touche ctrl n'est pas appuyée, on reset les autres
+				if (!isCtrlKeyDown) {
 					resetSelectedGates();
-					selectGate(gate);
 				}
+				selectGate(gate);
 				initGatesToMove(x,y);
 			} else {
 				resetMovingGates();

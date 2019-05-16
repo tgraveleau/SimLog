@@ -155,7 +155,7 @@ public abstract class SimLogGate extends Rectangle {
 	// the number of output links is not limited so make it a vector
 	//
 
-	private Vector outputLinks;
+	private Vector<SimLogLink> outputLinks;
 
 	/**
 	 * Default constructor
@@ -363,7 +363,7 @@ public abstract class SimLogGate extends Rectangle {
 	 * @return vector containing all the output links
 	 */
 
-	public Vector getOutputLinks() {
+	public Vector<SimLogLink> getOutputLinks() {
 		return outputLinks;
 	}
 

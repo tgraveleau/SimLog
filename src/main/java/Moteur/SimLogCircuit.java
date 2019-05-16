@@ -66,7 +66,7 @@ public class SimLogCircuit {
 	private boolean modified = false;
 
 	// list of all gates
-	private Vector listOfGates;
+	private Vector<SimLogGate> listOfGates;
 
 	// names
 	private boolean tabAvailSwitchNames[]; // for switches
@@ -119,7 +119,22 @@ public class SimLogCircuit {
 	 * @return a vector containing the gates
 	 */
 
-	public Vector getListOfGates() {
+	public Vector<SimLogGate> getListOfGates() {
+		return listOfGates;
+	}
+
+	/**
+	 * replace current list of gates
+	 *
+	 * @return a vector containing the gates
+	 */
+
+	public Vector<SimLogGate> replaceListOfGates(Vector<SimLogGate> gates) {
+		listOfGates.clear();
+		for (SimLogGate g: gates) {
+			listOfGates.add((SimLogGate) g.clone());
+		}
+//		listOfGates = (Vector<SimLogGate>) gates.clone();
 		return listOfGates;
 	}
 
