@@ -786,6 +786,14 @@ public abstract class SimLogGate extends Rectangle {
 //		g.setColor(GRID_COLOR);
 		g.draw3DRect(x, y, WIDTH, HEIGHT, true);
 //		g.setColor(GATE_COLOR);
+		
+	}
+	/**
+	 * Draws the deletion cross
+	 * @param g
+	 */
+	
+	public void paintClose(Graphics g) {
 		g.drawRect(x + 50, y, 20, 20);
 		g.drawLine(x + 50, y, x + 70, y + 20);
 		g.drawLine(x + 50, y + 20, x + 70, y);

@@ -596,12 +596,16 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	    			toolbar.setState(toolbar.STATE_LINK);
 	    			toolbar.setGateType(SimLogGate.NONE_GATE);
 	    			break;
-	    		case  KeyEvent.VK_D:
+	    		/*case  KeyEvent.VK_D:
 	    			//Delete
 	    			toolbar.selectTab(11);
 	    			toolbar.setState(toolbar.STATE_DELE);
 	    			toolbar.setGateType(SimLogGate.NONE_GATE);
-	    			break;
+	    			listOfGates = circuit.getListOfGates();
+//	    			for (SimLogGate g : listOfGates) {
+//	    				g.paintClose(g); 
+//	    			}
+	    			break;*/
     		}
     	}
     	repaint();

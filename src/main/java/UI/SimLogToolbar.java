@@ -68,12 +68,12 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 			"add Programmable Array - not implemented",
 //			"To move a gate, click on it and maintain button while moving",
 			"Link gates",
-			"To remove a window, click on the cross on the top right corner" };
+			/*"To remove a window, click on the cross on the top right corner"*/ };
 
 	private final String buttonLabels[] = { "select", "switch", "led", "and", "nand",
 			"or", "nor", "not", "xor", "parray",
 //			"move",
-			"link", "dele", };
+			"link", /*"dele"*/ };
 
 	private final String tabTips[] = { "Select elements", "add a switch", "add a LED",
 			"add a AND gate", "add NAND gate", "add OR gate", "add NOR gate",
@@ -86,14 +86,14 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 			STATE_GATE, STATE_GATE, STATE_GATE, STATE_GATE, STATE_GATE,
 			STATE_GATE, STATE_GATE,
 //			STATE_MOVE,
-			STATE_LINK, STATE_DELE };
+			STATE_LINK, /*STATE_DELE*/ };
 
 	private final static int tabGates[] = { SimLogGate.NONE_GATE, SimLogGate.SWITCH_GATE,
 			SimLogGate.LED_GATE, SimLogGate.AND_GATE, SimLogGate.NAND_GATE,
 			SimLogGate.OR_GATE, SimLogGate.NOR_GATE, SimLogGate.NOT_GATE,
 			SimLogGate.XOR_GATE, SimLogGate.NONE_GATE,
 //			SimLogGate.NONE_GATE,
-			SimLogGate.NONE_GATE, SimLogGate.NONE_GATE, };
+			SimLogGate.NONE_GATE, /*SimLogGate.NONE_GATE*/ };
 
 	private JButton tabButtons[];
 	private int markedButton = 0;
