@@ -207,6 +207,7 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 				}
 			}
 			appli.mainPanel.unsetCanvasIntersectFlag();
+			appli.mainPanel.requestCanvasFocus();
 
 			state = tabStates[markedButton];
 			appli.messageWarning(tabWarningMessages[i]);

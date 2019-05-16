@@ -140,6 +140,10 @@ public class SimLogPanel extends JPanel {
 	public void unsetCanvasIntersectFlag() {
 		canvas.unsetIntersectFlag();
 	}
+	
+	public void requestCanvasFocus() {
+		canvas.requestFocus();
+	}
 
 	public void changeGridMode() {
 		canvas.changeGridMode();
