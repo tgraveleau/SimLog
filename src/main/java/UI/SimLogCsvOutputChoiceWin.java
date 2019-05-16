@@ -19,6 +19,13 @@ import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
 
 import com.opencsv.CSVReader;
 
+/**
+ * Classe qui sert à choisir sur quel sortie se fera le calcul de la table
+ * de Karnaugh.
+ * 
+ * @author DERAMAIX Jonathan
+ *
+ */
 public class SimLogCsvOutputChoiceWin extends JFrame implements ActionListener {
 	private SimLogWin     parent;
 	private SimLogPlaParamWin param;
@@ -26,7 +33,6 @@ public class SimLogCsvOutputChoiceWin extends JFrame implements ActionListener {
 	private JTable        table;
 	private int			  nbInput;
 	private int			  nbOutput;
-	private String		  fileName;
 	private int			  outputChoice;
 	private int[]		  nbMonome;
 	private String[] 	  enTete;
@@ -48,6 +54,7 @@ public class SimLogCsvOutputChoiceWin extends JFrame implements ActionListener {
 		pack();
 	}
 	
+
 	JTable createTable() {
 		int i,j;
 		String cols[];
@@ -55,6 +62,10 @@ public class SimLogCsvOutputChoiceWin extends JFrame implements ActionListener {
 		
 		try {
 			
+			/**
+			 * À partir de la table de vérité les données sont mises en forme
+			 * afin de pouvoir être mise dans la JTable
+			 */
 			cols=new String[nbOutput];
 			for(i=0 ; i<nbOutput ; i++) {
 				cols[i] = enTete[i+nbInput];
@@ -89,7 +100,7 @@ public class SimLogCsvOutputChoiceWin extends JFrame implements ActionListener {
 		bOk=new JButton("  OK  ");
 		bOk.addActionListener(this);
 		buttonPanel.add(bOk);
-		ButtonGroup x = new ButtonGroup();
+		ButtonGroup RadioGroup = new ButtonGroup();
 		
 
 		JScrollPane scrollpane=new JScrollPane(createTable());
@@ -98,7 +109,7 @@ public class SimLogCsvOutputChoiceWin extends JFrame implements ActionListener {
 
 		for(int i=0 ; i<nbOutput ; i++) {
 			listeChoix[i] = new JRadioButton(enTete[i+nbInput], true);
-			x.add(listeChoix[i]);
+			RadioGroup.add(listeChoix[i]);
 			buttonPanel.add(listeChoix[i]);
 		}
 		
