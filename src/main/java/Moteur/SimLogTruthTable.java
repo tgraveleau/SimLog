@@ -199,13 +199,26 @@ public class SimLogTruthTable {
 		return data;
 	}
 	
+	/**
+	 * Fonction permettant de sauvegardé une table de vérité au format CSV
+	 * 
+	 * @param fileName Chemin absolu du fichier avec le nom du fichier
+	 * @return retourne 0 dans le cas où l'enregistrement s'est bien passé, retourne -1 sinon.
+	 */
 	public int save(String fileName) {
-		PrintWriter out;
+		PrintWriter out; 
 		
 		if(!fileName.endsWith(".csv")) {
 			fileName += ".csv";
 		}
 		
+		/**
+		 * Dans cette partie le fichier est écrit dans l'ordre suivant :
+		 * 	Renseigner le nombre d'entrées et de sorties
+		 * 	Renseigner le nom des entrées et sorties
+		 * 	Renseigner la table de vérité sous forme de 0 et de 1
+		 * 	le séparateur utilisé pour ce fichier CSV est la virgule.
+		 */
 		try {
 			out = new PrintWriter( new BufferedWriter( new FileWriter( fileName ) ) );
 			out.print("Number of inputs :,");

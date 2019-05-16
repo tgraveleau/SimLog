@@ -111,7 +111,6 @@ public class SimLogTopBar extends JToolBar implements ActionListener {
 			for (i = 0; i < tabButtons.length; i++) {
 				if (b == tabButtons[i]) {
 					// unmark button
-					System.out.println(i);
 					switch (i) {
 					case 0:
 						enterFormula();
