@@ -20,9 +20,9 @@ import Moteur.SimLogTruthTable;
 
 public class SimLogTopBar extends JToolBar implements ActionListener {
 	
-	private final String buttonLabels[] = { "formula", "karnaugh", "nandnor", "truthtable", "reorganise", "edit", "simulation"};
+	private final String buttonLabels[] = { "formula", "karnaugh", "NandTool", "NorTool", "truthtable", "reorganise", "edit", "simulation"};
 
-	private final String tabTips[] = { "Enter a formula", "Generate a Karnaugh table", "Do...something?",
+	private final String tabTips[] = { "Enter a formula", "Generate a Karnaugh table", "Turn gates to NAND gates", "Turn gates to NOR gates",
 			"Generate the truth table", "Reorganise the elements","Edition mode", "Simulation mode",  };
 	
 	private JButton tabButtons[];
@@ -128,6 +128,10 @@ public class SimLogTopBar extends JToolBar implements ActionListener {
 						}
 						break;
 					case 3:
+						appli.notImplemented();
+						break;
+						//JONATHAN
+					case 4:
 						if (!mainPanel.validation()) {
 							appli.windowWarning("Circuit is not valid	");
 						} else {
@@ -137,22 +141,22 @@ public class SimLogTopBar extends JToolBar implements ActionListener {
 							}
 						}
 						break;
-					case 4:
+					case 5:
 						circuit.reorganize();
 						appli.repaint();
 						break;
-					case 5:
-						mainPanel.edition();
-						tabButtons[5].setEnabled(false);
-						tabButtons[6].setEnabled(true);
-						break;
 					case 6:
+						mainPanel.edition();
+						//tabButtons[5].setEnabled(false);
+						//tabButtons[6].setEnabled(true);
+						break;
+					case 7:
 						if (!mainPanel.validation()) {
 							appli.windowWarning("Circuit is not valid	");
 						} else {
 							mainPanel.simulation();
-							tabButtons[5].setEnabled(true);
-							tabButtons[6].setEnabled(false);
+							//tabButtons[5].setEnabled(true);
+							//tabButtons[6].setEnabled(false);
 						}
 						break;
 					
@@ -183,6 +187,25 @@ public class SimLogTopBar extends JToolBar implements ActionListener {
 		SimLogPlaParamWin win = new SimLogPlaParamWin(appli);
 		win.centerComponent();
 		win.setVisible(true);
+	}
+	
+	/**
+	 * chose simulation mode in which the Toolbar is not accessible
+	 */
+
+	public void simulation() {
+		
+		tabButtons[5].setEnabled(true);
+		tabButtons[6].setEnabled(false);
+	}
+
+	/**
+	 * chose edition mode in which the Toolbar is accessible
+	 */
+
+	public void edition() {
+		tabButtons[5].setEnabled(false);
+		tabButtons[6].setEnabled(true);
 	}
 
 }

@@ -268,7 +268,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		int i;
 
 		g.setColor(Color.LIGHT_GRAY);
-		for (i = 75; i < 1000; i += 80) {
+		for (i = 75; i < 10000; i += 80) {
 			g.drawLine(0, i, 10000, i);
 			g.drawLine(i, 0, i, 10000);
 		}
@@ -505,17 +505,110 @@ public class SimLogCanvas extends JPanel implements MouseListener,
     public void keyTyped(KeyEvent e) {}
 
     public void keyPressed(KeyEvent e) {
+    	
     	if (e.isControlDown()) {
     		isCtrlKeyDown = true;
     		switch (e.getKeyCode()) {
+	    		case KeyEvent.VK_S:
+	    			appli.saveCircuit();
+	    			break;
 	    		case KeyEvent.VK_C:
 	    			copy();
 	    			break;
 	    		case KeyEvent.VK_V:
 	    			paste();
 	    			break;
+	    		case KeyEvent.VK_E:
+	    			edition();
+	    			break;
+	    		case KeyEvent.VK_R:
+	    			simulation();
+	    			break;
+	    		
+	    			
     		}
     	}
+    	else {
+    		switch (e.getKeyCode()) {
+	    		case KeyEvent.VK_DELETE:
+	    			for (SimLogGate g : selectedGates) {
+	    				circuit.removeGateWithName(g);
+	    			}
+	    			repaint();
+	    			break;
+	    		case  KeyEvent.VK_S:
+	    			//SWITCH
+	    			toolbar.selectTab(1);
+	    			toolbar.setState(toolbar.STATE_GATE);
+	    			toolbar.setGateType(SimLogGate.SWITCH_GATE);
+	    			break;
+	    		case  KeyEvent.VK_M:
+	    			toolbar.selectTab(0);
+	    			toolbar.setState(toolbar.STATE_SELECTED);
+	    			toolbar.setGateType(SimLogGate.NONE_GATE);
+	    			//mouse
+	    			break;
+	    		case  KeyEvent.VK_L:
+	    			//Light
+	    			toolbar.selectTab(2);
+	    			toolbar.setState(toolbar.STATE_GATE);
+	    			toolbar.setGateType(SimLogGate.LED_GATE);
+	    			break;
+	    		case  KeyEvent.VK_A:
+	    			//AND
+	    			toolbar.selectTab(3);
+	    			toolbar.setState(toolbar.STATE_GATE);
+	    			toolbar.setGateType(SimLogGate.AND_GATE);
+	    			break;
+	    		case  KeyEvent.VK_W:
+	    			//NAND
+	    			toolbar.selectTab(4);
+	    			toolbar.setState(toolbar.STATE_GATE);
+	    			toolbar.setGateType(SimLogGate.NAND_GATE);
+	    			break;
+	    		case  KeyEvent.VK_O:
+	    			//OR
+	    			toolbar.selectTab(5);
+	    			toolbar.setState(toolbar.STATE_GATE);
+	    			toolbar.setGateType(SimLogGate.OR_GATE);
+	    			break;
+	    		case  KeyEvent.VK_P:
+	    			//NOR
+	    			toolbar.selectTab(6);
+	    			toolbar.setState(toolbar.STATE_GATE);
+	    			toolbar.setGateType(SimLogGate.NOR_GATE);
+	    			break;
+	    		case  KeyEvent.VK_EXCLAMATION_MARK:
+	    			//NOT
+	    			toolbar.selectTab(7);
+	    			toolbar.setState(toolbar.STATE_GATE);
+	    			toolbar.setGateType(SimLogGate.NOT_GATE);
+	    			break;
+	    		case  KeyEvent.VK_X:
+	    			//XOR
+	    			toolbar.selectTab(8);
+	    			toolbar.setState(toolbar.STATE_GATE);
+	    			toolbar.setGateType(SimLogGate.XOR_GATE);
+	    			break;
+	    		case  KeyEvent.VK_H:
+	    			//LINK
+	    			toolbar.selectTab(10);
+	    			toolbar.setState(toolbar.STATE_LINK);
+	    			toolbar.setGateType(SimLogGate.NONE_GATE);
+	    			break;
+	    		/*case  KeyEvent.VK_D:
+	    			//Delete
+	    			toolbar.selectTab(11);
+	    			toolbar.setState(toolbar.STATE_DELE);
+	    			toolbar.setGateType(SimLogGate.NONE_GATE);
+	    			listOfGates = circuit.getListOfGates();
+//	    			for (SimLogGate g : listOfGates) {
+//	    				g.paintClose(g); 
+//	    			}
+	    			break;*/
+    		}
+    	}
+    	repaint();
     }
 
     public void keyReleased(KeyEvent e) {
@@ -864,7 +957,8 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	public void edition() {
 		int i;
 		SimLogGate g;
-
+		appli.toolbar.edition();
+		appli.topBar.edition();
 		for (i = 0; i < listOfGates.size(); i++) {
 			g = (SimLogGate) listOfGates.elementAt(i);
 			g.setNormalState();
@@ -879,7 +973,8 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 	public void simulation() {
 		int i;
 		SimLogGate g;
-
+		appli.toolbar.simulation();
+		appli.topBar.simulation();
 		for (i = 0; i < listOfGates.size(); i++) {
 			g = (SimLogGate) listOfGates.elementAt(i);
 			if (g.getType() != SimLogGate.SWITCH_GATE)
