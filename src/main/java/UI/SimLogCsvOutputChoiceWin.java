@@ -127,7 +127,7 @@ public class SimLogCsvOutputChoiceWin extends JFrame implements ActionListener {
 					outputChoice = i;
 				}
 			}
-			param.toKarnaugh(tableVerite, nbInput, nbOutput, nbMonome[outputChoice], outputChoice);
+			param.toKarnaugh(tableVerite, nbInput, nbOutput, nbMonome[outputChoice], outputChoice, enTete);
 			dispose();
 		}		
 	}

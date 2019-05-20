@@ -43,6 +43,7 @@ package Moteur;
 import java.io.*;
 import java.awt.*;
 import java.util.Vector;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import Gate.SimLogAndGate;
@@ -1109,6 +1110,144 @@ public class SimLogCircuit {
 			link = gate.getInputLink(0);
 			setPositions(height, link.getOutputGate(), ypos);
 			break;
+		}
+	}
+	
+	public void toNand() {
+		SimLogGate g;
+		ArrayList<SimLogGate> arrayListGate = new ArrayList<SimLogGate>();
+		for(int i=0 ; i<listOfGates.size() ; i++ ) {
+			g=(SimLogGate)listOfGates.elementAt(i);
+			arrayListGate.add(g);
+		}
+		for(int i=0 ; i<arrayListGate.size() ; i++ ) {
+			g=arrayListGate.get(i);
+			if(g.getType() == SimLogGate.AND_GATE) {
+				SimLogGate g1 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				SimLogGate g2 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				listOfGates.addElement(g1);
+				listOfGates.addElement(g2);
+				ArrayList<SimLogGate> listOutputGate = new ArrayList<SimLogGate>();
+				for(int j=0 ; j<g.getOutputLinks().size() ; j++) {
+					SimLogLink out = (SimLogLink)g.getOutputLinks().elementAt(j);
+					SimLogGate gInput = out.getInputGate();
+					listOutputGate.add(gInput);
+				}
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[1].getOutputGate(), g1);
+				g.removeAllLinks();
+				addLink(g1, g2);
+				addLink(g1, g2);
+				for(int j=0 ; j<listOutputGate.size() ; j++) {
+					addLink(g2, listOutputGate.get(j));
+				}
+				listOfGates.remove(g);
+				reorganize();
+			}
+			else if(g.getType() == SimLogGate.NOT_GATE) {
+				SimLogGate g1 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				listOfGates.addElement(g1);
+				ArrayList<SimLogGate> listOutputGate = new ArrayList<SimLogGate>();
+				for(int j=0 ; j<g.getOutputLinks().size() ; j++) {
+					SimLogLink out = (SimLogLink)g.getOutputLinks().elementAt(j);
+					SimLogGate gInput = out.getInputGate();
+					listOutputGate.add(gInput);
+				}
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				g.removeAllLinks();
+				for(int j=0 ; j<listOutputGate.size() ; j++) {
+					addLink(g1, listOutputGate.get(j));
+				}
+				listOfGates.remove(g);
+				reorganize();
+			}
+			else if(g.getType() == SimLogGate.OR_GATE) {
+				SimLogGate g1 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				SimLogGate g2 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				SimLogGate g3 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				listOfGates.addElement(g1);
+				listOfGates.addElement(g2);
+				listOfGates.addElement(g3);
+				ArrayList<SimLogGate> listOutputGate = new ArrayList<SimLogGate>();
+				for(int j=0 ; j<g.getOutputLinks().size() ; j++) {
+					SimLogLink out = (SimLogLink)g.getOutputLinks().elementAt(j);
+					SimLogGate gInput = out.getInputGate();
+					listOutputGate.add(gInput);
+				}
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[1].getOutputGate(), g2);
+				addLink(g.inputLinks[1].getOutputGate(), g2);
+				g.removeAllLinks();
+				addLink(g1, g3);
+				addLink(g2, g3);
+				for(int j=0 ; j<listOutputGate.size() ; j++) {
+					addLink(g3, listOutputGate.get(j));
+				}
+				listOfGates.remove(g);
+				reorganize();
+			}
+			else if(g.getType() == SimLogGate.XOR_GATE) {
+				SimLogGate g1 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				SimLogGate g2 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				SimLogGate g3 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				SimLogGate g4 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				listOfGates.addElement(g1);
+				listOfGates.addElement(g2);
+				listOfGates.addElement(g3);
+				listOfGates.addElement(g4);
+				ArrayList<SimLogGate> listOutputGate = new ArrayList<SimLogGate>();
+				for(int j=0 ; j<g.getOutputLinks().size() ; j++) {
+					SimLogLink out = (SimLogLink)g.getOutputLinks().elementAt(j);
+					SimLogGate gInput = out.getInputGate();
+					listOutputGate.add(gInput);
+				}
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[1].getOutputGate(), g1);
+				addLink(g.inputLinks[0].getOutputGate(), g2);
+				addLink(g1, g2);
+				addLink(g.inputLinks[1].getOutputGate(), g3);
+				addLink(g1, g3);
+				addLink(g2, g4);
+				addLink(g3, g4);
+				g.removeAllLinks();
+				for(int j=0 ; j<listOutputGate.size() ; j++) {
+					addLink(g4, listOutputGate.get(j));
+				}
+				listOfGates.remove(g);
+				reorganize();
+			}
+			else if(g.getType() == SimLogGate.NOR_GATE) {
+				SimLogGate g1 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				SimLogGate g2 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				SimLogGate g3 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				SimLogGate g4 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				listOfGates.addElement(g1);
+				listOfGates.addElement(g2);
+				listOfGates.addElement(g3);
+				listOfGates.addElement(g4);
+				ArrayList<SimLogGate> listOutputGate = new ArrayList<SimLogGate>();
+				for(int j=0 ; j<g.getOutputLinks().size() ; j++) {
+					SimLogLink out = (SimLogLink)g.getOutputLinks().elementAt(j);
+					SimLogGate gInput = out.getInputGate();
+					listOutputGate.add(gInput);
+				}
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[1].getOutputGate(), g2);
+				addLink(g.inputLinks[1].getOutputGate(), g2);
+				addLink(g1, g3);
+				addLink(g2, g3);
+				addLink(g3, g4);
+				addLink(g3, g4);
+				g.removeAllLinks();
+				for(int j=0 ; j<listOutputGate.size() ; j++) {
+					addLink(g4, listOutputGate.get(j));
+				}
+				listOfGates.remove(g);
+				reorganize();
+			}
 		}
 	}
 }
