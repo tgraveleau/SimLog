@@ -1081,7 +1081,7 @@ public class SimLogCircuit {
 		if (gate.y > reorganizeY)
 			reorganizeY = gate.y;
 
-		// System.out.println("pos "+gate.x+" "+gate.y);
+		System.out.println("pos "+gate.x+" "+gate.y);
 
 		switch (gate.getType()) {
 		case SimLogGate.SWITCH_GATE:
@@ -1223,6 +1223,148 @@ public class SimLogCircuit {
 				SimLogGate g2 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
 				SimLogGate g3 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
 				SimLogGate g4 = new SimLogNandGate(0, 0, getStdGateName("NAND"));
+				listOfGates.addElement(g1);
+				listOfGates.addElement(g2);
+				listOfGates.addElement(g3);
+				listOfGates.addElement(g4);
+				ArrayList<SimLogGate> listOutputGate = new ArrayList<SimLogGate>();
+				for(int j=0 ; j<g.getOutputLinks().size() ; j++) {
+					SimLogLink out = (SimLogLink)g.getOutputLinks().elementAt(j);
+					SimLogGate gInput = out.getInputGate();
+					listOutputGate.add(gInput);
+				}
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[1].getOutputGate(), g2);
+				addLink(g.inputLinks[1].getOutputGate(), g2);
+				addLink(g1, g3);
+				addLink(g2, g3);
+				addLink(g3, g4);
+				addLink(g3, g4);
+				g.removeAllLinks();
+				for(int j=0 ; j<listOutputGate.size() ; j++) {
+					addLink(g4, listOutputGate.get(j));
+				}
+				listOfGates.remove(g);
+				reorganize();
+			}
+		}
+	}
+	
+	public void toNor() {
+		SimLogGate g;
+		ArrayList<SimLogGate> arrayListGate = new ArrayList<SimLogGate>();
+		for(int i=0 ; i<listOfGates.size() ; i++ ) {
+			g=(SimLogGate)listOfGates.elementAt(i);
+			arrayListGate.add(g);
+		}
+		for(int i=0 ; i<arrayListGate.size() ; i++ ) {
+			g=arrayListGate.get(i);
+			if(g.getType() == SimLogGate.OR_GATE) {
+				SimLogGate g1 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
+				SimLogGate g2 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
+				listOfGates.addElement(g1);
+				listOfGates.addElement(g2);
+				ArrayList<SimLogGate> listOutputGate = new ArrayList<SimLogGate>();
+				for(int j=0 ; j<g.getOutputLinks().size() ; j++) {
+					SimLogLink out = (SimLogLink)g.getOutputLinks().elementAt(j);
+					SimLogGate gInput = out.getInputGate();
+					listOutputGate.add(gInput);
+				}
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[1].getOutputGate(), g1);
+				g.removeAllLinks();
+				addLink(g1, g2);
+				addLink(g1, g2);
+				for(int j=0 ; j<listOutputGate.size() ; j++) {
+					addLink(g2, listOutputGate.get(j));
+				}
+				listOfGates.remove(g);
+				reorganize();
+			}
+			else if(g.getType() == SimLogGate.NOT_GATE) {
+				SimLogGate g1 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
+				listOfGates.addElement(g1);
+				ArrayList<SimLogGate> listOutputGate = new ArrayList<SimLogGate>();
+				for(int j=0 ; j<g.getOutputLinks().size() ; j++) {
+					SimLogLink out = (SimLogLink)g.getOutputLinks().elementAt(j);
+					SimLogGate gInput = out.getInputGate();
+					listOutputGate.add(gInput);
+				}
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				g.removeAllLinks();
+				for(int j=0 ; j<listOutputGate.size() ; j++) {
+					addLink(g1, listOutputGate.get(j));
+				}
+				listOfGates.remove(g);
+				reorganize();
+			}
+			else if(g.getType() == SimLogGate.AND_GATE) {
+				SimLogGate g1 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
+				SimLogGate g2 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
+				SimLogGate g3 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
+				listOfGates.addElement(g1);
+				listOfGates.addElement(g2);
+				listOfGates.addElement(g3);
+				ArrayList<SimLogGate> listOutputGate = new ArrayList<SimLogGate>();
+				for(int j=0 ; j<g.getOutputLinks().size() ; j++) {
+					SimLogLink out = (SimLogLink)g.getOutputLinks().elementAt(j);
+					SimLogGate gInput = out.getInputGate();
+					listOutputGate.add(gInput);
+				}
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[1].getOutputGate(), g2);
+				addLink(g.inputLinks[1].getOutputGate(), g2);
+				g.removeAllLinks();
+				addLink(g1, g3);
+				addLink(g2, g3);
+				for(int j=0 ; j<listOutputGate.size() ; j++) {
+					addLink(g3, listOutputGate.get(j));
+				}
+				listOfGates.remove(g);
+				reorganize();
+			}
+			else if(g.getType() == SimLogGate.XOR_GATE) {
+				SimLogGate g1 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
+				SimLogGate g2 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
+				SimLogGate g3 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
+				SimLogGate g4 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
+				SimLogGate g5 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
+				listOfGates.addElement(g1);
+				listOfGates.addElement(g2);
+				listOfGates.addElement(g3);
+				listOfGates.addElement(g4);
+				listOfGates.addElement(g5);
+				ArrayList<SimLogGate> listOutputGate = new ArrayList<SimLogGate>();
+				for(int j=0 ; j<g.getOutputLinks().size() ; j++) {
+					SimLogLink out = (SimLogLink)g.getOutputLinks().elementAt(j);
+					SimLogGate gInput = out.getInputGate();
+					listOutputGate.add(gInput);
+				}
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[0].getOutputGate(), g1);
+				addLink(g.inputLinks[1].getOutputGate(), g2);
+				addLink(g.inputLinks[1].getOutputGate(), g2);
+				addLink(g1, g3);
+				addLink(g2, g3);
+				addLink(g.inputLinks[0].getOutputGate(), g4);
+				addLink(g.inputLinks[1].getOutputGate(), g4);
+				addLink(g3, g5);
+				addLink(g4, g5);
+				g.removeAllLinks();
+				for(int j=0 ; j<listOutputGate.size() ; j++) {
+					addLink(g5, listOutputGate.get(j));
+				}
+				listOfGates.remove(g);
+				reorganize();
+			}
+			else if(g.getType() == SimLogGate.NAND_GATE) {
+				SimLogGate g1 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
+				SimLogGate g2 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
+				SimLogGate g3 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
+				SimLogGate g4 = new SimLogNorGate(0, 0, getStdGateName("NOR"));
 				listOfGates.addElement(g1);
 				listOfGates.addElement(g2);
 				listOfGates.addElement(g3);

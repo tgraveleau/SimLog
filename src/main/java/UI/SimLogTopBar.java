@@ -128,9 +128,13 @@ public class SimLogTopBar extends JToolBar implements ActionListener {
 						}
 						break;
 					case 3:
-						appli.notImplemented();
+						if (!mainPanel.validation()) {
+							appli.windowWarning("Circuit is not valid	");
+						}else {
+							circuit.toNor();
+							appli.repaint();
+						}
 						break;
-						//JONATHAN
 					case 4:
 						if (!mainPanel.validation()) {
 							appli.windowWarning("Circuit is not valid	");
