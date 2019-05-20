@@ -67,7 +67,7 @@ public class SimLogTopBar extends JToolBar implements ActionListener {
 				tabButtons[i] = b;
 				add(b);
 			}
-			tabButtons[5].setEnabled(false);
+			tabButtons[6].setEnabled(false);
 		} else {
 			Image tabImg[] = new Image[buttonLabels.length];
 			MediaTracker tracker = new MediaTracker(this);
