@@ -18,9 +18,9 @@ import Moteur.SimLogCircuit;
 
 public class SimLogTopBar extends JToolBar implements ActionListener {
 	
-	private final String buttonLabels[] = { "formula", "karnaugh", "nandnor", "truthtable", "reorganise", "edit", "simulation"};
+	private final String buttonLabels[] = { "formula", "karnaugh", "NandTool", "NorTool", "truthtable", "reorganise", "edit", "simulation"};
 
-	private final String tabTips[] = { "Enter a formula", "Generate a Karnaugh table", "Do...something?",
+	private final String tabTips[] = { "Enter a formula", "Generate a Karnaugh table", "Turn gates to NAND gates", "Turn gates to NOR gates",
 			"Generate the truth table", "Reorganise the elements","Edition mode", "Simulation mode",  };
 	
 	private JButton tabButtons[];
@@ -121,6 +121,10 @@ public class SimLogTopBar extends JToolBar implements ActionListener {
 						appli.notImplemented();
 						break;
 					case 3:
+						appli.notImplemented();
+						break;
+						//JONATHAN
+					case 4:
 						if (!mainPanel.validation()) {
 							appli.windowWarning("Circuit is not valid	");
 						} else {
@@ -130,16 +134,16 @@ public class SimLogTopBar extends JToolBar implements ActionListener {
 							}
 						}
 						break;
-					case 4:
+					case 5:
 						circuit.reorganize();
 						appli.repaint();
 						break;
-					case 5:
+					case 6:
 						mainPanel.edition();
 						//tabButtons[5].setEnabled(false);
 						//tabButtons[6].setEnabled(true);
 						break;
-					case 6:
+					case 7:
 						if (!mainPanel.validation()) {
 							appli.windowWarning("Circuit is not valid	");
 						} else {

@@ -60,9 +60,15 @@ public class SimLogContribWin extends JDialog implements ActionListener {
 			+ "<LI> Version 2.0 (awt) Copyright (@) 2002 Jean-Michel RICHER"
 			+ "<LI> Version 2.1 (swing) Copyright (@) 2002 Jean-Michel RICHER"
 			+ "<LI> Version 2.2 (swing) Copyright (@) 2003 Jean-Michel RICHER"
-			+ "with the help of :" + "<UL>" + "<LI> Anne ESNAULT"
-			+ "<LI> Julien FOUCAULT-KERVENNAL" + "<LI> S�bastien RIDE"
-			+ "<LI> Xavier STEPHAN" + "</UL>" + "</UL>" + "<BR>";
+			+ " with the help of :" + "<UL>" + "<LI> Anne ESNAULT"
+			+ "<LI> Julien FOUCAULT-KERVENNAL" + "<LI> Sébastien RIDE"
+			+ "<LI> Xavier STEPHAN" 
+			+ "</UL>"
+			+ "<LI> Version 3.0 (swing) Copyright (@) 2019 Jean-Michel RICHER"
+			+ " with the help of :" + "<UL>" + "<LI> Jonathan DERAMAIX"
+			+ "<LI> Teddy GRAVELEAU" + "<LI> Victoria ROGER"
+			+ "<LI> Xavier STEPHAN" 
+			+ "</UL>" + "</UL>" + "<BR>";
 
 	/**
 	 * create a panel with a Ok button

@@ -268,7 +268,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		int i;
 
 		g.setColor(Color.LIGHT_GRAY);
-		for (i = 75; i < 1000; i += 80) {
+		for (i = 75; i < 10000; i += 80) {
 			g.drawLine(0, i, 10000, i);
 			g.drawLine(i, 0, i, 10000);
 		}
