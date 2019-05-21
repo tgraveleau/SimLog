@@ -65,6 +65,8 @@ public class SimLogCircuit {
 	private final static String fileIdentifier = "# SimLog v2.1";
 
 	private boolean modified = false;
+	
+	private int m_height = 0;
 
 	// list of all gates
 	private Vector listOfGates;
@@ -983,7 +985,7 @@ public class SimLogCircuit {
 	 * reorganize circuit for display
 	 *
 	 */
-
+	//If you want to have original reorganize go to SetPosition()
 	public void reorganize() {
 		int i, n, nbrLEDs;
 		int a;
@@ -1010,7 +1012,9 @@ public class SimLogCircuit {
 		for (i = 0; i < nbrLEDs; i++) {
 			LED = getLED(i);
 			setPositions(LED.locc + 1, LED, reorganizeY);
+			m_height=0;
 		}
+		System.out.println("\n\n");
 	}
 
 	/**
@@ -1069,7 +1073,8 @@ public class SimLogCircuit {
 		}
 		return 1 + gate.locc + gate.rocc;
 	}
-
+	
+	//If you want to have original reorganize function replace: gate.y = m_height * 70 + ypos; by gate.y = height * 70 + ypos;
 	private void setPositions(int height, SimLogGate gate, int ypos) {
 		SimLogLink link;
 		SimLogGate g;
@@ -1077,11 +1082,15 @@ public class SimLogCircuit {
 		if ((gate.x != -1) && (gate.y != -1))
 			return;
 		gate.x = (reorganizeX - gate.x) * 100;
-		gate.y = height * 70 + ypos;
+		gate.y = m_height * 70 + ypos;
+		m_height++;
+		if(gate.x<0) {
+			gate.x=70;
+		}
 		if (gate.y > reorganizeY)
 			reorganizeY = gate.y;
 
-		System.out.println("pos "+gate.x+" "+gate.y);
+		System.out.println("pos "+gate.x+" "+gate.y+" // locc :"+gate.locc+" rocc: "+gate.rocc);
 
 		switch (gate.getType()) {
 		case SimLogGate.SWITCH_GATE:
