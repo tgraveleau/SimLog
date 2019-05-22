@@ -75,12 +75,12 @@ public class SimLogToolbar extends JToolBar implements ActionListener {
 //			"move",
 			"link", /*"dele"*/ };
 
-	private final String tabTips[] = { "Select elements", "add a switch", "add a LED",
-			"add a AND gate", "add NAND gate", "add OR gate", "add NOR gate",
-			"add NOT gate", "add XOR gate",
+	private final String tabTips[] = { "Select elements (M)", "add a switch (S)", "add a LED (L)",
+			"add a AND gate (A)", "add NAND gate (W)", "add OR gate (O)", "add NOR gate (P)",
+			"add NOT gate (!)", "add XOR gate (X)",
 			"add Programmable Array - not implemented",
 //			"move a gate",
-			"link 2 gates", "remove a gate or link" };
+			"link 2 gates (H)", "remove a gate or link" };
 
 	private final static int tabStates[] = { STATE_SELECTED, STATE_GATE, STATE_GATE,
 			STATE_GATE, STATE_GATE, STATE_GATE, STATE_GATE, STATE_GATE,
