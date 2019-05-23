@@ -9,6 +9,7 @@ Pour compiler:
 `mvn compile`
 
 Création d'éxécutable :
+
  `mvn package`
 
 Pour exécuter:
