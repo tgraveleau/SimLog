@@ -1090,7 +1090,7 @@ public class SimLogCircuit {
 		if (gate.y > reorganizeY)
 			reorganizeY = gate.y;
 
-		System.out.println("pos "+gate.x+" "+gate.y+" // locc :"+gate.locc+" rocc: "+gate.rocc);
+		//System.out.println("pos "+gate.x+" "+gate.y+" // locc :"+gate.locc+" rocc: "+gate.rocc);
 
 		switch (gate.getType()) {
 		case SimLogGate.SWITCH_GATE:
