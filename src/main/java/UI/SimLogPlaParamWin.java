@@ -123,7 +123,7 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 	  // CONSTRUCTEUR
 	  
 	  public SimLogPlaParamWin(SimLogWin parent) {
-			appli=parent;
+		  appli=parent;
 		  setTitle("Monomial formula");
 		  setResizable(false);
 		  //Cursor cur = new Cursor( Cursor.HAND_CURSOR ); 
@@ -186,7 +186,12 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 				chargerCSV();
 			}
 			if(e.getSource()==bFromCircuit) {
-				circuitToKarnaugh();
+				if(!appli.mainPanel.validation()) {
+					appli.windowWarning("Circuit is not valid	");
+				}
+				else {
+					circuitToKarnaugh();
+				}
 			}
 		} 
 		

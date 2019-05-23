@@ -1181,5 +1181,9 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		}
 	}
 	
+	public void focus() {
+		requestFocus();
+	}
+	
 	
 }

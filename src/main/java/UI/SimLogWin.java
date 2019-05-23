@@ -65,7 +65,7 @@ public class SimLogWin extends JFrame implements ActionListener{
 	public SimLogToolbar toolbar;
 	public SimLogTopBar topBar;
 	public SimLogPanel mainPanel;
-	private SimLogCircuit circuit;
+	private static SimLogCircuit circuit;
 	private String circuitName;
 	private JTextField message;
 
@@ -603,7 +603,7 @@ public class SimLogWin extends JFrame implements ActionListener{
 	 * @return variable containing the description of the circuit
 	 */
 
-	public SimLogCircuit getCircuit() {
+	public static SimLogCircuit getCircuit() {
 		return circuit;
 	}
 
@@ -614,6 +614,8 @@ public class SimLogWin extends JFrame implements ActionListener{
 	public String getFileSeparator() {
 		return fileSeparator;
 	}
+	
+
 
 	/**
 		 *
@@ -635,5 +637,6 @@ public class SimLogWin extends JFrame implements ActionListener{
 		win.centerComponent();
 		win.setVisible(true);
 	}
+	
 
 }

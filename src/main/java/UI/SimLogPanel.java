@@ -61,7 +61,7 @@ public class SimLogPanel extends JPanel {
 	//
 
 	private SimLogWin appli;
-	private SimLogCanvas canvas;
+	private static SimLogCanvas canvas;
 
 	/**
 	 * default constructor
@@ -148,6 +148,10 @@ public class SimLogPanel extends JPanel {
 
 	public void changeGridMode() {
 		canvas.changeGridMode();
+	}
+	
+	public static SimLogCanvas leCanvas() {
+		return canvas;
 	}
 	
 }
