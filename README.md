@@ -5,7 +5,7 @@ Il faut se placer dans le dossier du projet avant d'éxécuter les commandes sui
 
 # Dépendances 
 Les dépendances présente dans ce projet sont les suivantes:
-* [JUnit version 3.8.1](http://opencsv.sourceforge.net/)
+* [JUnit](http://opencsv.sourceforge.net/) version 3.8.1
 * [Opencsv](https://junit.org/junit4/) version 4.1
 
 # Documentation
