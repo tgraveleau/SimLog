@@ -458,7 +458,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
     	if (!selectedGates.contains(g) ) {
     		g.setSelectedState();		
     		selectedGates.add(g);    
-    	} else {
+    	} else if (isCtrlKeyDown) {
     		g.setNormalState();
     		selectedGates.remove(g);
     	}
@@ -737,10 +737,10 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 //		case SimLogToolbar.STATE_MOVE:
 			gate = circuit.getGateAtPos(x, y);
 			if (gate != null) {
-				// Si la gate n'est pas sélectionnée, on la sélectionne
-				if (gate.getState() != SimLogGate.STATE_SELECTED) {
-					// Si la touche ctrl n'est pas appuyée, on reset les autres
+				// Si la touche ctrl n'est pas appuyée et que la gate n'est pas sélectionnée, on reset les autres
+				if (gate.getState() != SimLogGate.STATE_SELECTED && !isCtrlKeyDown) {
 					resetSelectedGates();
+					
 				}
 				selectGate(gate);
 				initGatesToMove(x,y);
