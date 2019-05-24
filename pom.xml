@@ -32,17 +32,6 @@
     <!-- Build -->
     <!-- =============================================================== -->
     <build>
-        <!-- Gestion des plugins (version) -->
-        <pluginManagement>
-            <plugins>
-                <!-- Plugin responsable de la génération du fichier JAR -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.0.2</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -51,7 +40,7 @@
                     <archive>
                         <!-- Création du Manifest pour la définition de la classe Main -->
                         <manifest>
-                            <mainClass>m2.acdi.SimLogWin</mainClass>
+                            <mainClass>UI.SimLogWin</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
