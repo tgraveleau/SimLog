@@ -314,7 +314,8 @@ public class SimLogCircuit {
 	
 	public void removeGateWithName(SimLogGate g) {
 		int index = listOfGates.indexOf(g);
-		removeGateAtIndex(index);
+		if (index !=-1)
+			removeGateAtIndex(index);
 	}
 
 	/**
@@ -328,19 +329,8 @@ public class SimLogCircuit {
 		String name = g.getName();
 
 		g.removeAllLinks();
-		if (g.getType() == SimLogGate.SWITCH_GATE) {
-			if (name != null) {
-				//tabAvailSwitchNames[(name.charAt(0)) - 65] = true;
-				listOfGates.remove(g);
-			}
-		} else if (g.getType() == SimLogGate.LED_GATE) {
-			if (name != null) {
-				//tabAvailLEDNames[Integer.parseInt(name.substring(1)) - 1] = true;
-				listOfGates.remove(g);
-				//tabAvailLEDNames[(name.charAt(0)) - 65] = true;
-			}
-		} else {
-		}
+
+		listOfGates.remove(g);
 	}
 
 	/**

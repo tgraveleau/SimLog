@@ -370,6 +370,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 		Rectangle r = new Rectangle(deleStartX, deleStartY, deleEndX
 				- deleStartX, deleEndY - deleStartY);
 		circuit.removeGatesIn(r);
+
 		r = null;
 	}
 
@@ -535,7 +536,8 @@ public class SimLogCanvas extends JPanel implements MouseListener,
     		switch (e.getKeyCode()) {
 	    		case KeyEvent.VK_DELETE:
 	    			for (SimLogGate g : selectedGates) {
-	    				circuit.removeGateWithName(g);
+	    				//circuit.removeGateWithName(g);
+	    				circuit.removeGate(g);
 	    			}
 	    			repaint();
 	    			break;
@@ -690,6 +692,7 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 				int n;
 				gate = (SimLogGate) listOfGates.elementAt(gateNbr);
 				if (gate.isInsideRemoveZone(x, y)) {
+
 					circuit.removeGateAtIndex(gateNbr);
 				} else {
 					n = gate.isNearInput(x, y);
@@ -1039,7 +1042,8 @@ public class SimLogCanvas extends JPanel implements MouseListener,
 					popupListener.mouseY);
 			System.out.println(gateNbr);*/
 
-			circuit.removeGateWithName(gate);
+			//circuit.removeGateWithName(gate);
+			circuit.removeGate(gate);
 			repaint();
 			/*if (gateNbr != -1) {
 				int n;
