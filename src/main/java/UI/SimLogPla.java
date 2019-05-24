@@ -122,8 +122,7 @@ public class SimLogPla extends JFrame implements ActionListener {
 							"More than 4 variables : the table may be difficult to understand",
 							"Information : ", 1);
 		}
-		SimLogListMask sllm = new SimLogListMask(canvas.getTablePla(), NbVar,
-				NbMonome);
+		SimLogListMask sllm = new SimLogListMask(canvas.getTablePla(), NbVar, NbMonome);
 	}
 
 }

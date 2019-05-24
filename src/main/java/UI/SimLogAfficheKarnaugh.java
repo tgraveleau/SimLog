@@ -85,7 +85,6 @@ public class SimLogAfficheKarnaugh extends JFrame {
 
 	public SimLogAfficheKarnaugh(boolean[][] Table, int nv, int nm) {
 		Karnaugh = new SimLogKarnaugh(Table, nv, nm);
-
 		// initialisation des legendes
 		LegendeH = new SimLogTableCorres(Karnaugh.getvarH()).Generer();
 		LegendeV = new SimLogTableCorres(Karnaugh.getvarV()).Generer();
@@ -184,8 +183,8 @@ public class SimLogAfficheKarnaugh extends JFrame {
 		g.setColor(Color.blue);
 
 		for (k = 0; k < vH; k++) {
-			lettre = String.valueOf((char) (65 + k));
-			g.drawString(lettre, (k * 10) + 8, yZone + (yZone / 2) - 10);
+				lettre = String.valueOf((char) (65 + k));
+				g.drawString(lettre, (k * 10) + 8, yZone + (yZone / 2) - 10);
 		}
 
 		g.setColor(Color.red);

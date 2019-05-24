@@ -123,7 +123,7 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 	  // CONSTRUCTEUR
 	  
 	  public SimLogPlaParamWin(SimLogWin parent) {
-			appli=parent;
+		  appli=parent;
 		  setTitle("Monomial formula");
 		  setResizable(false);
 		  //Cursor cur = new Cursor( Cursor.HAND_CURSOR ); 
@@ -186,7 +186,12 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 				chargerCSV();
 			}
 			if(e.getSource()==bFromCircuit) {
-				circuitToKarnaugh();
+				if(!appli.mainPanel.validation()) {
+					appli.windowWarning("Circuit is not valid	");
+				}
+				else {
+					circuitToKarnaugh();
+				}
 			}
 		} 
 		
@@ -297,7 +302,7 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 				 choiceWin.show();
 				 }
 				 else {
-					 toKarnaugh(tableVerite, nbrInputs, outputChoice, nbMonome, outputChoice);
+					 toKarnaugh(tableVerite, nbrInputs, outputChoice, nbMonome, outputChoice, enTete);
 				 }
 				
 			} catch (Exception e) {
@@ -315,7 +320,7 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 		 * @param nbMonome Nombre de ligne qui ont une sortie à 1 
 		 * @param outputChoice
 		 */
-		public void toKarnaugh(boolean[][] tableVerite,int nbInput, int nbOutput, int nbMonome, int outputChoice) {
+		public void toKarnaugh(boolean[][] tableVerite,int nbInput, int nbOutput, int nbMonome, int outputChoice, String[] enTete) {
 			try {
 				/**
 				 * La table Pla est une table regroupant les lignes de la table de vérité étant à 1 (d'où le nombre
@@ -389,7 +394,7 @@ public class SimLogPlaParamWin extends JFrame implements ActionListener {
 						choiceWin.show();
 					}
 					else {
-						toKarnaugh(table.getDataBool(), vIn.size(), vOut.size(), nbMonome, 0);
+						toKarnaugh(table.getDataBool(), vIn.size(), vOut.size(), nbMonome, 0, enTete);
 					}
 					this.dispose();
 

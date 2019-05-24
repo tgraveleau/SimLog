@@ -38,6 +38,8 @@ package UI;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import Moteur.SimLogAnaSynt;
+import Moteur.SimLogFormula;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -52,6 +54,7 @@ public class SimLogListMask extends JFrame {
 	private JList liste;
 	private JPanel conteneur = new JPanel();
 	private JButton GenColors;
+	private JButton GenCircuit;
 
 	private SimLogAfficheKarnaugh AffKar;
 
@@ -94,10 +97,14 @@ public class SimLogListMask extends JFrame {
 			GenColors.setFocusPainted(false);
 			GenColors.setCursor(cur);
 			GenColors.setPreferredSize(new Dimension(Longueur, 20));
+			
+			GenCircuit = new JButton("Generate to circuit");
 
 			// Cr�ation de la Liste
 
 			liste = new JList(AffKar.getVectMask());
+			String s = (String)AffKar.getVectMask().elementAt(0);
+			System.out.println(s);
 			liste.setCellRenderer(new SimLogCellRenderer(AffKar.getTabColors()));
 			JScrollPane jsplist = new JScrollPane(liste);
 
@@ -105,6 +112,7 @@ public class SimLogListMask extends JFrame {
 			conteneur.setLayout(LayoutParam);
 			conteneur.add(BorderLayout.NORTH, GenColors);
 			conteneur.add(BorderLayout.CENTER, jsplist);
+			conteneur.add(BorderLayout.SOUTH, GenCircuit);
 
 			this.setContentPane(conteneur);
 			this.setVisible(true);
@@ -115,6 +123,14 @@ public class SimLogListMask extends JFrame {
 					liste.setCellRenderer(new SimLogCellRenderer(AffKar
 							.getTabColors()));
 					AffKar.repaint();
+				}
+			});
+			
+			GenCircuit.addActionListener(new ActionListener() {
+				
+				public void actionPerformed(ActionEvent e) {
+					createCircuit();
+					
 				}
 			});
 
@@ -148,5 +164,42 @@ public class SimLogListMask extends JFrame {
 		}
 
 	} // Fin Constructeur
+	
+	private void createCircuit() {
+		String s = "";//¬
+		for(int i=0 ; i<AffKar.getVectMask().size();i++) {
+			s += "(";
+			String s2 = (String)AffKar.getVectMask().elementAt(i);
+			for(int j=0 ; j<s2.length() ; j++) {
+				if(s2.charAt(j) == '¬') {
+					s +="-";
+				}
+				else if(j != s2.length()-1) {
+					s += s2.charAt(j);
+					s += ".";
+				}
+				else {
+					s += s2.charAt(j);
+				}
+				
+			}
+			if(i != AffKar.getVectMask().size()-1) {
+				s+=")+";
+			}
+			else {
+				s+=")";
+			}
+		}
+		SimLogAnaSynt anasynt = new SimLogAnaSynt(s);
+		anasynt.expr();
+		if (anasynt.isCorrect()) {
+			// anasynt.printStack();
+			SimLogFormula formula = new SimLogFormula(anasynt.getStack());
+			if (formula.isCorrect())
+				SimLogWin.getCircuit().buildCircuit(formula.getRoot());
+				SimLogWin.getCircuit().reorganize();
+				SimLogPanel.leCanvas().repaint();
+		}
+	}
 
 } // Fin SimLogListMask

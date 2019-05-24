@@ -48,6 +48,7 @@ import java.util.Properties;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.Keymap;
 
 import Gate.SimLogGate;
 import Moteur.SimLogCircuit;
@@ -55,7 +56,7 @@ import Moteur.SimLogCircuit;
 
 import java.util.Vector;
 
-public class SimLogWin extends JFrame implements ActionListener {
+public class SimLogWin extends JFrame implements ActionListener{
 
 	//
 	// class variables
@@ -64,7 +65,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 	public SimLogToolbar toolbar;
 	public SimLogTopBar topBar;
 	public SimLogPanel mainPanel;
-	private SimLogCircuit circuit;
+	private static SimLogCircuit circuit;
 	private String circuitName;
 	private JTextField message;
 
@@ -89,6 +90,7 @@ public class SimLogWin extends JFrame implements ActionListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 		createUserInterface();
 	}
 
@@ -112,6 +114,7 @@ public class SimLogWin extends JFrame implements ActionListener {
         }
 
 		createUserInterface();
+		
 	}
 
 	/**
@@ -600,7 +603,7 @@ public class SimLogWin extends JFrame implements ActionListener {
 	 * @return variable containing the description of the circuit
 	 */
 
-	public SimLogCircuit getCircuit() {
+	public static SimLogCircuit getCircuit() {
 		return circuit;
 	}
 
@@ -611,6 +614,8 @@ public class SimLogWin extends JFrame implements ActionListener {
 	public String getFileSeparator() {
 		return fileSeparator;
 	}
+	
+
 
 	/**
 		 *
@@ -632,4 +637,6 @@ public class SimLogWin extends JFrame implements ActionListener {
 		win.centerComponent();
 		win.setVisible(true);
 	}
+	
+
 }
