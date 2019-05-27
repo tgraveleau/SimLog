@@ -69,7 +69,7 @@ public class SimLogListMask extends JFrame {
 
 		NbMask = AffKar.getSizeVect();
 		Longueur = 150;
-		Hauteur = (NbMask * 16) + 52;
+		Hauteur = (NbMask * 16) + 100;
 
 		// Cr�ation de la Fenetre
 
