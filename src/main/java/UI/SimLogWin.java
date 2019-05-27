@@ -79,7 +79,7 @@ public class SimLogWin extends JFrame implements ActionListener{
 	 */
 
 	public SimLogWin() {
-		super("SimLog v2.1");
+		super("SimLog v2.3");
 
 		Properties p = System.getProperties();
 		currentDir = new File(p.getProperty("user.dir"));
